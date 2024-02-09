@@ -4,6 +4,7 @@ import './index.css';
 import App from './App';
 import { initializeApp } from "firebase/app";
 import 'firebase/firestore'; //import other Firebase services as needed
+import { AuthProvider } from './AuthContext';
 
 const firebaseConfig = {
 
@@ -23,7 +24,7 @@ const app = initializeApp(firebaseConfig);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <React.StrictMode>
+  <AuthProvider>
     <App />
-  </React.StrictMode>
+  </AuthProvider>
 );
