@@ -1,6 +1,15 @@
 import React from 'react'
+import { useAuth } from '../../AuthContext'
 
 const LoggInn = () => {
+  const { isLoggedIn, login} = useAuth();
+
+  const handleLogin = () => {
+    //Login logic for database
+    login(); //if the login from database is OK
+  }
+
+
   return (
     <div className='logInContainer'>
       <div className='logInHeader'>
@@ -17,7 +26,7 @@ const LoggInn = () => {
         <label for="email">Epost:</label>
         <input type="email" id="email" name="email"></input>
         
-        <button type='button'>Logg inn</button>
+        <button type='button' onClick={handleLogin}>Logg inn</button>
       </form>
 
     </div>
