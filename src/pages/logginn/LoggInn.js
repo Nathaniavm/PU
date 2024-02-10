@@ -2,11 +2,20 @@ import React from 'react'
 import { useAuth } from '../../AuthContext'
 
 const LoggInn = () => {
-  const { isLoggedIn, login} = useAuth();
+  const { IsLoggedIn, login, logout } = useAuth();
+
 
   const handleLogin = () => {
-    //Login logic for database
-    login(); //if the login from database is OK
+    if(!IsLoggedIn){
+      const username = document.getElementById('username').value;
+      //Login logic for database
+      login(username); //if the login from database is OK
+    }
+
+  }
+
+  const handleLogout = () => {
+    logout();
   }
 
 
@@ -27,6 +36,7 @@ const LoggInn = () => {
         <input type="email" id="email" name="email"></input>
         
         <button type='button' onClick={handleLogin}>Logg inn</button>
+        <button type='button' onClick={handleLogout}>Logg ut</button>
       </form>
 
     </div>

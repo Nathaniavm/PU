@@ -9,7 +9,7 @@ export const Navbar = () => {
       <div className='leftDiv'>
         <ul className='nav-menu'> 
             <li className='nav-item-left'>
-                <Link to="/pages/hjem/Hjem.js" className='nav-link'>
+                <Link to="/" className='nav-link'>
                   Hjem
                 </Link>
               </li>
