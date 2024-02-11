@@ -1,5 +1,7 @@
 import React from 'react'
 import { useAuth } from '../../AuthContext'
+import { Link } from 'react-router-dom';
+import './LoggInn.css'
 
 const LoggInn = () => {
   const { IsLoggedIn, login, logout } = useAuth();
@@ -38,6 +40,10 @@ const LoggInn = () => {
         <button type='button' onClick={handleLogin}>Logg inn</button>
         <button type='button' onClick={handleLogout}>Logg ut</button>
       </form>
+      <div className="logInNewUser">
+        <p>Hvis du ikke har en bruker kan du logge inn</p>
+        <Link to='/newUser'>her</Link>
+      </div>
 
     </div>
   )
