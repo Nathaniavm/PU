@@ -6,7 +6,7 @@ import {
     Routes,
     Route,
 } from "react-router-dom";
-import {Hjem, OpprettLeker, LoggInn, MinSide} from './pages';
+import {Hjem, OpprettLeker, LoggInn, MinSide, NewUser} from './pages';
  
 function App() {
   return (
@@ -17,6 +17,7 @@ function App() {
               <Route path="/opprettleker" element={<OpprettLeker />} />
               <Route path="/logginn" element={<LoggInn />} />
               <Route path="/minside" element={<MinSide />} />
+              <Route path="/newUser" element={<NewUser />} />
           </Routes>
       </Router>
   );
