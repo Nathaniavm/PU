@@ -1,0 +1,53 @@
+.classContainer {
+    display: flex;
+}
+
+
+.gameOverview ul {
+    list-style-type: circle;
+    list-style-position: inside; /*Bullet points følger teksten*/
+}
+
+.leftSideContainer {
+    width: 15%;
+    height: auto;
+    text-align: left;
+}
+
+.rightSideContainer {
+    width: 15%;
+    height: auto;
+    text-align: right;
+}
+
+.middleContainer {
+    text-align: center;
+    width: 70%;
+    height: auto;
+}
+
+.title {
+    font-size: 4vw;
+    background-image: linear-gradient(to left, #003ce1, #a5b2ff);
+    color: transparent;
+    background-clip: text;
+}
+
+h4 {
+    color: #3463e1;
+    font-size: 2vw;
+}
+
+#search {
+    width: 250px;
+    height: 50px;
+    font-size: large;
+    padding: 8px;
+}
+
+#choiceBox {
+    width: 250px;
+    height: 70px;
+    font-size:xx-large;
+    padding: 8px;
+}
