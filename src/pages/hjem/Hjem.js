@@ -1,6 +1,6 @@
 import React from 'react'
 import './Hjem.css'
-import myImage from './friends.jpg';
+import myImage from './reklame.png';
 
 const Hjem = () => {
   return (
@@ -8,7 +8,7 @@ const Hjem = () => {
     <div className='classContainer'>
 
       <div className='leftSideContainer'>
-        <img src={myImage} alt='Friends at beach' width="250" height="1000"></img>
+        <img src={myImage} alt='Her skal det være reklame' width="100%" height="100%"></img>
       </div>
       
         <div className='middleContainer'>
@@ -47,12 +47,17 @@ const Hjem = () => {
               <p>lek 2</p>
             </li>
           </ul>
+          <ul>
+            <li>
+              <p>lek 2</p>
+            </li>
+          </ul>
         </div>
         </div>
 
 
       <div className='rightSideContainer'>
-        <img src={myImage} alt='Friends at beach' width="250" height="1000"></img>
+        <img src={myImage} alt='Her skal det være reklame' width="100%" height="100%"></img>
       </div>
 
     </div>
