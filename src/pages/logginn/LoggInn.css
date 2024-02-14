@@ -4,3 +4,66 @@
     align-items: center;
     justify-content: center;
 }
+
+.inputField{
+    text-align: center;
+    padding-bottom: 1%;
+}
+
+.logInHeader{
+    color: #3463e1;
+    font-size: 2vw;
+}
+
+.inputFieldLabels{
+    color: #3463e1;
+    font-size: 1.5vw;
+    font-weight: bold;
+}
+
+.button{
+    background-color: #3463e1;
+    border: none;
+    color: #FFFADD;
+    padding: 2% 5%;
+    display: inline-block;
+    margin: 5px;
+    cursor: pointer;
+    font-size:medium ;
+    font-weight: 500;
+}
+
+.button:hover{
+    box-shadow: 0 3px 4px 0 #6c84c8, 0 4px 10px 0 #c0ccee;
+}
+
+.buttonDiv{
+    text-align: center;
+    width: 100%;
+    justify-content: center;
+    display: flex;
+    margin-top: 3%;
+    
+}
+
+.formContainer{
+    text-align: center;
+    width: 75%;
+    
+}
+
+.logInNewUser{
+    width: 75%;
+    font-weight: 500; 
+    margin: 0;
+    margin-top: 2%;
+    text-align: center;
+
+}
+
+.logInNewUser p, 
+.logInNewUser a {
+    display: inline-block;
+    margin: 0.5%;
+}
+
