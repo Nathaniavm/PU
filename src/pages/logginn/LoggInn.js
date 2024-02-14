@@ -44,7 +44,6 @@ const LoggInn = () => {
         <p>Hvis du ikke har en bruker kan du logge inn</p>
         <Link to='/newUser'>her</Link>
       </div>
-
     </div>
   )
 }

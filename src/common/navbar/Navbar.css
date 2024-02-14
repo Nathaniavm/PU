@@ -1,5 +1,5 @@
 .navbarContainer {
-    background-color: #0081C9 ;
+    background-color: #3463e1 ;
     height:  auto;
     width: 100%;
     display: flex;
@@ -41,7 +41,7 @@
 }
 
 .nav-item-left {
-    margin-top: 15px;
+    margin-top: 16px;
     margin-bottom: 5px;
     padding-left: 40px;
     
