@@ -1,35 +1,24 @@
-import { initializeApp } from "firebase/app";
-import { getAuth } from 'firebase/auth';
-import { getDatabase } from 'firebase/database';
-import firebaseConfig from './firebaseConfig'; //from firebaseConfig.js
-
-
-// Initialize Firebase app
-const app = initializeApp(firebaseConfig);
+import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
+import { getDatabase, ref, set } from 'firebase/database';
+import app from '../../firebaseConfig'; //Import firebase instance
 
 //Login setup
 const auth = getAuth(app);
 const database = getDatabase(app);
 
 //Register new users to the database
-export function register() {
-    //Get all input fields
-    //Can also use register(email, username, password), which is better?
-    let email = document.getElementById("email".value);
-    let username = document.getElementById("username".value);
-    let password = document.getElementById("password".value); 
-  
+export function register(username, password, email) {  
     //Optionally validate fields (email), unsure if frontend will handle this
   
     //Register user
-    return auth.createUserWithEmailAndPassword(email,password)
+    return createUserWithEmailAndPassword(auth, email,password)    
     .then(function() {
       //Declare user variable
       var user = auth.currentUser;
       alert("User created");
   
       //Add user to Firebase Database
-      var database_ref = database.ref();
+      var database_ref = ref(database);
   
       //Create user data
       var user_data = {
@@ -41,13 +30,14 @@ export function register() {
       }
   
       //Save user data to database
-      return database_ref.child("users/" + user.uid).set(user_data);
+      return set(ref(database, "users/" + user.uid), user_data);
     })
     .catch(function(error){
       // Alert any potential errors
       var error_code = error.code;
       var error_message = error.message;
-  
+
+      console.log(error_code, error_message);
       alert(error_message);
     })
 }
