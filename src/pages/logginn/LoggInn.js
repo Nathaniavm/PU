@@ -21,6 +21,10 @@ const LoggInn = () => {
     logout();
   }
 
+  const handleRegister = () => { //Kall registreringsfunksjonen.
+    register();
+  }
+
 
   return (
     <div className='logInContainer'>
@@ -35,7 +39,7 @@ const LoggInn = () => {
         <input type="password" id="password" name='password' /*required*/ placeholder='qwerty123'></input>
 
         <label for="email">Epost:</label>
-        <input type="email" id="email" name="email"/*required*/ placeholder='ola@nordmann.no'></input>
+        <input type="email" id="email" name="email" /*required*/ placeholder='ola@nordmann.no'></input>
         
         <button type='button' onClick={handleLogin}>Logg inn</button>
         <button type='button' onClick={handleLogout}>Logg ut</button>
