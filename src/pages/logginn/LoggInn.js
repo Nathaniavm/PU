@@ -11,25 +11,40 @@ const LoggInn = () => {
   const handleLogin = () => {
     if(!IsLoggedIn){
 
-      const username = document.getElementById('username').value;
-      const password = document.getElementById('password').value;
-      const email = document.getElementById('email').value;
+      const username = document.getElementById('username');
+      const password = document.getElementById('password');
+      const email = document.getElementById('email');
 
-      console.log(username, password, email);
+      const usernameValue = username.value;
+      const passwordValue = password.value;
+      const emailValue = email.value;
 
-      if(!userExists(username)){
-        alert("Bruker finnes ikke")
+      if(!usernameValue.trim() || !passwordValue.trim() || !emailValue.trim()){
+        alert("Alle felter er påkrevd!")
+        username.value = '';
+        password.value = '';
+        email.value = '';
       }
+      else{
 
-      else if(!passwordMatch(username, password)){
-        alert("Feil passord")
-      }
+        if(!userExists(usernameValue)){
+          alert("Bruker finnes ikke")
+        }
 
-      else {
-        login(username);
+        else if(!passwordMatch(username, password)){
+          alert("Feil passord")
+        }
 
-        //Return to home page on a successful login
-        window.location.replace("/");
+        else {
+          login(usernameValue);
+
+          //Return to home page on a successful login
+          window.location.replace("/");
+        }
+        username.value = '';
+        password.value = '';
+        email.value = '';
+
       }
     }
   }
