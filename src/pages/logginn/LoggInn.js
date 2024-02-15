@@ -31,7 +31,6 @@ const LoggInn = () => {
         window.location.replace("/");
       }
     }
-
   }
 
   const handleLogout = () => {
