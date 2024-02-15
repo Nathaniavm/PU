@@ -31,18 +31,26 @@ const LoggInn = () => {
       <div className='logInHeader'>
         <h1>Logg inn her:</h1>
       </div>
-      <form>
-        <label for='username'>Brukernavn:</label>
-        <input type="text" id="username" name='username' /*required*/ placeholder='Navnesen' ></input>
 
-        <label for='password'>Passord:</label>
-        <input type="password" id="password" name='password' /*required*/ placeholder='qwerty123'></input>
+      <form className='formContainer'>
+        <div className='inputField'>
+          <label className='inputFieldLabels' for='username'>Brukernavn: </label>
+          <input type="text" id="username" name='username'></input>
+        </div>
+        <div className='inputField'>
+          <label className= 'inputFieldLabels' for='password'>Passord: </label>
+          <input type="password" id="password" name='password'></input>
+        </div>
+        <div className='inputField'>
+          <label className= 'inputFieldLabels' for="email">Epost: </label>
+          <input type="email" id="email" name="email"></input>
+        </div>
 
-        <label for="email">Epost:</label>
-        <input type="email" id="email" name="email" /*required*/ placeholder='ola@nordmann.no'></input>
+        <div className='buttonDiv'>
+          <button className= 'button' type='button' onClick={handleLogin}>Logg inn</button>
+          <button className= 'button' type='button' onClick={handleLogout}>Logg ut</button>
+        </div>
         
-        <button type='button' onClick={handleLogin}>Logg inn</button>
-        <button type='button' onClick={handleLogout}>Logg ut</button>
       </form>
       <div className="logInNewUser">
         <p>Hvis du ikke har en bruker kan du lage en <Link to='/newUser'>her</Link></p>
