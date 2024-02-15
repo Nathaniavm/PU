@@ -3,6 +3,7 @@ import { useAuth } from '../../AuthContext'
 import { Link } from 'react-router-dom';
 import './LoggInn.css'
 
+
 const LoggInn = () => {
   const { IsLoggedIn, login, logout } = useAuth();
 
@@ -54,22 +55,28 @@ const LoggInn = () => {
         <h1>Logg inn her:</h1>
       </div>
 
-      <form>
-        <label for='username'>Brukernavn:</label>
-        <input type="text" id="username" name='username'></input>
+      <form className='formContainer'>
+        <div className='inputField'>
+          <label className='inputFieldLabels' for='username'>Brukernavn: </label>
+          <input type="text" id="username" name='username'></input>
+        </div>
+        <div className='inputField'>
+          <label className= 'inputFieldLabels' for='password'>Passord: </label>
+          <input type="password" id="password" name='password'></input>
+        </div>
+        <div className='inputField'>
+          <label className= 'inputFieldLabels' for="email">Epost: </label>
+          <input type="email" id="email" name="email"></input>
+        </div>
 
-        <label for='password'>Passord:</label>
-        <input type="password" id="password" name='password'></input>
-
-        <label for="email">Epost:</label>
-        <input type="email" id="email" name="email"></input>
+        <div className='buttonDiv'>
+          <button className= 'button' type='button' onClick={handleLogin}>Logg inn</button>
+          <button className= 'button' type='button' onClick={handleLogout}>Logg ut</button>
+        </div>
         
-        <button type='button' onClick={handleLogin}>Logg inn</button>
-        <button type='button' onClick={handleLogout}>Logg ut</button>
       </form>
       <div className="logInNewUser">
-        <p>Hvis du ikke har en bruker kan du logge inn</p>
-        <Link to='/newUser'>her</Link>
+        <p>Hvis du ikke har en bruker kan du lage en <Link to='/newUser'>her</Link></p>
       </div>
     </div>
   )
