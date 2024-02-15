@@ -3,6 +3,7 @@ import { useAuth } from '../../AuthContext'
 import { Link } from 'react-router-dom';
 import './LoggInn.css'
 
+
 const LoggInn = () => {
   const { IsLoggedIn, login, logout } = useAuth();
 
@@ -18,6 +19,10 @@ const LoggInn = () => {
 
   const handleLogout = () => {
     logout();
+  }
+
+  const handleRegister = () => { //Kall registreringsfunksjonen.
+    register();
   }
 
 
@@ -48,8 +53,7 @@ const LoggInn = () => {
         
       </form>
       <div className="logInNewUser">
-        <p>Hvis du ikke har en bruker kan du logge inn</p>
-        <Link to='/newUser'>her</Link>
+        <p>Hvis du ikke har en bruker kan du lage en <Link to='/newUser'>her</Link></p>
       </div>
     </div>
   )
