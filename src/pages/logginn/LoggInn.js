@@ -1,4 +1,5 @@
 import { doc } from 'firebase/firestore'
+import { ref, getDatabase, get, child } from 'firebase/database'
 import React from 'react'
 import { useAuth } from '../../AuthContext'
 import { Link } from 'react-router-dom';
@@ -7,15 +8,32 @@ import './LoggInn.css'
 const LoggInn = () => {
   const { IsLoggedIn, login, logout } = useAuth();
 
+  var username;
 
   const handleLogin = () => {
     if(!IsLoggedIn){
-      const username = document.getElementById('username').value;
+      username = document.getElementById('username').value;
       //Login logic for database
       login(username); //if the login from database is OK
     }
 
   }
+
+
+  const readFromFirebase = () => {
+    const dbRef = ref(getDatabase());
+    get(child(dbRef, `users/${username}`)).then((snapshot) => {
+      if (snapshot.exists()) {
+        console.log(snapshot.val());
+      } else {
+        console.log("No data available");
+      }
+    }).catch((error) => {
+      console.error(error);
+    });
+  }
+
+
 
   const handleLogout = () => {
     logout();
@@ -57,12 +75,8 @@ const LoggInn = () => {
 }
 
 
-// Initialize variables
-const auth = firebase.auth()
-const database = firebase.database()
-
 function register() {
-  email = document.getElementById("email").value;
+  /*email = document.getElementById("email").value;
   password = document.getElementById("password").value;
   username = document.getElementById("username").value;
 
@@ -105,11 +119,11 @@ function register() {
     var error_message = error.message;
 
     alert(error_message);
-  })
+  })*/
 }
 
 function validate_email(email) {
-  expression = /^[^@]+@\w+(\.\w+)+\w$/;
+  const  expression = /^[^@]+@\w+(\.\w+)+\w$/;
   return expression.test(email);
 }
 
