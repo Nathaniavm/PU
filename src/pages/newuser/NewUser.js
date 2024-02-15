@@ -42,17 +42,19 @@ const NewUser = () => {
         <h1>Lag ny bruker her:</h1>
       </div>
 
-      <form>
-        <label for='username'>Brukernavn:</label>
-        <input type="text" id="username" name='username' /*required*/ placeholder='Navnesen' ></input>
-
-        <label for='password'>Passord:</label>
-        <input type="password" id="password" name='password' /*required*/ placeholder='qwerty123'></input>
-
-        <label for="email">Epost:</label>
-        <input type="email" id="email" name="email" /*required*/ placeholder='ola@nordmann.no'></input>
-        
-        <button type='button' onClick={handleNewUser}>Registrer</button>
+      <form className='formContainer'>
+          <div className='inputFieldContainer'>
+            <input className='inputField' type="text" placeholder='Brukernavn' id="username" name='username'></input>
+          </div>
+          <div className='inputFieldContainer'>
+            <input className='inputField' type="password" placeholder='Passord' id="password" name='password'></input>
+          </div>
+          <div className='inputFieldContainer'>
+            <input className='inputField' type="email" placeholder='Epost' id="email" name="email"></input>
+          </div>
+          <div className='buttonDiv'>
+            <button className='button' type='button' onClick={handleNewUser}>Ny bruker</button>
+          </div>
       </form>
     </div>
   )

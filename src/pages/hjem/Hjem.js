@@ -22,13 +22,13 @@ const Hjem = () => {
           <h4>Søk etter leker:</h4>
           <form>
             <label for="search"> </label>
-            <input type='search' id='search' name='search'></input>
+            <input className= 'homeInputField' type='search' id='search' name='search'></input>
           </form>
         </div>
 
         <div className='filter'>
           <h4>Velg type lek:</h4>
-          <select id='choiceBox'>
+          <select className='homeInputField' id='choiceBox'>
             <option value='option1'>Navnelek</option>
             <option value='option2'>Icebreaker</option>
             <option value='option3'>Fysisk lek</option>
