@@ -3,34 +3,63 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    /*new */
+    background-color: var(--White-Background);
+    border-radius: 100px 100px 100px 100px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.35);
+    position: relative; 
+    overflow: hidden;
+    width: 60%;
+    max-width: 80%;
+    min-height: 480px;
+    margin-top: 5%;
+    margin-left: 20%;
+    margin-right: 25%;
+    margin-bottom: 5%;
+    
+}
+
+
+.inputFieldContainer{
+    text-align: center;
+    padding-bottom: 1%;
+    padding-left: 10%;
+    padding-right: 10%;
+
 }
 
 .inputField{
-    text-align: center;
-    padding-bottom: 1%;
+    background-color: #eee;
+    border: none;
+    margin: 8px 0;
+    padding: 10px 15px;
+    font-size: 13px;
+    border-radius: 8px;
+    width: 80%;
+    outline: none;
+    margin-bottom: 5%;
 }
 
 .logInHeader{
-    color: #3463e1;
-    font-size: 2vw;
-}
-
-.inputFieldLabels{
-    color: #3463e1;
+    color: var(--Header-Color);
     font-size: 1.5vw;
-    font-weight: bold;
+    padding-top: 2%;
 }
 
 .button{
-    background-color: #3463e1;
+    background-color: var(--Header-Color);
     border: none;
+    border-radius: 8px;
     color: #FFFADD;
     padding: 2% 5%;
     display: inline-block;
     margin: 5px;
+    margin-top: 10px;
     cursor: pointer;
     font-size:medium ;
     font-weight: 500;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
 }
 
 .button:hover{
@@ -49,6 +78,10 @@
 .formContainer{
     text-align: center;
     width: 75%;
+    /*position: absolute;*/ 
+    top: 0; 
+    height: 100%;
+    transition: all 0.6s ease-in-out;
     
 }
 
@@ -57,6 +90,7 @@
     font-weight: 500; 
     margin: 0;
     margin-top: 2%;
+    margin-bottom: 5%;
     text-align: center;
 
 }

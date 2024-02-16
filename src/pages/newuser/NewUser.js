@@ -1,6 +1,8 @@
 import React from 'react'
 import './NewUser.css'
 import { useAuth } from '../../AuthContext'
+import { register } from '../../persistence/NewUserBackend';
+
 
 
 const NewUser = () => {
@@ -17,8 +19,12 @@ const NewUser = () => {
     const password = passwordInput.value;
     const email = emailInput.value;
 
-    console.log(username, password, email);
+
+    //console.log(username, password, email);
     //run backend for creating new user
+
+    register(username, password, email);
+
 
     //if backend is OK:
     login(username)
@@ -36,17 +42,19 @@ const NewUser = () => {
         <h1>Lag ny bruker her:</h1>
       </div>
 
-      <form>
-        <label for='username'>Brukernavn:</label>
-        <input type="text" id="username" name='username'></input>
-
-        <label for='password'>Passord:</label>
-        <input type="password" id="password" name='password'></input>
-
-        <label for="email">Epost:</label>
-        <input type="email" id="email" name="email"></input>
-        
-        <button type='button' onClick={handleNewUser}>Logg inn</button>
+      <form className='formContainer'>
+          <div className='inputFieldContainer'>
+            <input className='inputField' type="text" placeholder='Brukernavn' id="username" name='username'></input>
+          </div>
+          <div className='inputFieldContainer'>
+            <input className='inputField' type="password" placeholder='Passord' id="password" name='password'></input>
+          </div>
+          <div className='inputFieldContainer'>
+            <input className='inputField' type="email" placeholder='Epost' id="email" name="email"></input>
+          </div>
+          <div className='buttonDiv'>
+            <button className='button' type='button' onClick={handleNewUser}>Ny bruker</button>
+          </div>
       </form>
     </div>
   )
