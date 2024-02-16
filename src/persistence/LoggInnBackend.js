@@ -47,7 +47,6 @@ export async function getEmailFromUsername(username){
         return false;
     }
 }
-
 export async function usernameExists(username){
     try{
         //Create database reference to "users"
