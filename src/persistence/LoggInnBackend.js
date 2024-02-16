@@ -1,15 +1,13 @@
-import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
-import { getDatabase, ref, set, update } from 'firebase/database';
-import app from '../firebaseConfig'; //Import firebase instance
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { ref, update } from 'firebase/database';
+import {auth, database} from '../firebaseConfig'; //Import firebase instance
 
 // BACKEND FILE FOR FETCHING USERS FROM DATABASE
 
-//Login setup
-const auth = getAuth(app);
-const database = getDatabase(app);
 
 export const userExists = (username) => {
     //Check if username is registered in the database
+    
     return true;
 }
 
@@ -22,6 +20,8 @@ export const passwordMatch = (username, password) => {
 export function loginData(email, passord){
 
     //Validate if necessary
+
+    console.log("Email: " + email + "\nPassword: " + passord);
 
     return signInWithEmailAndPassword(auth, email, passord)
     .then(function() {
@@ -37,12 +37,15 @@ export function loginData(email, passord){
         //Save user data to database
         return update(ref(database, "users/" + user.uid), user_data);
     })
-    .catch(function(error){
-        // Alert any potential errors
-        var error_code = error.code;
-        var error_message = error.message;
+
+    // Kan kun catche én gang, hvis vi catcher her funker ikke catchen i try/catch der funksjonen kalles
+    // Vet ikke hva som er lurest
+    // .catch(function(error){
+    //     // Alert any potential errors
+    //     var error_code = error.code;
+    //     var error_message = error.message;
   
-        console.log(error_code, error_message);
-        alert("Error %: " + error_message);
-      });
+    //     console.log(error_code, error_message);
+    //     alert("Error %: " + error_message);
+    //   });
 }

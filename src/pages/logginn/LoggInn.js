@@ -1,4 +1,3 @@
-import { doc } from 'firebase/firestore'
 import { ref, getDatabase, get, child } from 'firebase/database'
 import React from 'react'
 import { useAuth } from '../../AuthContext'
@@ -25,9 +24,6 @@ const LoggInn = () => {
 
       if(!usernameValue.trim() || !passwordValue.trim() || !emailValue.trim()){
         alert("Alle felter er påkrevd!")
-        username.value = '';
-        password.value = '';
-        email.value = '';
       }
       else{
 
@@ -35,20 +31,20 @@ const LoggInn = () => {
           alert("Bruker finnes ikke")
         }
 
-        else if(!passwordMatch(username, password)){
+        else if(!passwordMatch(usernameValue, passwordValue)){
           alert("Feil passord")
         }
 
         else {
           try{
-            console.log(loginData(email, password))
-            await loginData(email, password);
+            //console.log(loginData(email, password))
+            await loginData(emailValue, passwordValue);
             console.log("Success");
           }
           catch(error){
             console.log("Error ?: " + error);
           }
-          //login(usernameValue);
+          login(usernameValue);
 
           //Return to home page on a successful login
           //window.location.replace("/");
@@ -56,7 +52,6 @@ const LoggInn = () => {
         username.value = '';
         password.value = '';
         email.value = '';
-
       }
     }
   }
@@ -91,7 +86,7 @@ const LoggInn = () => {
         </div>
         <form className='formContainer'>
           <div className='inputFieldContainer'>
-            <input className='inputField' type="text" placeholder='Brukernavn' id="username" name='username'></input>
+            <input className='inputField' type="text" placeholder='Brukernavn' id="username" name='username' autoFocus></input>
           </div>
           <div className='inputFieldContainer'>
             <input className='inputField' type="password" placeholder='Passord' id="password" name='password'></input>
