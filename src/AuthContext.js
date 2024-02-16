@@ -13,6 +13,10 @@ export function AuthProvider({ children }) {
     () => JSON.parse(localStorage.getItem('isLoggedIn')) || false
   );
 
+  const [isAdmin, setIsAdmin] = useState(
+    () => JSON.parse(localStorage.getItem('isAdmin')) || false
+  );
+
   const [username, setUsername] = useState(
     () => localStorage.getItem('username') || ''
   );
@@ -22,9 +26,14 @@ export function AuthProvider({ children }) {
     setUsername(username);
   };
 
+  const loginAdmin = () => {
+    setIsAdmin(true);
+  };
+
   const logout = () => {
     setIsLoggedIn(false);
     setUsername('');
+    setIsAdmin(false);
   };
 
   // Update localStorage when isLoggedIn or username changes
@@ -33,11 +42,15 @@ export function AuthProvider({ children }) {
   }, [isLoggedIn]);
 
   useEffect(() => {
+    localStorage.setItem('isAdmin', JSON.stringify(isAdmin));
+  }, [isAdmin]);
+
+  useEffect(() => {
     localStorage.setItem('username', username);
   }, [username]);
 
   return (
-    <AuthContext.Provider value={{ isLoggedIn, login, logout, username }}>
+    <AuthContext.Provider value={{ isLoggedIn, isAdmin, login, logout, loginAdmin, username }}>
       {children}
     </AuthContext.Provider>
   );
