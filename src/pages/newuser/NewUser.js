@@ -23,16 +23,36 @@ const NewUser = () => {
     //console.log(username, password, email);
     //run backend for creating new user
 
-    register(username, password, email);
+    if(!validate_password(password)){
+      alert("Ugyldig passord!");
+    }
+    else if(!validate_email(email)){
+      alert("Ugyldig email!");
+    }
+    else if(!username.trim() || !password.trim() || !email.trim()){
+      alert("Alle felter er påkrevd!");
+    }
+    else{
+      register(username, password, email);
+      alert("Bruker opprettet!")
+        
+      //Redirect to login page on a successful login
+      window.location.replace("/logginn");
 
+      //if backend is OK:
+      //login(username)
 
-    //if backend is OK:
-    login(username)
-
-    usernameInput.value = '';
-    passwordInput.value = '';
-    emailInput.value = '';
+    }
     
+  }
+
+  function validate_email(email) {
+    const  expression = /^[^@]+@\w+(\.\w+)+\w$/;
+    return expression.test(email);
+  }
+  
+  function validate_password(password) {
+    return password.length > 6;
   }
 
 

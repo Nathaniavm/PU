@@ -41,7 +41,7 @@ const LoggInn = () => {
 
         else {
           try{
-            console.log(loginData(email, pass))
+            console.log(loginData(email, password))
             await loginData(email, password);
             console.log("Success");
           }
@@ -113,19 +113,6 @@ const LoggInn = () => {
   )
 }
 
-
-function validate_email(email) {
-  const  expression = /^[^@]+@\w+(\.\w+)+\w$/;
-  return expression.test(email);
-}
-
-function validate_password(password) {
-  return password > 6;
-}
-
-function validate_field(field) {
-  return (field != null) && (field.length > 0)
-}
 
 
 export default LoggInn
