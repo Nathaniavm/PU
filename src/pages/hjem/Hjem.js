@@ -1,6 +1,17 @@
 import React from 'react'
 import './Hjem.css'
 import myImage from './reklame.png';
+import { Link } from 'react-router-dom';
+
+
+
+const placeholderGames = [
+  {gameID: 1, title: 'Stiv Heks', description: 'bladdi bladdi bla', category: 'fysisk lek', nPeople: '10'},
+  {gameID: 2, title: 'Navnedyrleken', description: 'blææææææææ', category: 'icebreaker', nPeople: '1'},
+  {gameID: 3, title: 'Klumpelure', description: 'blåååpopppppepepewpepe', category: 'tullete', nPeople: '4'},
+  {gameID: 4, title: 'BONGONG', description: 'fjsdhkfhdsufheuh', category: 'tullete', nPeople: '4'},
+
+]
 
 const Hjem = () => {
   return (
@@ -12,11 +23,11 @@ const Hjem = () => {
       </div>
       
         <div className='middleContainer'>
-        <div className='title'>
-          <h1>
-          Icebreakers
-          </h1>
-        </div>
+          <div className='title'>
+            <h1>
+            Icebreakers
+            </h1>
+          </div>
 
         <div className='searchBar'>
           <h4>Søk etter leker:</h4>
@@ -35,24 +46,16 @@ const Hjem = () => {
           </select>
         </div>
 
-        <div className='gameOverview'>
-          <h4>Bli kjent-leker:</h4>
-          <ul>
-            <li>
-              <p>lek 1</p>
-            </li>
-          </ul>
-          <ul>
-            <li>
-              <p>lek 2</p>
-            </li>
-          </ul>
-          <ul>
-            <li>
-              <p>lek 2</p>
-            </li>
-          </ul>
-        </div>
+          <div className='gameOverview'>
+            <h4>Bli kjent-leker:</h4>
+            <div className='gameGrid'>
+              {placeholderGames.map((game, index) => (
+                <Link to={`game/${game.gameID}`} key={index} className="gameSquare">
+                  <p>{game.title}</p>
+                </Link>
+              ))}
+            </div>
+          </div>
         </div>
 
 
