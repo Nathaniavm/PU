@@ -1,7 +1,7 @@
 import React from 'react'
 import './NewUser.css'
 import { useAuth } from '../../AuthContext'
-import { register } from './registerUser';
+import { register } from '../../persistence/NewUserBackend';
 
 
 

@@ -3,13 +3,14 @@ import React from 'react'
 import { useAuth } from '../../AuthContext'
 import { Link } from 'react-router-dom';
 import './LoggInn.css'
+import { loginData, userExists, passwordMatch } from '../../persistence/LoggInnBackend'
 
 
 const LoggInn = () => {
   const { IsLoggedIn, login, logout } = useAuth();
 
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
     if(!IsLoggedIn){
 
       const username = document.getElementById('username');
@@ -37,10 +38,19 @@ const LoggInn = () => {
         }
 
         else {
-          login(usernameValue);
+          try{
+            console.log(loginData(email, pass))
+            await loginData(email, password);
+            console.log("Success");
+          }
+          catch(error){
+            console.log("Error: " + error);
+
+          }
+          //login(usernameValue);
 
           //Return to home page on a successful login
-          window.location.replace("/");
+          //window.location.replace("/");
         }
         username.value = '';
         password.value = '';
@@ -54,15 +64,7 @@ const LoggInn = () => {
     logout();
   }
 
-  const userExists = (username) => {
-    //Check if username is registered in the database
-    return true;
-  }
 
-  const passwordMatch = (username, password) => {
-    //Check if password matches username in database
-    return true;
-  }
 
 
   return (
@@ -93,57 +95,6 @@ const LoggInn = () => {
   )
 }
 
-
-// Initialize variables
-const auth = firebase.auth()
-const database = firebase.database()
-
-function register() {
-  email = document.getElementById("email").value;
-  password = document.getElementById("password").value;
-  username = document.getElementById("username").value;
-
-  if(!validate_email(email)){
-    alert("efeil email");
-    return;
-  }
-  else if(!validate_password(password)){
-    alert("dårlig passord");
-    return;
-  }
-  else if(!validate_field(username)){
-    alert("teit brukernavn");
-    return;
-  }
-
-  auth.createUserWithEmailAndPassword(email, password)
-  .then(function() {
-
-    var user = auth.currentUser;
-    alert("Bruker opprettet");
-
-    //Add user to database
-    var databse_ref = database.ref();
-
-    // Create user data
-    var user_data = {
-      email : email,
-      username : username,
-      password : password,
-      last_login : Date.now()
-    }
-
-    database_ref.child("users/" + user.uid).set(user_data)
-
-    
-  })
-  .catch(function(error){
-    var error_code = error.code;
-    var error_message = error.message;
-
-    alert(error_message);
-  })
-}
 
 function validate_email(email) {
   expression = /^[^@]+@\w+(\.\w+)+\w$/;
