@@ -27,7 +27,7 @@ export function loginData(email, passord){
     .then(function() {
         //Declare user variable
         var user = auth.currentUser;
-        alert("User created");
+        alert("User logged in");
     
         //Create user data
         var user_data = {
@@ -43,9 +43,6 @@ export function loginData(email, passord){
         var error_message = error.message;
   
         console.log(error_code, error_message);
-        alert(error_message);
+        alert("Error %: " + error_message);
       });
-
-
-
 }
