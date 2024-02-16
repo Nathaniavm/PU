@@ -3,7 +3,7 @@ import React from 'react'
 import { useAuth } from '../../AuthContext'
 import { Link } from 'react-router-dom';
 import './LoggInn.css'
-import { loginData, userExists, passwordMatch } from '../../persistence/LoggInnBackend'
+import { loginData, userExists, passwordMatch, signOutUser } from '../../persistence/LoggInnBackend'
 
 
 const LoggInn = () => {
@@ -73,9 +73,9 @@ const LoggInn = () => {
 
 
   const handleLogout = () => {
+    signOutUser();
     logout();
   }
-
 
 
 

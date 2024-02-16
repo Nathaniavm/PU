@@ -7,13 +7,25 @@ import {auth, database} from '../firebaseConfig'; //Import firebase instance
 
 export const userExists = (username) => {
     //Check if username is registered in the database
-    
+
     return true;
 }
 
 export const passwordMatch = (username, password) => {
     //Check if password matches username in database
     return true;
+}
+
+export function signOutUser() {
+    return auth.signOut()
+    .then(function() {
+        //Sign out successful
+        console.log("User signed out");
+    })
+    .catch(function(error) {
+        //An error occured
+        console.log("Error signing out: " + error);
+    })
 }
 
 
