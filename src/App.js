@@ -6,7 +6,7 @@ import {
     Routes,
     Route,
 } from "react-router-dom";
-import {Hjem, OpprettLeker, LoggInn, MinSide, NewUser} from './pages';
+import {Hjem, OpprettLeker, LoggInn, MinSide, NewUser, Games} from './pages';
  
 function App() {
   return (
@@ -18,10 +18,10 @@ function App() {
               <Route path="/logginn" element={<LoggInn />} />
               <Route path="/minside" element={<MinSide />} />
               <Route path="/newUser" element={<NewUser />} />
+              <Route path="/game/:gameID" element={<Games />} />
           </Routes>
       </Router>
   );
 }
 
 export default App;
-
