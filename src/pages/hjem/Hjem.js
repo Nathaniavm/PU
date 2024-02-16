@@ -1,6 +1,7 @@
 import React from 'react'
 import './Hjem.css'
 import myImage from './reklame.png';
+import { Link } from 'react-router-dom';
 
 const Hjem = () => {
   return (
@@ -54,6 +55,8 @@ const Hjem = () => {
           </ul>
         </div>
         </div>
+
+      <Link to="/games">Games</Link>
 
 
       <div className='rightSideContainer'>
