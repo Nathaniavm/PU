@@ -1,0 +1,73 @@
+.classContainer {
+    display: flex;
+}
+
+
+.gameOverview ul {
+    list-style: none;
+    list-style-position: inside; /*Bullet points følger teksten*/
+    
+}
+
+.leftSideContainer {
+    width: 15%;
+    height: auto;
+    text-align: left;
+}
+
+.rightSideContainer {
+    width: 15%;
+    height: auto;
+    text-align: right;
+}
+
+.middleContainer {
+    text-align: center;
+    width: 70%;
+    height: auto;
+}
+
+.title {
+    font-size: 3vw;
+    background-image: linear-gradient(to left, var(--Header-Color), #a5b2ff);
+    color: transparent;
+    background-clip: text;
+}
+
+.homeInputField{
+    background-color: var(--InputField-Color-Hjem);
+    border: none;
+    /*margin: 8px 0;*/
+    padding: 10px 15px;
+    font-size: 13px;
+    border-radius: 8px;
+    width: 50%;
+    outline: none;
+    /*margin-bottom: 5%;*/
+}
+
+h4 {
+    color: var(--Header-Color);
+    font-size: 1.5vw;
+}
+
+#search {
+    width: 250px;
+    height: 35px;
+    font-size: small;
+}
+
+#choiceBox {
+    width: 250px;
+    height: 35px;
+    font-size: small;
+}
+
+.searchBar{
+    margin-top: 1px;
+}
+
+.filter{
+    margin-top: 1px;
+    margin-bottom: 0%;
+}
