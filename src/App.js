@@ -18,7 +18,7 @@ function App() {
               <Route path="/logginn" element={<LoggInn />} />
               <Route path="/minside" element={<MinSide />} />
               <Route path="/newUser" element={<NewUser />} />
-              <Route path='/games' element={<Games />} />
+              <Route path="/game/:gameID" element={<Games />} />
           </Routes>
       </Router>
   );
