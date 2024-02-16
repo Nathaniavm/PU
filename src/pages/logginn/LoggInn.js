@@ -5,7 +5,7 @@ import './LoggInn.css'
 
 
 const LoggInn = () => {
-  const { IsLoggedIn, login, logout } = useAuth();
+  const { IsLoggedIn, login, loginAdmin } = useAuth();
 
 
   const handleLogin = () => {
@@ -37,6 +37,9 @@ const LoggInn = () => {
 
         else {
           login(usernameValue);
+          if(usernameValue == 'Admin'){
+            loginAdmin(); //need work, everyone should not be admin
+          }
 
           //Return to home page on a successful login
           window.location.replace("/");
@@ -49,9 +52,6 @@ const LoggInn = () => {
     }
   }
 
-  const handleLogout = () => {
-    logout();
-  }
 
   const userExists = (username) => {
     //Check if username is registered in the database
@@ -81,7 +81,6 @@ const LoggInn = () => {
           </div>
           <div className='buttonDiv'>
             <button className= 'button' type='button' onClick={handleLogin}>Logg inn</button>
-            <button className= 'button' type='button' onClick={handleLogout}>Logg ut</button>
           </div>
         </form>
         <div className="logInNewUser">
