@@ -2,6 +2,7 @@ import React, { useContext, useState } from 'react';
 import { AuthContext } from '../../AuthContext';
 import { Link } from 'react-router-dom';
 import './Opprettleker.css';
+import { registerGame } from '../../OpprettLekerBackend';
 
 const OpprettLeker = () => {
   const { isLoggedIn, username } = useContext(AuthContext);
@@ -23,6 +24,9 @@ const OpprettLeker = () => {
       alert("Beskrivelse er påkrevd")
     }
     //Send data to backend
+
+    registerGame(title, description, nPeople); //added for database
+
 
     // Clear form inputs after submission
     setFormData({
