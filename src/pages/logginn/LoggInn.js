@@ -3,11 +3,20 @@ import React from 'react'
 import { useAuth } from '../../AuthContext'
 import { Link } from 'react-router-dom';
 import './LoggInn.css'
-import { loginData, userExists, passwordMatch, signOutUser } from '../../persistence/LoggInnBackend'
+import { loginData, usernameExists, passwordMatch, signOutUser, emailExists, getEmailFromUsername } from '../../persistence/LoggInnBackend'
 
 
 const LoggInn = () => {
   const { IsLoggedIn, login, logout } = useAuth();
+
+  function isEmail(username){
+    //Check format for wether an input field is email
+    const res = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
+    if(res.test(String(username).toLowerCase())){
+      return true;
+    }
+    else return false;
+  }
 
   var username;
 
@@ -16,26 +25,48 @@ const LoggInn = () => {
 
       const username = document.getElementById('username');
       const password = document.getElementById('password');
-      const email = document.getElementById('email');
-
+      var email = username;
+      var emailValue = "";
       const usernameValue = username.value;
       const passwordValue = password.value;
-      const emailValue = email.value;
 
-      if(!usernameValue.trim() || !passwordValue.trim() || !emailValue.trim()){
-        alert("Alle felter er påkrevd!")
+      
+      if (isEmail(usernameValue)){ 
+        email = username; 
+        emailValue = usernameValue;
+        //Make all lower case
+      }
+
+
+      if(!usernameValue.trim() || !passwordValue.trim()){
+        alert("Begge felter er påkrevd!")
       }
       else{
-
-        if(!userExists(usernameValue)){
-          alert("Bruker finnes ikke")
+        if (isEmail(usernameValue)){
+          if (!emailExists(emailValue)){
+            alert("Eposten finnes ikke");
+          }
         }
+        else {
+          if(!usernameExists(usernameValue)){
+          alert("Brukernavnet finnes ikke");
+          }
+        }  
 
-        else if(!passwordMatch(usernameValue, passwordValue)){
+
+
+        //Vet ikke om vi trenger dette siden vi har sjekket brukernavn, og hvis det stemmer vil det automatisk bli passord som er feil
+        if(!passwordMatch(usernameValue, passwordValue)){
           alert("Feil passord")
         }
 
         else {
+          if(!isEmail(usernameValue)){
+            //emailValue = "test@test.no";
+            emailValue = await getEmailFromUsername(usernameValue);
+            console.log("emailValue: " + emailValue);
+          }
+
           try{
             //console.log(loginData(email, password))
             await loginData(emailValue, passwordValue);
@@ -86,14 +117,16 @@ const LoggInn = () => {
         </div>
         <form className='formContainer'>
           <div className='inputFieldContainer'>
-            <input className='inputField' type="text" placeholder='Brukernavn' id="username" name='username' autoFocus></input>
+            <input className='inputField' type="text" placeholder='Brukernavn/Epost' id="username" name='username' autoFocus></input>
           </div>
           <div className='inputFieldContainer'>
             <input className='inputField' type="password" placeholder='Passord' id="password" name='password'></input>
           </div>
+          {/* 
           <div className='inputFieldContainer'>
             <input className='inputField' type="email" placeholder='Epost' id="email" name="email"></input>
           </div>
+          */}
           <div className='buttonDiv'>
             <button className= 'button' type='button' onClick={handleLogin}>Logg inn</button>
             <button className= 'button' type='button' onClick={handleLogout}>Logg ut</button>

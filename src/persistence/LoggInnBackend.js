@@ -1,15 +1,9 @@
 import { signInWithEmailAndPassword } from 'firebase/auth';
-import { ref, update } from 'firebase/database';
+import { equalTo, query, get, getDatabase, orderByChild, ref, update } from 'firebase/database';
 import {auth, database} from '../firebaseConfig'; //Import firebase instance
 
 // BACKEND FILE FOR FETCHING USERS FROM DATABASE
 
-
-export const userExists = (username) => {
-    //Check if username is registered in the database
-
-    return true;
-}
 
 export const passwordMatch = (username, password) => {
     //Check if password matches username in database
@@ -27,12 +21,88 @@ export function signOutUser() {
         console.log("Error signing out: " + error);
     })
 }
+export async function getEmailFromUsername(username){
+    try{
+        //Create database reference to "users"
+        const dbRef = ref(getDatabase(), "users");
+
+        //Create database query for username
+        const userQuery = query(dbRef, orderByChild("username"), equalTo(username));
+
+        //Execute query
+        const snapshot = await get(userQuery);
+
+        if (snapshot.exists()) {
+            const userData = snapshot.val()[Object.keys(snapshot.val())[0]];
+            console.log(userData);
+            const userEmail = userData.email;
+            return userEmail; //User exists
+        }
+        else {
+            return null;
+        }
+    }
+    catch (error){
+        console.log("Error med query til databasen ved søking etter brukernavn: " + error);
+        return false;
+    }
+}
+
+export async function usernameExists(username){
+    try{
+        //Create database reference to "users"
+        const dbRef = ref(getDatabase(), "users");
+
+        //Create database query for username
+        //OBS! Må ha ".indexON": "username" som en rule i firebase databasen
+        const userQuery = query(dbRef, orderByChild("username"), equalTo(username));
+
+        //Execute query
+        const snapshot = await get(userQuery);
+
+        if (snapshot.exists()) {
+            console.log("Brukernavnet finnes");
+            return true; //User exists
+        }
+        else {
+            return false;
+        }
+    }
+    catch (error){
+        console.log("Error med query til databasen: " + error);
+        return false;
+    }
+}
+export async function emailExists(email){
+    try{
+        //Create database reference to "users"
+        const dbRef = ref(getDatabase(), "users");
+
+        //Create database query for email
+        //OBS! Må ha ".indexON": "email" som en rule i firebase databasen
+        const userQuery = query(dbRef, orderByChild("email"), equalTo(email));
+
+        //Execute query
+        const snapshot = await get(userQuery);
+
+        if (snapshot.exists()) {
+            console.log("Eposten finnes");
+            return true; //User exists
+        }
+        else {
+            return false;
+        }
+    }
+    catch (error){
+        console.log("Error med query til databasen: " + error);
+        return false;
+    }
+}
 
 
 export function loginData(email, passord){
 
-    //Validate if necessary
-
+    //Validate fields if necessary
     console.log("Email: " + email + "\nPassword: " + passord);
 
     return signInWithEmailAndPassword(auth, email, passord)
