@@ -7,7 +7,7 @@ import { loginData, usernameExists, passwordMatch, signOutUser, emailExists, get
 
 
 const LoggInn = () => {
-  const { IsLoggedIn, login, logout } = useAuth();
+  const { IsLoggedIn, login, loginAdmin } = useAuth();
 
   function isEmail(username){
     //Check format for wether an input field is email
@@ -76,6 +76,9 @@ const LoggInn = () => {
             console.log("Error ?: " + error);
           }
           login(usernameValue);
+          if(usernameValue == 'Admin'){
+            loginAdmin(); //need work, everyone should not be admin
+          }
 
           //Return to home page on a successful login
           //window.location.replace("/");
@@ -129,7 +132,6 @@ const LoggInn = () => {
           */}
           <div className='buttonDiv'>
             <button className= 'button' type='button' onClick={handleLogin}>Logg inn</button>
-            <button className= 'button' type='button' onClick={handleLogout}>Logg ut</button>
           </div>
         </form>
         <div className="logInNewUser">

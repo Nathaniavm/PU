@@ -1,0 +1,114 @@
+.TitleDiv{
+    font-size: 2.8vw;
+    background-image: linear-gradient(to left, var(--Header-Color), #a5b2ff);
+    color: transparent;
+    background-clip: text;
+    text-align: center;
+}
+
+.MyPageDiv{
+    display: flex;
+    max-width: 95%;
+    align-items: center;
+    justify-content: center;
+    padding-left: 10%;
+    padding-right: 10%;
+}
+
+.FavoritesDiv{
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    background-color: var(--White-Background);
+    border-radius: 100px 100px 100px 100px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.35);
+    position: relative; 
+    overflow: hidden;
+    width: 100%;
+    max-width: 100%;
+    min-height: 480px;
+    margin-top: 2%;
+    margin-bottom: 5%;
+    margin-left: 3%;
+    margin-right: 5%;
+}
+
+.QueueDiv{
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    color: var(--Header-Color);
+    background-color: var(--White-Background);
+    border-radius: 100px 100px 100px 100px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.35);
+    position: relative; 
+    overflow: hidden;
+    width: 100%;
+    max-width: 100%;
+    min-height: 480px;
+    margin-top: 2%;
+    margin-bottom: 5%;
+    margin-left: 10%;
+    margin-right: 3%;
+}
+
+.HeaderInDiv{
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    max-height: 5%;
+    width: 100%;
+    align-items: center;
+    display: flex;
+    background-color: var(--Header-Color);
+    color: var(--White-Background);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.35);
+    
+}
+
+.LogoutDiv{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 8%;
+}
+
+.RapportedUsersDiv{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    text-align: center;
+    color: var(--Header-Color);
+    background-color: var(--White-Background);
+    border-radius: 100px 100px 100px 100px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.35);
+    position: relative; 
+    overflow: hidden;
+    max-width: 80%;
+    min-height: 480px;
+    margin-top: 2%;
+    margin-bottom: 5%;
+    margin-left: 10%;
+    margin-right: 10%;
+}
+
+.LogoutButton{
+    background-color:#e36767;
+    border: none;
+    border-radius: 8px;
+    color: #FFFADD;
+    padding: 2% 5%;
+    display: inline-block;
+    margin: 5px;
+    margin-top: 10px;
+    cursor: pointer;
+    font-size:medium ;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+
+.LogoutButton:hover{
+    box-shadow: 0 3px 4px 0 #6c84c8, 0 4px 10px 0 #c0ccee;
+}
+
