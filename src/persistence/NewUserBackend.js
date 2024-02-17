@@ -1,12 +1,9 @@
-import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
-import { getDatabase, ref, set } from 'firebase/database';
-import app from '../../firebaseConfig'; //Import firebase instance
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { ref, set } from 'firebase/database';
+import {auth, database} from '../firebaseConfig'; //Import firebase instance
 
 // BACKEND FILE FOR REGISTERING NEW USERS IN THE DATABASE?
 
-//Login setup
-const auth = getAuth(app);
-const database = getDatabase(app);
 
 //Register new users to the database
 export function register(username, password, email) {  
@@ -18,9 +15,6 @@ export function register(username, password, email) {
       //Declare user variable
       var user = auth.currentUser;
       alert("User created");
-  
-      //Add user to Firebase Database
-      var database_ref = ref(database);
   
       //Create user data
       var user_data = {
