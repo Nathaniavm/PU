@@ -19,6 +19,17 @@
     width: auto;
 }
 
+.nav-link.current { /* Skjønner ikke hvorfor dette ikke blir likt som de andre linkene bare med underline, men det får noen se på senere */
+    text-decoration: underline;
+    color: #FFFADD;
+    font-size: 25px;
+    font-family: Tahoma, sans-serif;
+}
+
+.nav-link:hover {
+    color: #999999;
+}
+
 .nav-link {
     text-decoration: none;
     color: #FFFADD;
@@ -53,6 +64,8 @@
     margin-bottom: 5px ;
     padding-right: 40px;
 }
+
+
 
 ul {
     list-style: none;
