@@ -44,7 +44,7 @@ const LoggInn = () => {
       }
       else{
         if (isEmail){
-          if (! await emailExists(emailValue)){
+          if (! await emailExists(emailValue)){ //Await for å vente til queryen av databasen er ferdig
             alert("Eposten finnes ikke");
             return;
           }
@@ -64,7 +64,7 @@ const LoggInn = () => {
           if(!isEmail){
             //emailValue = "test@test.no";
             emailValue = await getEmailFromUsername(usernameValue);
-            console.log("emailValue: " + emailValue);
+            //console.log("emailValue: " + emailValue);
           }
 
           try{
@@ -74,6 +74,8 @@ const LoggInn = () => {
           }
           catch(error){
             console.log("Error ?: " + error);
+            alert("Feil passord") //
+            return;
           }
           login(usernameValue);
 
