@@ -9,7 +9,7 @@ import { loginData, usernameExists, passwordMatch, signOutUser, emailExists, get
 const LoggInn = () => {
   const { IsLoggedIn, login, loginAdmin } = useAuth();
 
-  function isEmail(username){
+  function nameIsEmail(username){
     //Check format for wether an input field is email
     const res = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
     if(res.test(String(username).toLowerCase())){
@@ -30,11 +30,12 @@ const LoggInn = () => {
       const usernameValue = username.value;
       const passwordValue = password.value;
 
+      let isEmail = nameIsEmail(usernameValue);
       
-      if (isEmail(usernameValue)){ 
+      if (isEmail){ 
         email = username; 
         emailValue = usernameValue;
-        //Make all lower case
+        //Make all lower case?
       }
 
 
@@ -42,29 +43,28 @@ const LoggInn = () => {
         alert("Begge felter er påkrevd!")
       }
       else{
-        if (isEmail(usernameValue)){
-          if (!emailExists(emailValue)){
+        if (isEmail){
+          if (! await emailExists(emailValue)){ //Await for å vente til queryen av databasen er ferdig
             alert("Eposten finnes ikke");
+            return;
           }
         }
         else {
-          if(!usernameExists(usernameValue)){
+          if(! await usernameExists(usernameValue)){
           alert("Brukernavnet finnes ikke");
+          return;
           }
         }  
-
-
 
         //Vet ikke om vi trenger dette siden vi har sjekket brukernavn, og hvis det stemmer vil det automatisk bli passord som er feil
         if(!passwordMatch(usernameValue, passwordValue)){
           alert("Feil passord")
         }
-
         else {
-          if(!isEmail(usernameValue)){
+          if(!isEmail){
             //emailValue = "test@test.no";
             emailValue = await getEmailFromUsername(usernameValue);
-            console.log("emailValue: " + emailValue);
+            //console.log("emailValue: " + emailValue);
           }
 
           try{
@@ -74,6 +74,8 @@ const LoggInn = () => {
           }
           catch(error){
             console.log("Error ?: " + error);
+            alert("Feil passord") //
+            return;
           }
           login(usernameValue);
           if(usernameValue == 'Admin'){
@@ -83,6 +85,7 @@ const LoggInn = () => {
           //Return to home page on a successful login
           //window.location.replace("/");
         }
+        //Dette er vel ikke nødvendig da dette er variabler som ble definert da funksjonen ble kalt, og vil dermed ikke ta plass etter funksjonen har returnert?
         username.value = '';
         password.value = '';
         email.value = '';
@@ -91,6 +94,7 @@ const LoggInn = () => {
   }
 
 
+  //Jeg vet ikke om dette faktisk er i bruk?
   const readFromFirebase = () => {
     const dbRef = ref(getDatabase());
     get(child(dbRef, `users/${username}`)).then((snapshot) => {

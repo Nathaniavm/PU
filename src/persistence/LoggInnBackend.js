@@ -34,7 +34,7 @@ export async function getEmailFromUsername(username){
 
         if (snapshot.exists()) {
             const userData = snapshot.val()[Object.keys(snapshot.val())[0]];
-            console.log(userData);
+            //console.log(userData);
             const userEmail = userData.email;
             return userEmail; //User exists
         }
@@ -60,7 +60,7 @@ export async function usernameExists(username){
         const snapshot = await get(userQuery);
 
         if (snapshot.exists()) {
-            console.log("Brukernavnet finnes");
+            //console.log("Brukernavnet finnes");
             return true; //User exists
         }
         else {
@@ -85,7 +85,7 @@ export async function emailExists(email){
         const snapshot = await get(userQuery);
 
         if (snapshot.exists()) {
-            console.log("Eposten finnes");
+            //console.log("Eposten finnes");
             return true; //User exists
         }
         else {
@@ -102,7 +102,7 @@ export async function emailExists(email){
 export function loginData(email, passord){
 
     //Validate fields if necessary
-    console.log("Email: " + email + "\nPassword: " + passord);
+    //console.log("Email: " + email + "\nPassword: " + passord);
 
     return signInWithEmailAndPassword(auth, email, passord)
     .then(function() {
