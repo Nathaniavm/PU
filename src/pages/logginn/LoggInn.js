@@ -110,13 +110,6 @@ const LoggInn = () => {
 
 
 
-  const handleLogout = () => {
-    signOutUser();
-    logout();
-  }
-
-
-
   return (
       <div className='logInContainer'>
         <div className='logInHeader'>

@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import './MinSide.css'
 
 const MinSide = () => {
-  const { logout , isAdmin } = useAuth();
+  const { logout, isAdmin, isLoggedIn } = useAuth();
 
   const handleLogout = () => {
     logout();
@@ -12,42 +12,53 @@ const MinSide = () => {
 
   return (
     <>
-      <div className='MPContainer'> 
-        <div className='TitleDiv'> 
-          <h1>
-            Min Side
-          </h1>
-        </div>
-        <div className='MyPageDiv'>
-          <div className='FavoritesDiv'>
-            <div className='HeaderInDiv'>
-              <h1>
-                Favoritter <span role="img" aria-label="Heart">❤️</span>
-              </h1>
-            </div>
-          </div>
-          <div className='QueueDiv'>
-            <div className='HeaderInDiv'>
+      {isLoggedIn ? (
+        <div className='MPContainer'>
+          <div className='TitleDiv'>
             <h1>
-              Kø
+              Min Side
             </h1>
+          </div>
+
+          <div className='MyPageDiv'>
+            <div className='FavoritesDiv'>
+              <div className='HeaderInDiv'>
+                <h1>
+                  Favoritter <span role="img" aria-label="Heart">❤️</span>
+                </h1>
+              </div>
+            </div>
+            <div className='QueueDiv'>
+              <div className='HeaderInDiv'>
+                <h1>
+                  Kø
+                </h1>
+              </div>
             </div>
           </div>
-        </div>
-        <div className='LogoutDiv'>
-          <button className= 'LogoutButton' type='button' onClick={handleLogout}>Logg ut</button>
-        </div>
 
-        {isAdmin ? (
-        <div className='RapportedUsersDiv'>
-          <div className='HeaderInDiv'>
-            <h1>Rapporterte spillere</h1>
+          <div className='LogoutDiv'>
+            <button className='LogoutButton' type='button' onClick={handleLogout}>Logg ut</button>
+          </div>
+
+          {isAdmin && (
+            <div className='RapportedUsersDiv'>
+              <div className='HeaderInDiv'>
+                <h1>Rapporterte spillere</h1>
+              </div>
+            </div>
+          )}
+        </div>
+      ) : (
+        <div className="MinSide__not-logged-in">
+          <div className='ErrorLoginContainer'>
+            <h2 className='ErrorLoginMessage'>
+              For å ha tilgang til disse funksjonene er det nødvendig at du er logget inn.
+            </h2>
+            <Link to="/logginn">Logg inn</Link>
           </div>
         </div>
-        ) : (
-          <div></div>
-        )}
-      </div>
+      )}
     </>
   )
 }
