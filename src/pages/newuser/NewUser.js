@@ -33,11 +33,11 @@ const NewUser = () => {
       alert("Alle felter er påkrevd!");
     }
     else{
-      register(username, password, email);
+      const result = register(username, password, email);
       alert("Bruker opprettet!")
         
       //Redirect to login page on a successful login
-      window.location.replace("/logginn");
+      //window.location.replace("/logginn");
 
       //if backend is OK:
       //login(username)
