@@ -49,10 +49,7 @@
 }
 
 
-.Opprettleker__form-title,
-.Opprettleker__form-description,
-.Opprettleker__form-nPeople,
-.Opprettleker__form-btn{
+.Opprettleker__form-general{
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -72,6 +69,24 @@
     min-width: 80%;
     outline: none;
     margin-bottom: 5%;
+}
+
+.selectField{
+    background-color: #eee;
+    border: none;
+    margin: 8px 0;
+    padding: 10px 15px;
+    font-size: 13px;
+    border-radius: 8px;
+    width: 84%;
+    max-width: 84%;
+    min-width: 84%;
+    outline: none;
+    margin-bottom: 5%;
+}
+
+.placeholder{
+    color: rgb(116, 116, 116)
 }
 
 #description{

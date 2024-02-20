@@ -2,11 +2,13 @@ import React from 'react'
 import { useAuth } from '../../AuthContext'
 import { Link } from 'react-router-dom';
 import './MinSide.css'
+import { signOutUser } from '../../persistence/LoggInnBackend';
 
 const MinSide = () => {
   const { logout , isAdmin } = useAuth();
 
   const handleLogout = () => {
+    signOutUser();
     logout();
   }
 

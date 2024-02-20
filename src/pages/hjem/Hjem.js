@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import './Hjem.css'
-import myImage from './reklame.png';
+//import myImage from './reklame.png';
 import { Link } from 'react-router-dom';
 
 
@@ -34,7 +34,8 @@ const Hjem = () => {
     <div className='classContainer'>
 
       <div className='leftSideContainer'>
-        <img src={myImage} alt='Her skal det være reklame' width="100%" height="100%"></img>
+        {/* Commented this out because of problems when filtering games, need some work on the image scaling i suppose */}
+        {/*<img src={myImage} alt='Her skal det være reklame' width="100%" height="100%"></img>*/}
       </div>
       
         <div className='middleContainer'>
@@ -92,7 +93,8 @@ const Hjem = () => {
         </div>
 
       <div className='rightSideContainer'>
-        <img src={myImage} alt='Her skal det være reklame' width="100%" height="100%"></img>
+        {/* Commented this out because of problems when filtering games, need some work on the image scaling i suppose */}
+        {/*<img src={myImage} alt='Her skal det være reklame' width="100%" height="100%"></img>*/}
       </div>
 
     </div>
