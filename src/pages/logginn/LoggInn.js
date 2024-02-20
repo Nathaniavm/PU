@@ -3,7 +3,7 @@ import React from 'react'
 import { useAuth } from '../../AuthContext'
 import { Link } from 'react-router-dom';
 import './LoggInn.css'
-import { loginData, usernameExists, passwordMatch, signOutUser, emailExists, getEmailFromUsername } from '../../persistence/LoggInnBackend'
+import { loginData, usernameExists, passwordMatch, emailExists, getEmailFromUsername } from '../../persistence/LoggInnBackend'
 
 
 const LoggInn = () => {
@@ -78,7 +78,7 @@ const LoggInn = () => {
             return;
           }
           login(usernameValue);
-          if(usernameValue == 'Admin'){
+          if(usernameValue === 'Admin'){
             loginAdmin(); //need work, everyone should not be admin
           }
 

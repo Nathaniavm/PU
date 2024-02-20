@@ -8,10 +8,11 @@ const Games = () => {
 
     // Placeholder games, will be switched with backend retreiving method
     const placeholderGames = [
-        {gameID: 1, title: 'Stiv Heks', description: 'bladdi bladdi bla', category: 'fysisk lek', nPeople: '10'},
-        {gameID: 2, title: 'Navnedyrleken', description: 'blææææææææ', category: 'icebreaker', nPeople: '1'},
-        {gameID: 3, title: 'Klumpelure', description: 'blåååpopppppepepewpepe', category: 'tullete', nPeople: '4'},
-        {gameID: 4, title: 'BONGONG', description: 'fjsdhkfhdsufheuh', category: 'tullete', nPeople: '4'},
+        {gameID: 1, title: 'Stiv Heks', description: 'En blir valgt til å være heks, heksa skal løpe etter de andre og prøve å ta på dem, hvis man blir truffet av heksa må man stå med beina spredt, og man blir fri hvis noen kraber under beina dine'
+        , category: 'fysisk lek', nPeople: '10'},
+        {gameID: 2, title: 'Navnedyrleken', description: 'Alle sier navnet sitt, og et dyr med samme forbokstav som navnet', category: 'navnelek', nPeople: '1'},
+        {gameID: 3, title: 'Spille kort', description: 'Bare spille ett eller annet med kort', category: 'icebreaker', nPeople: '4'},
+        {gameID: 4, title: 'Sista', description: 'Løpe etter hverandre', category: 'fysisk lek', nPeople: '4'},
     ];
 
     // Find the game baced on the gameID

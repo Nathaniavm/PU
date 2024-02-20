@@ -8,34 +8,32 @@ const OpprettLeker = () => {
   const [formData, setFormData] = useState({
     title: '',
     description: '',
-    nPeople: ''
+    nPeople: '',
+    category: ''
   });
 
   const handleCreateGame = () => {
     // Access form data from state
-    const { title, description, nPeople } = formData;
-    console.log(title, description, nPeople);
+    const { title, description, nPeople, category } = formData;
+    console.log(title, description, nPeople, category);
 
-    if(!title.trim()){
+    if (!title.trim()) {
       alert("Tittel er påkrevd")
-    }
-
-    else if(!description.trim()){
+    } else if (!description.trim()) {
       alert("Beskrivelse er påkrevd")
     }
     //Send data to backend
-
-
 
     // Clear form inputs after submission
     setFormData({
       title: '',
       description: '',
-      nPeople: ''
+      nPeople: '',
+      category: ''
     });
   };
 
-  const handleChange = (e) => {
+  const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevFormData) => ({
       ...prevFormData,
@@ -55,7 +53,7 @@ const OpprettLeker = () => {
           </div>
           <div className="Opprettleker__logged-in-form">
             <form className='form'>
-              <div className="Opprettleker__form-title">
+              <div className="Opprettleker__form-title Opprettleker__form-general">
                 <input
                   className='inputField'
                   type="text"
@@ -63,11 +61,11 @@ const OpprettLeker = () => {
                   name="title"
                   placeholder='Tittel, påkrevd informasjon'
                   value={formData.title}
-                  onChange={handleChange}
+                  onChange={handleInputChange}
                 />
               </div>
 
-              <div className="Opprettleker__form-description">
+              <div className="Opprettleker__form-description Opprettleker__form-general">
                 <textarea
                   className='inputField'
                   rows="4"
@@ -76,11 +74,11 @@ const OpprettLeker = () => {
                   name="description"
                   placeholder='Beskrivelse, påkrevd informasjon'
                   value={formData.description}
-                  onChange={handleChange}
+                  onChange={handleInputChange}
                 ></textarea>
               </div>
 
-              <div className="Opprettleker__form-nPeople">
+              <div className="Opprettleker__form-nPeople Opprettleker__form-general">
                 <input
                   className='inputField'
                   type="number"
@@ -88,12 +86,30 @@ const OpprettLeker = () => {
                   name="nPeople"
                   placeholder='Antall personer, la stå blank hvis ubegrenset antall'
                   value={formData.nPeople}
-                  onChange={handleChange}
+                  onChange={handleInputChange}
                 />
               </div>
 
-              <div className="Opprettleker__form-btn">
-                <button className= 'button' type="button" onClick={handleCreateGame}>
+              <div className='Opprettleker__form-category Opprettleker__form-general'>
+                <select required
+                  className={`selectField ${formData.category === '' ? 'placeholder' : ''}`}
+                  id='category'
+                  name='category'
+                  value={formData.category}
+                  onChange={handleInputChange}
+                >
+                  {formData.category === '' && (
+                    <option value="" disabled>Velg kategori</option>
+                  )}
+                  <option value='alle'>Alle</option>
+                  <option value='navnelek'>Navnelek</option>
+                  <option value='icebreaker'>Icebreaker</option>
+                  <option value='fysisk lek'>Fysisk lek</option>
+                </select>
+              </div>
+
+              <div className="Opprettleker__form-btn Opprettleker__form-general">
+                <button className='button' type="button" onClick={handleCreateGame}>
                   Send
                 </button>
               </div>
@@ -104,8 +120,8 @@ const OpprettLeker = () => {
         <div className="Opprettleker__not-logged-in">
           <div className='ErrorLoginContainer'>
             <h2 className='ErrorLoginMessage'>
-            For å benytte deg av denne funksjonen må du være logget inn, dette er fordi vi vil ha
-            kontroll på hvem som opprettet lekene.
+              For å benytte deg av denne funksjonen må du være logget inn, dette er fordi vi vil ha
+              kontroll på hvem som opprettet lekene.
             </h2>
             <Link to="/logginn">Logg inn</Link>
           </div>
