@@ -26,7 +26,7 @@ const MinSide = () => {
             <div className='FavoritesDiv'>
               <div className='HeaderInDiv'>
                 <h1>
-                  Favoritter <span role="img" aria-label="Heart">❤️</span>
+                  Favoritter
                 </h1>
               </div>
             </div>

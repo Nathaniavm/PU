@@ -24,6 +24,7 @@ const Games = () => {
     }
     return (
     <>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></link>
         <div className='gamesContainer'>
             <div className='gameTitle'>
                 <h1>{game.title}</h1>
@@ -40,7 +41,13 @@ const Games = () => {
 
             <div className='gameDescription'>
                 <p>{game.description}</p>
-            </div>         
+            </div> 
+
+            <div className='buttonsContainer'>
+                <button className='moreButton favoriteButton' type='button'><i className="fa fa-heart"></i> Favoritt</button>
+                <button className='moreButton queueButton' type='button'><i className="fa fa-plus"></i> Legg til i kø</button>
+                <button className='moreButton reportButton' type='button'><i className="fa fa-flag"></i> Rapporter</button>
+            </div>   
         </div>
     </> 
     )
