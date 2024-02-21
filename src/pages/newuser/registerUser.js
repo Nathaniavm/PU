@@ -42,5 +42,7 @@ export function register(username, password, email) {
       console.log(error_code, error_message);
       alert(error_message);
     })
+
 }
+
   

@@ -32,20 +32,17 @@ export function registerGame(title, description, nPeople) {
     var user = auth.currentUser;
 
     var database_ref = ref(database);
+    // Henter username fra gud vet hvor men det funker
+    const username = localStorage.getItem('username') || '';
 
-    // Ensure user is authenticated
-    // TODO fiks dette auth greiene
-    //if (!user) {
-    //    console.error("User not authenticated");
-    //    return Promise.reject(new Error("User not authenticated"));
-    //}
 
     // Create game data
     var gameData = {
         title: title,
         description: description,
         nPeople: nPeople, 
-        registered: Date.now()
+        registered: Date.now(),
+        username: username
     }
 
     // Get the current number of games
