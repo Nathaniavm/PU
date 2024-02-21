@@ -19,7 +19,7 @@
     width: auto;
 }
 
-.nav-link.current { /* Skjønner ikke hvorfor dette ikke blir likt som de andre linkene bare med underline, men det får noen se på senere */
+.nav-linkcurrent { /* Skjønner ikke hvorfor dette ikke blir likt som de andre linkene bare med underline, men det får noen se på senere */
     text-decoration: underline;
     color: #FFFADD;
     font-size: 25px;
