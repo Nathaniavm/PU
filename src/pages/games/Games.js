@@ -22,6 +22,11 @@ const Games = () => {
     if (!game) {
         return <p>Fant ikke spillet.</p>;
     }
+
+    const handleReportGame = () => {
+        alert("Spillet er rapportert")
+    }
+
     return (
     <>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></link>
@@ -46,7 +51,8 @@ const Games = () => {
             <div className='buttonsContainer'>
                 <button className='moreButton favoriteButton' type='button'><i className="fa fa-heart"></i> Favoritt</button>
                 <button className='moreButton queueButton' type='button'><i className="fa fa-plus"></i> Legg til i kø</button>
-                <button className='moreButton reportButton' type='button'><i className="fa fa-flag"></i> Rapporter</button>
+                <button className='moreButton reportButton' type='button' onClick={handleReportGame}>
+                    <i className="fa fa-flag"></i> Rapporter</button>
             </div>   
         </div>
     </> 

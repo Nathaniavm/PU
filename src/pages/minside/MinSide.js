@@ -46,7 +46,7 @@ const MinSide = () => {
           {isAdmin && (
             <div className='RapportedUsersDiv'>
               <div className='HeaderInDiv'>
-                <h1>Rapporterte spillere</h1>
+                <h1>Rapporterte spill</h1>
               </div>
             </div>
           )}
