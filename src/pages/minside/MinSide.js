@@ -2,6 +2,7 @@ import React from 'react'
 import { useAuth } from '../../AuthContext'
 import './MinSide.css'
 import { signOutUser } from '../../persistence/LoggInnBackend';
+import {Link } from 'react-router-dom';
 
 const MinSide = () => {
   const { logout, isAdmin, isLoggedIn } = useAuth();
