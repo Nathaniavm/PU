@@ -1,10 +1,7 @@
 import { getAuth } from 'firebase/auth';
 import { getDatabase, ref, set, push, onValue } from 'firebase/database';
-import app from './firebaseConfig'; // Import firebase instance
+import {auth, database} from '../firebaseConfig'; //Import firebase instance
 
-// Database setup
-const database = getDatabase(app);
-const auth = getAuth(app);
 
 // Function to get the number of game elements
 export function getNumberOfGames() {

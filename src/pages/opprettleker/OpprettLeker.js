@@ -2,7 +2,7 @@ import React, { useContext, useState } from 'react';
 import { AuthContext } from '../../AuthContext';
 import { Link } from 'react-router-dom';
 import './Opprettleker.css';
-import { registerGame } from '../../OpprettLekerBackend';
+import { registerGame } from '../../persistence/OpprettLekerBackend';
 
 const OpprettLeker = () => {
   const { isLoggedIn, username } = useContext(AuthContext);
