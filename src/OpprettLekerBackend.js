@@ -1,10 +1,7 @@
 import { getAuth } from 'firebase/auth';
-import { getDatabase, ref, set, push, onValue } from 'firebase/database';
-import app from './firebaseConfig'; // Import firebase instance
+import { getDatabase, ref, set, remove, push, onValue } from 'firebase/database';
+import { database, auth } from './firebaseConfig'; // Import firebase instance
 
-// Database setup
-const database = getDatabase(app);
-const auth = getAuth(app);
 
 // Function to get the number of game elements
 export function getNumberOfGames() {
@@ -66,3 +63,12 @@ export function registerGame(title, description, nPeople) {
     });
 }
 
+export function deleteGame(gameID){
+    
+    var game = ref(database, 'games/' + gameID)
+
+    //Does not throw error if gameID doesn't exist
+    remove(game)
+    alert('Lek slettet')
+
+}
