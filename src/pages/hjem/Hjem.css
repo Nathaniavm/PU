@@ -28,6 +28,15 @@
     height: auto;
 }
 
+.search-filter-container{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 4%;
+    margin-top: 0;
+}
+
 .title {
     font-size: 3vw;
     background-image: linear-gradient(to left, var(--Header-Color), #a5b2ff);
@@ -36,7 +45,7 @@
 }
 
 .homeInputField{
-    background-color: var(--InputField-Color-Hjem);
+    background-color: var(--White-Background);
     border: none;
     /*margin: 8px 0;*/
     padding: 10px 15px;
@@ -64,13 +73,10 @@ h4 {
     font-size: small;
 }
 
-.searchBar{
-    margin-top: 1px;
-}
-
+.searchBar,
 .filter{
-    margin-top: 1px;
-    margin-bottom: 0%;
+    margin-right: 2%;
+    margin-left: 2%;
 }
 
 .gameOverview {

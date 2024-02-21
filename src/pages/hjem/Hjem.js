@@ -44,38 +44,38 @@ const Hjem = () => {
             Icebreakers
             </h1>
           </div>
+          <div className="search-filter-container">
+            <div className='searchBar'>
+              <h4>Søk etter leker:</h4>
+              <form>
+                <label for="search"> </label>
+                <input 
+                  className= 'homeInputField' 
+                  type='search' 
+                  id='search' 
+                  name='search'
+                  value={searchInput}
+                  onChange={handleSearchChange}
+                  placeholder='Søk etter tittel'
+                  />
+              </form>
+            </div>
 
-          <div className='searchBar'>
-            <h4>Søk etter leker:</h4>
-            <form>
-              <label for="search"> </label>
-              <input 
-                className= 'homeInputField' 
-                type='search' 
-                id='search' 
-                name='search'
-                value={searchInput}
-                onChange={handleSearchChange}
-                placeholder='Søk etter tittel'
-                />
-            </form>
+            <div className='filter'>
+              <h4>Velg type lek:</h4>
+              <select
+                className='homeInputField' 
+                id='choiceBox'
+                value={selectedCategory}
+                onChange={handleCategoryChange}
+                  >
+                  <option value='alle'>Alle</option>
+                  <option value='navnelek'>Navnelek</option>
+                  <option value='icebreaker'>Icebreaker</option>
+                  <option value='fysisk lek'>Fysisk lek</option>
+              </select>
+            </div>
           </div>
-
-          <div className='filter'>
-            <h4>Velg type lek:</h4>
-            <select
-              className='homeInputField' 
-              id='choiceBox'
-              value={selectedCategory}
-              onChange={handleCategoryChange}
-                >
-                <option value='alle'>Alle</option>
-                <option value='navnelek'>Navnelek</option>
-                <option value='icebreaker'>Icebreaker</option>
-                <option value='fysisk lek'>Fysisk lek</option>
-            </select>
-          </div>
-
           <div className='gameOverview'>
             <h4>Bli kjent-leker:</h4>
             <div className='gameGrid'>
