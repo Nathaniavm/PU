@@ -79,21 +79,21 @@ h4 {
     margin-left: 2%;
 }
 
-.gameOverview {
+.gameOverviewList {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
 }
 
-.gameGrid {
+.gameHorisontalList {
     display: flex;
     flex-direction: column; 
     gap: 10px; 
     background-color: var(--Body-Color);
 }
 
-.gameSquare {
+.gameSquareHorisontalList {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -116,12 +116,57 @@ h4 {
     transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-.gameSquare-p-content {
+.gameSquare-p-content-horisontal {
     display: flex;
     flex-direction: row;
 }
 
-.gameSquare p {
+/* For Vertical view */
+
+.gameOverviewGrid {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.gameVerticalList {
+    display: flex;
+    flex-direction: row;
+    gap: 10px; 
+    background-color: var(--Body-Color);
+    flex-wrap: wrap;
+}
+
+.gameSquareVerticalList {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    text-decoration: none;
+    color: var(--Header-Color);
+    font-size: 25px;
+    font-family: Tahoma, sans-serif;
+
+
+    background-color: var(--White-Background);
+    border: 2px solid var(--Header-Color); 
+    border-radius: 30px; 
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.35); 
+
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.gameSquare-p-content-vertical {
+    display: flex;
+    flex-direction: column;
+}
+
+
+.gameSquareHorisontalList p,
+.gameSquareVerticalList p {
     text-decoration: none;
     color: #5578d6;
     font-size: 14px;
@@ -130,12 +175,38 @@ h4 {
     margin-top: 0px;
 }
 
-.gameSquare:hover {
-    background-color:rgb(250, 250, 250);
+.gameSquareVerticalList:hover,
+.gameSquareHorisontalList:hover {
+    background-color: var(--Selected-color);
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
 
 
     transition: background-color 0.3s ease;
     transition: box-shadow 0.3s ease;
+}
+
+.switchViewContainer{
+    background-color: transparent;
+    border: none;
+    font-size: 20px;
+    margin-right: 10px;
+}
+
+.toggleBtn {
+    cursor: pointer;
+    background-color: var(--White-Background);
+    border: 2px solid var(--Header-Color);
+    color: var(--Header-Color);
+    border-radius: 7px;
+    padding: 0.7%;
+    margin: 0.3%;
+}
+
+.toggleBtn:hover {
+    background-color: var(--Selected-color);
+}
+
+.toggleBtn.active{
+    background-color: rgb(224, 224, 224);
 }
 
