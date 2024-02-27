@@ -12,7 +12,7 @@ const OpprettLeker = () => {
     nPeople: '',
     category: ''
   });
-
+ 
   const handleCreateGame = () => {
     // Access form data from state
     const { title, description, nPeople, category } = formData;
@@ -25,7 +25,7 @@ const OpprettLeker = () => {
     }
     //Send data to backend
 
-    registerGame(title, description, nPeople); //added for database
+    registerGame(title, description, nPeople, category); //added for database
 
 
     // Clear form inputs after submission

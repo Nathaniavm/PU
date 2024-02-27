@@ -1,29 +1,27 @@
-import { getDatabase, ref, set, push, onValue } from 'firebase/database';
+import { getDatabase, ref, set, push, onValue, query, get, limitToLast, orderByKey, orderByChild, equalTo } from 'firebase/database';
 import { auth, database } from '../firebaseConfig'; //Import firebase instance
 
 
 // Function to get the number of game elements
-export function getNumberOfGames() {
-    const gamesRef = ref(database, 'games');
-
-    return new Promise((resolve, reject) => {
-        onValue(gamesRef, (snapshot) => {
-            if (snapshot.exists()) {
-                const games = snapshot.val();
-                const numberOfGames = Object.keys(games).length;
-                resolve(numberOfGames);
-            } else {
-                resolve(0);
-            }
-        }, (error) => {
-            console.error("Error getting number of games:", error);
-            reject(error);
-        });
-    });
+export async function getLastId(callback) {
+    const gamesRef = ref(getDatabase(), "games");
+    const lastGameQuery = query(gamesRef, orderByKey(), limitToLast(1));
+    console.log(1);
+    const snapshot = await get(lastGameQuery);
+    console.log(snapshot);
+    if (snapshot.exists()) {
+        const lastId = Object.keys(snapshot.val())[0];
+        console.log(5);
+        return Number(lastId); //User exists
+    }
+    else {
+        return null;
+    }
 }
 
+
 // Function to register a new game
-export function registerGame(title, description, nPeople) {  
+export async function registerGame(title, description, nPeople, category) {  
     // Declare user variable
     var user = auth.currentUser;
 
@@ -38,27 +36,21 @@ export function registerGame(title, description, nPeople) {
         description: description,
         nPeople: nPeople, 
         registered: Date.now(),
-        username: username
+        username: username,
+        category: category
     }
 
     // Get the current number of games
-    return getNumberOfGames().then((numberOfGames) => {
-        // Generate a unique key for the new game
-        const gameKey = numberOfGames + 1;
-
-        // Save game data to database under 'games/gameKey'
-        return set(ref(database, `games/${gameKey}`), gameData)
-            .then(() => {
-                console.log("Game registered successfully");
-                return "Game registered successfully";
-            })
-            .catch((error) => {
-                console.error("Error registering game:", error);
-                throw error;
-            });
-    }).catch((error) => {
-        console.error("Error getting number of games:", error);
-        throw error;
-    });
+    var gameKey = await getLastId() + 1; 
+    
+    // Save game data to database under 'games/gameKey'
+    return set(ref(database, `games/${gameKey}`), gameData)
+        .then(() => {
+            console.log("Game registered successfully");
+            return "Game registered successfully";
+        })
+        .catch((error) => {
+            console.error("Error registering game:", error);
+            throw error;
+        });
 }
-
