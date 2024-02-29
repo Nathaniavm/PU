@@ -63,12 +63,3 @@ export function registerGame(title, description, nPeople) {
     });
 }
 
-export function deleteGame(gameID){
-    
-    var game = ref(database, 'games/' + gameID)
-
-    //Does not throw error if gameID doesn't exist
-    remove(game)
-    alert('Lek slettet')
-
-}
