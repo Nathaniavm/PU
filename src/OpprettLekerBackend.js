@@ -72,3 +72,4 @@ export function deleteGame(gameID){
     alert('Lek slettet')
 
 }
+
