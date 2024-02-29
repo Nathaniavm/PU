@@ -1,6 +1,5 @@
-import { getAuth } from 'firebase/auth';
 import { getDatabase, ref, set, push, onValue } from 'firebase/database';
-import {auth, database} from '../firebaseConfig'; //Import firebase instance
+import { auth, database } from '../firebaseConfig'; //Import firebase instance
 
 
 // Function to get the number of game elements
