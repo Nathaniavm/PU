@@ -91,6 +91,7 @@ h4 {
     flex-direction: column; 
     gap: 10px; 
     background-color: var(--Body-Color);
+    flex-wrap: wrap;
 }
 
 .gameSquareHorisontalList {
@@ -209,4 +210,5 @@ h4 {
 .toggleBtn.active{
     background-color: rgb(224, 224, 224);
 }
+
 

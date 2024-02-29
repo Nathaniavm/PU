@@ -101,37 +101,20 @@ const Hjem = () => {
           <FontAwesomeIcon icon={faBars} />
         </button>
       </div>
-      {isListView ? (
-        <div className='gameOverviewList'>
-          <h4>Bli kjent-leker:</h4>
-          <div className='gameHorisontalList'>
-            {filteredGames.map((game, index) => (
-              <Link to={`game/${game.gameID}`} key={index} className="gameSquareHorisontalList">
-                <h4>{game.title}</h4>
-                <div className="gameSquare-p-content-horisontal">
-                  <p>Kategori: {game.category}</p>
-                  <p>Antall: {game.nPeople}</p>
+      <div className={isListView ? 'gameOverviewList' : 'gameOverviewGrid'}>
+                    <h4>Bli kjent-leker:</h4>
+                    <div className={isListView ? 'gameHorisontalList' : 'gameVerticalList'}>
+                        {filteredGames.map((game, index) => (
+                            <Link to={`game/${game.gameID}`} key={index} className={isListView ? "gameSquareHorisontalList" : "gameSquareVerticalList"}>
+                                <h4>{game.title}</h4>
+                                <div className="gameSquare-p-content">
+                                    <p>Kategori: {game.category}</p>
+                                    <p>Antall: {game.nPeople}</p>
+                                </div>
+                            </Link>
+                        ))}
+                    </div>
                 </div>
-              </Link>
-            ))}
-          </div>
-        </div>
-      ) : (
-        <div className='gameOverviewGrid'>
-          <h4>Bli kjent-leker:</h4>
-          <div className='gameVerticalList'>
-            {filteredGames.map((game, index) => (
-              <Link to={`game/${game.gameID}`} key={index} className="gameSquareVerticalList">
-                <h4>{game.title}</h4>
-                <div className="gameSquare-p-content-vertical">
-                  <p>Kategori: {game.category}</p>
-                  <p>Antall: {game.nPeople}</p>
-                </div>
-              </Link>
-            ))}
-          </div>
-        </div>
-      )}
     </div>
 
     <div className='rightSideContainer'>
