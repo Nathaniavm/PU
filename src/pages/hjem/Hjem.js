@@ -98,10 +98,10 @@ const Hjem = () => {
         </div>
       </div>
       <div className="switchViewContainer">
-        <button class={`toggleBtn ${!isListView ? 'active' : ''}`} onClick={toggleToGrid}>
+        <button className={`toggleBtn ${!isListView ? 'active' : ''}`} onClick={toggleToGrid}>
           <FontAwesomeIcon icon={faThLarge} />
         </button>
-        <button class={`toggleBtn ${isListView ? 'active' : ''}`} onClick={toggleToList}>
+        <button className={`toggleBtn ${isListView ? 'active' : ''}`} onClick={toggleToList}>
           <FontAwesomeIcon icon={faBars} />
         </button>
       </div>
