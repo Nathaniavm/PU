@@ -6,15 +6,67 @@
     text-align: center;
 }
 
-.MyPageDiv{
-    display: flex;
-    max-width: 95%;
-    align-items: center;
+.MPContainer{
     justify-content: center;
-    padding-left: 10%;
-    padding-right: 10%;
 }
 
+.MyPageDiv{
+    /*display: flex;*/
+    /*max-width: 95%;*/
+    align-items: center;
+    justify-content: center;
+    /*padding-left: 10%;
+    padding-right: 10%;*/
+}
+
+.FavoritesDiv{
+    margin-top: 2%;
+    
+}
+
+.InputFavorites{
+    height: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.QueueDiv{
+    margin-top: 2%;
+}
+
+.InputQueue{
+    height: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.SquareGame{
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+    
+        text-decoration: none;
+        color: var(--Header-Color);
+        font-size: 25px;
+        font-family: Tahoma, sans-serif;
+    
+        background-color: var(--White-Background);
+        border: 2px solid var(--Header-Color); 
+        border-radius: 30px; 
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.35); 
+        width: 400px;
+        height: 80px;
+        margin-top: 10px;
+        margin-right: 1%;
+        margin-left: 1%;
+        padding: 10px;
+    
+        transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+
+/*
 .FavoritesDiv{
     display: flex;
     flex-direction: column;
@@ -51,19 +103,26 @@
     margin-left: 10%;
     margin-right: 3%;
 }
+*/
 
 .HeaderInDiv{
     display: flex;
     flex-direction: column;
-    text-align: center;
+    /*text-align: center;*/
+    text-align: left;
     max-height: 5%;
     width: 100%;
     align-items: center;
     display: flex;
     background-color: var(--Header-Color);
     color: var(--White-Background);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.35);
+    /*box-shadow: 0 5px 15px rgba(0, 0, 0, 0.35);*/
     
+}
+
+.HeaderInDiv2{
+    color: var(--Header-Color);
+    text-align: center;
 }
 
 .LogoutDiv{
@@ -71,6 +130,7 @@
     align-items: center;
     justify-content: center;
     margin-bottom: 8%;
+    margin-top: 8%;
 }
 
 .RapportedUsersDiv{
@@ -80,12 +140,11 @@
     text-align: center;
     color: var(--Header-Color);
     background-color: var(--White-Background);
-    border-radius: 100px 100px 100px 100px;
+    border-radius: 20px 20px 20px 20px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.35);
     position: relative; 
     overflow: hidden;
     max-width: 80%;
-    min-height: 480px;
     margin-top: 2%;
     margin-bottom: 5%;
     margin-left: 10%;
@@ -112,3 +171,29 @@
     box-shadow: 0 3px 4px 0 #6c84c8, 0 4px 10px 0 #c0ccee;
 }
 
+.ReportedGameContainer {
+    display: flex;
+    max-width: 100%;
+    align-items: center;
+    justify-content: center;
+
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+td, th {
+    border: 1px solid #dddd;
+    text-align: left;
+    padding: 8px;
+}
+
+th {
+    font-size: x-large;
+}
+
+tr:nth-child(even) {
+    background-color: #eaedff;
+}

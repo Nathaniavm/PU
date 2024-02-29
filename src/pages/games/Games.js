@@ -24,9 +24,13 @@ const Games = () => {
     }
 
     const handleReportGame = () => {
+<<<<<<< Updated upstream
         var alertedGameID = game.gameID;
         var alertedgGameTitle = game.title;
         alert("Spillet " + alertedgGameTitle + " (ID: " + alertedGameID + ") ble rapportert")
+=======
+        alert("Game" + gameID + " er rapportert")
+>>>>>>> Stashed changes
     }
 
     return (
