@@ -2,7 +2,7 @@ import React, { useContext, useState } from 'react';
 import { AuthContext } from '../../AuthContext';
 import { Link } from 'react-router-dom';
 import './Opprettleker.css';
-import { registerGame } from '../../OpprettLekerBackend';
+import { registerGame } from '../../persistence/OpprettLekerBackend';
 
 const OpprettLeker = () => {
   const { isLoggedIn, username } = useContext(AuthContext);
@@ -12,11 +12,10 @@ const OpprettLeker = () => {
     nPeople: '',
     category: ''
   });
-
+ 
   const handleCreateGame = () => {
     // Access form data from state
     const { title, description, nPeople, category } = formData;
-    console.log(title, description, nPeople, category);
 
     if (!title.trim()) {
       alert("Tittel er påkrevd")
@@ -25,7 +24,7 @@ const OpprettLeker = () => {
     }
     //Send data to backend
 
-    registerGame(title, description, nPeople); //added for database
+    registerGame(title, description, nPeople, category); //added for database
 
 
     // Clear form inputs after submission

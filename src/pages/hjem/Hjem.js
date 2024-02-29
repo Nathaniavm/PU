@@ -48,7 +48,7 @@ const Hjem = () => {
             <div className='searchBar'>
               <h4>Søk etter leker:</h4>
               <form>
-                <label for="search"> </label>
+                <label htmlFor="search"> </label>
                 <input 
                   className= 'homeInputField' 
                   type='search' 

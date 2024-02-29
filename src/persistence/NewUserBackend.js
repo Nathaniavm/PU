@@ -1,6 +1,6 @@
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { ref, set } from 'firebase/database';
-import {auth, database} from '../firebaseConfig'; //Import firebase instance
+import { auth, database } from '../firebaseConfig'; //Import firebase instance
 import { emailExists, usernameExists } from './LoggInnBackend';
 
 // BACKEND FILE FOR REGISTERING NEW USERS IN THE DATABASE?
