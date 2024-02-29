@@ -51,3 +51,13 @@ export async function registerGame(title, description, nPeople, category) {
             throw error;
         });
 }
+
+export function deleteGame(gameID){
+    
+    var game = ref(database, 'games/' + gameID)
+
+    //Does not throw error if gameID doesn't exist
+    remove(game)
+    alert('Lek slettet')
+
+}
