@@ -4,11 +4,11 @@ import './Hjem.css'
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars, faThLarge } from '@fortawesome/free-solid-svg-icons';
+import GamesList from '../../persistence/HjemBackend';
 
 /*
 Need to run this install to run: npm install @fortawesome/react-fontawesome @fortawesome/free-solid-svg-icons
 */
-
 
 
 const placeholderGames = [
