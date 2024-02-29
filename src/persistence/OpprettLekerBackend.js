@@ -26,7 +26,7 @@ export async function registerGame(title, description, nPeople, category) {
     var user = auth.currentUser;
 
     var database_ref = ref(database);
-    // Henter username fra gud vet hvor men det funker
+    // Henter username fra localStorage
     const username = localStorage.getItem('username') || '';
 
 
