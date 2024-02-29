@@ -24,7 +24,9 @@ const Games = () => {
     }
 
     const handleReportGame = () => {
-        alert("Spillet er rapportert")
+        var alertedGameID = game.gameID;
+        var alertedgGameTitle = game.title;
+        alert("Spillet " + alertedgGameTitle + " (ID: " + alertedGameID + ") ble rapportert")
     }
 
     return (
