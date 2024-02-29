@@ -44,5 +44,3 @@ export function register(username, password, email) {
     })
 
 }
-
-  
