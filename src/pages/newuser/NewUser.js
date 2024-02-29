@@ -2,14 +2,16 @@ import React from 'react'
 import './NewUser.css'
 //import { useAuth } from '../../AuthContext'
 import { register } from '../../persistence/NewUserBackend';
+import { loginData } from '../../persistence/LoggInnBackend';
+import { useAuth } from '../../AuthContext';
 
 
 
 const NewUser = () => {
 
-  //const { login } = useAuth();
+  const { login } = useAuth();
 
-  const handleNewUser = () => {
+  const handleNewUser = async () => {
 
     const usernameInput = document.getElementById('username');
     const passwordInput = document.getElementById('password');
@@ -33,14 +35,19 @@ const NewUser = () => {
       alert("Alle felter er påkrevd!");
     }
     else{
-      const result = register(username, password, email);
-      alert("Bruker opprettet!")
+      const result = await register(username, password, email);
+      if (result){
+        console.log("Bruker opprettet!")
+              //if backend is OK:
+        loginData(email,password);
+        login(username)
+      }
+      else {
+        console.log("Error med registrering til databasen");
+      }
         
-      //Redirect to login page on a successful login
-      //window.location.replace("/logginn");
 
-      //if backend is OK:
-      //login(username)
+
 
     }
     

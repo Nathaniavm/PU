@@ -24,6 +24,10 @@ export function AuthProvider({ children }) {
   const login = (username) => {
     setIsLoggedIn(true);
     setUsername(username);
+    window.location.replace("/");
+    if (username === "Admin"){
+      loginAdmin();
+    }
   };
 
   const loginAdmin = () => {
