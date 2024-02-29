@@ -16,7 +16,6 @@ const OpprettLeker = () => {
   const handleCreateGame = () => {
     // Access form data from state
     const { title, description, nPeople, category } = formData;
-    console.log(title, description, nPeople, category);
 
     if (!title.trim()) {
       alert("Tittel er påkrevd")

@@ -6,12 +6,9 @@ import { auth, database } from '../firebaseConfig'; //Import firebase instance
 export async function getLastId(callback) {
     const gamesRef = ref(getDatabase(), "games");
     const lastGameQuery = query(gamesRef, orderByKey(), limitToLast(1));
-    console.log(1);
     const snapshot = await get(lastGameQuery);
-    console.log(snapshot);
     if (snapshot.exists()) {
         const lastId = Object.keys(snapshot.val())[0];
-        console.log(5);
         return Number(lastId); //User exists
     }
     else {
