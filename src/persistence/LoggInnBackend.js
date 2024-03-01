@@ -22,6 +22,7 @@ export function signOutUser() {
     })
 }
 export async function getEmailFromUsername(username){
+    
     try{
         //Create database reference to "users"
         const dbRef = ref(getDatabase(), "users");
