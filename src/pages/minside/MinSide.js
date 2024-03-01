@@ -128,7 +128,7 @@ const MinSide = () => {
                   </h4>
                 </div>
                 <div className='queueCategory'>
-                  <h5>Type: </h5> {game.category}
+                <h5>Type: </h5> {game.category}
                   <h5>Antall: </h5> {game.nPeople}
                 </div>
                 {showGameInfo && (
