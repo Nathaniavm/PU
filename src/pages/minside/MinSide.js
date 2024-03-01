@@ -3,6 +3,12 @@ import { useAuth } from '../../AuthContext'
 import './MinSide.css'
 import { signOutUser } from '../../persistence/LoggInnBackend';
 import {Link } from 'react-router-dom';
+import '../hjem/Hjem.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTrashAlt } from '@fortawesome/free-solid-svg-icons'; 
+import { faStepBackward } from '@fortawesome/free-solid-svg-icons';
+import { faStepForward  } from '@fortawesome/free-solid-svg-icons';
+
 
 const MinSide = () => {
   const { logout, isAdmin, isLoggedIn} = useAuth();
@@ -11,6 +17,18 @@ const MinSide = () => {
     signOutUser();
     logout();
   }
+  
+  const favoritePlaceholderGames = [
+    {gameID: 1, title: 'Stiv Heks', description: 'En blir valgt til å være heks, heksa skal løpe etter de andre og prøve å ta på dem, hvis man blir truffet av heksa må man stå med beina spredt, og man blir fri hvis noen kraber under beina dine'
+    , category: 'fysisk lek', nPeople: '10'},
+    {gameID: 2, title: 'Navnedyrleken', description: 'Alle sier navnet sitt, og et dyr med samme forbokstav som navnet', category: 'navnelek', nPeople: '1'},
+    {gameID: 3, title: 'Spille kort', description: 'Bare spille ett eller annet med kort', category: 'icebreaker', nPeople: '4'},
+    {gameID: 4, title: 'Sista', description: 'Løpe etter hverandre', category: 'fysisk lek', nPeople: '4'},
+    {gameID: 1, title: 'Stiv Heks', description: 'En blir valgt til å være heks, heksa skal løpe etter de andre og prøve å ta på dem, hvis man blir truffet av heksa må man stå med beina spredt, og man blir fri hvis noen kraber under beina dine'
+    , category: 'fysisk lek', nPeople: '10'},
+    {gameID: 2, title: 'Navnedyrleken', description: 'Alle sier navnet sitt, og et dyr med samme forbokstav som navnet', category: 'navnelek', nPeople: '1'},
+    {gameID: 4, title: 'Sista', description: 'Løpe etter hverandre', category: 'fysisk lek', nPeople: '4'},
+  ]
 
    // State variable to store reported games
    const [deletedGames, setDeletedGames] = useState([]);
@@ -32,6 +50,34 @@ const MinSide = () => {
       {gameID: 4, title: 'Sista', description: 'Løpe etter hverandre', category: 'fysisk lek', nPeople: '4', reportCount: '2'},
     ];
 
+      const [currentIndex, setCurrentIndex] = useState(0);
+
+      const queuePlaceholderGames = [
+        {gameID: 1, title: 'Stiv Heks', description: 'En blir valgt til å være heks, heksa skal løpe etter de andre og prøve å ta på dem, hvis man blir truffet av heksa må man stå med beina spredt, og man blir fri hvis noen kraber under beina dine'
+        , category: 'fysisk lek', nPeople: '10', reportCount: '2'},
+        {gameID: 2, title: 'Navnedyrleken', description: 'Alle sier navnet sitt, og et dyr med samme forbokstav som navnet', category: 'navnelek', nPeople: '1', reportCount: '2'},
+        {gameID: 3, title: 'Spille kort', description: 'Bare spille ett eller annet med kort', category: 'icebreaker', nPeople: '4', reportCount: '2'},
+        {gameID: 4, title: 'Sista', description: 'Løpe etter hverandre', category: 'fysisk lek', nPeople: '4', reportCount: '2'},
+      ];
+    
+
+    const handleNext = () => {
+      setCurrentIndex((prevIndex) => (prevIndex +1) % queuePlaceholderGames.length);
+    }
+
+    const handlePrevious = () => {
+      setCurrentIndex((prevIndex) => prevIndex === 0 ? queuePlaceholderGames.length -1 : prevIndex -1);
+    };
+
+      const [showGameInfo, setShowGameInfo] = useState(false);
+    
+      const handleShowMore = () => {
+        setShowGameInfo(!showGameInfo);
+      };
+  
+
+    
+
   return (
     <>
       {isLoggedIn ? (
@@ -50,9 +96,20 @@ const MinSide = () => {
                 </h1>
               </div>
               <div className='InputFavorites'>
-                <div className='SquareGame'> </div>
-                <div className='SquareGame'> </div>
-                <div className='SquareGame'> </div>
+                <div className= 'gameOverviewGrid'>
+                      <div className= 'gameVerticalList'>
+                          {favoritePlaceholderGames.map((game, index) => (
+                              <Link to={`/game/${game.gameID}`} key={index} className= "gameSquareVerticalList">
+                                  <h4>{game.title}</h4>
+                                  <div className="gameSquare-p-content">
+                                      <p>Kategori: {game.category}</p>
+                                      <p>Antall: {game.nPeople}</p>
+                                  </div>
+                              </Link>
+                          ))}
+                      </div>
+                  </div>
+                
               </div>
             </div>
             <div className='QueueDiv'>
@@ -62,9 +119,23 @@ const MinSide = () => {
                 </h1>
               </div>
               <div className='InputQueue'> 
-                <div className='SquareGame'> </div>
-                <div className='SquareGame'> </div>
-                <div className='SquareGame'> </div>
+              <FontAwesomeIcon icon={faStepBackward} className='icon' onClick={handlePrevious}></FontAwesomeIcon>
+                <div className='SquareGame'> 
+                    <div className='queueHeaderDiv'>
+                      {queuePlaceholderGames[currentIndex].title}
+                    </div>
+                    <div className='queueCategory'>
+                      {queuePlaceholderGames[currentIndex].category}
+                      <h5>Antall: </h5> {queuePlaceholderGames[currentIndex].nPeople}
+                    </div>
+                    <div className='queueGameInfo'>
+                      {queuePlaceholderGames[currentIndex].description}
+                    </div>
+                    <button onClick={handleShowMore}>
+                      {showGameInfo ? 'Show less' : 'Show more'}
+                    </button>
+                </div>
+                  <FontAwesomeIcon icon={faStepForward} className='icon' onClick={handleNext}></FontAwesomeIcon>
               </div>
             </div>
           </div>
@@ -93,7 +164,7 @@ const MinSide = () => {
                         <td className="ReportedGameCategory">{game.category}</td>
                         <td className="ReportedGameReportCount">Reports: {game.reportCount}</td>
                         <td className='ReportedGameDelete' onClick={() => handleDeleteGame(game.gameID)}>
-                          <button> Trykk</button>
+                          <FontAwesomeIcon icon={faTrashAlt} />
                         </td>
                     </tr>
                 ))}
@@ -115,4 +186,4 @@ const MinSide = () => {
   )
 }
 
-export default MinSide
+export default MinSide;

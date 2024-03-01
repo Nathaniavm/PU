@@ -1,4 +1,4 @@
-import { getAuth } from 'firebase/auth';
+/*import { getAuth } from 'firebase/auth';
 import { getDatabase, ref, set, push, onValue } from 'firebase/database';
 import app from './firebaseConfig'; // Import firebase instance
 
@@ -64,5 +64,5 @@ export function registerGame(title, description, nPeople) {
         console.error("Error getting number of games:", error);
         throw error;
     });
-}
+}*/
 
