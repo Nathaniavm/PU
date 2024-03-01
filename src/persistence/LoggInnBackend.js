@@ -1,6 +1,6 @@
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { equalTo, query, get, getDatabase, orderByChild, ref, update } from 'firebase/database';
-import {auth, database} from '../firebaseConfig'; //Import firebase instance
+import { auth, database } from '../firebaseConfig'; //Import firebase instance
 
 // BACKEND FILE FOR FETCHING USERS FROM DATABASE
 

@@ -95,10 +95,11 @@
         width: 400px;
 }
 
-.queueHeaderDivh4{
-    text-align: center;
+.queueHeaderDiv h4{
+    margin-top: 0;
     width: 100%;
     height: 25%;
+    font: bold;
 }
 
 .queueCategory h5{
@@ -167,6 +168,7 @@
 }
 .queueGameInfo {
     font-size: 16px; /* Adjust font size */
+    margin-top: 10px;
 }
 
 .HeaderInDiv2{
@@ -256,4 +258,25 @@ tr:nth-child(even) {
 h4 {
     margin-bottom: 0px;
     font-size: x-large;
+}
+
+.showMoreButton {
+    margin-bottom: 5px;
+    margin-top: 20px;
+    background-color: var(--Header-Color);
+    color: var(--White-Background);
+    border: none;
+    border-radius: 8px;
+    color: #FFFADD;
+    padding: 2% 5%;
+    display: inline-block;
+    cursor: pointer;
+    font-size:medium ;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+
+.showMoreButton:hover{
+    box-shadow: 0 3px 4px 0 #6c84c8, 0 4px 10px 0 #c0ccee;
 }

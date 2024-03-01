@@ -69,12 +69,13 @@ const MinSide = () => {
       setCurrentIndex((prevIndex) => prevIndex === 0 ? queuePlaceholderGames.length -1 : prevIndex -1);
     };
 
-      const [showGameInfo, setShowGameInfo] = useState(false);
+    const [showGameInfo, setShowGameInfo] = useState(false);
+    const game = queuePlaceholderGames[currentIndex];
     
-      const handleShowMore = () => {
-        setShowGameInfo(!showGameInfo);
-      };
-  
+    const handleShowMore = () => {
+      setShowGameInfo(!showGameInfo);
+    };
+
 
     
 
@@ -120,23 +121,27 @@ const MinSide = () => {
               </div>
               <div className='InputQueue'> 
               <FontAwesomeIcon icon={faStepBackward} className='icon' onClick={handlePrevious}></FontAwesomeIcon>
-                <div className='SquareGame'> 
-                    <div className='queueHeaderDiv'>
-                      {queuePlaceholderGames[currentIndex].title}
-                    </div>
-                    <div className='queueCategory'>
-                      {queuePlaceholderGames[currentIndex].category}
-                      <h5>Antall: </h5> {queuePlaceholderGames[currentIndex].nPeople}
-                    </div>
-                    <div className='queueGameInfo'>
-                      {queuePlaceholderGames[currentIndex].description}
-                    </div>
-                    <button onClick={handleShowMore}>
-                      {showGameInfo ? 'Show less' : 'Show more'}
-                    </button>
+              <div className='SquareGame'> 
+                <div className='queueHeaderDiv'>
+                  <h4>
+                    {game.title}
+                  </h4>
                 </div>
-                  <FontAwesomeIcon icon={faStepForward} className='icon' onClick={handleNext}></FontAwesomeIcon>
+                <div className='queueCategory'>
+                  <h5>Type: </h5> {game.category}
+                  <h5>Antall: </h5> {game.nPeople}
+                </div>
+                {showGameInfo && (
+                  <div className='queueGameInfo'>
+                   {game.description}
+                  </div>
+                )}
+                <button onClick={handleShowMore} className='showMoreButton'>
+                  {showGameInfo ? 'Vis mindre' : 'Vis mer'}
+                </button>
               </div>
+              <FontAwesomeIcon icon={faStepForward} className='icon' onClick={handleNext}></FontAwesomeIcon>
+            </div>
             </div>
           </div>
 

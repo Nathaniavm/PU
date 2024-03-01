@@ -53,30 +53,34 @@ const Hjem = () => {
 
   return (
     <div className='classContainer'>
-    <div className='leftSideContainer'>
-      {/* Your left side content */}
-    </div>
 
-    <div className='middleContainer'>
-      <div className='title'>
-        <h1>Icebreakers</h1>
+      <div className='leftSideContainer'>
+        {/* Commented this out because of problems when filtering games, need some work on the image scaling i suppose */}
+        {/*<img src={myImage} alt='Her skal det være reklame' width="100%" height="100%"></img>*/}
       </div>
-      <div className="search-filter-container">
-        <div className='searchBar'>
-          <h4>Søk etter leker:</h4>
-          <form>
-            <label htmlFor="search"></label>
-            <input
-              className='homeInputField'
-              type='search'
-              id='search'
-              name='search'
-              value={searchInput}
-              onChange={handleSearchChange}
-              placeholder='Søk etter tittel'
-            />
-          </form>
-        </div>
+      
+        <div className='middleContainer'>
+          <div className='title'>
+            <h1>
+            Icebreakers
+            </h1>
+          </div>
+          <div className="search-filter-container">
+            <div className='searchBar'>
+              <h4>Søk etter leker:</h4>
+              <form>
+                <label htmlFor="search"> </label>
+                <input 
+                  className= 'homeInputField' 
+                  type='search' 
+                  id='search' 
+                  name='search'
+                  value={searchInput}
+                  onChange={handleSearchChange}
+                  placeholder='Søk etter tittel'
+                  />
+              </form>
+            </div>
 
         <div className='filter'>
           <h4>Velg type lek:</h4>
@@ -94,10 +98,10 @@ const Hjem = () => {
         </div>
       </div>
       <div className="switchViewContainer">
-        <button class={`toggleBtn ${!isListView ? 'active' : ''}`} onClick={toggleToGrid}>
+        <button className={`toggleBtn ${!isListView ? 'active' : ''}`} onClick={toggleToGrid}>
           <FontAwesomeIcon icon={faThLarge} />
         </button>
-        <button class={`toggleBtn ${isListView ? 'active' : ''}`} onClick={toggleToList}>
+        <button className={`toggleBtn ${isListView ? 'active' : ''}`} onClick={toggleToList}>
           <FontAwesomeIcon icon={faBars} />
         </button>
       </div>
