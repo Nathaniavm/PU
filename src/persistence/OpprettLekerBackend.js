@@ -61,5 +61,27 @@ export function deleteGame(gameID){
     //Does not throw error if gameID doesn't exist
     remove(game)
     alert('Lek slettet')
+}
 
+export async function gameExists(gameID){
+
+    try{
+        const dbRef = ref(database, "games");
+        // console.log("Database: Games" + dbRef);
+
+        const gameQuery = query(dbRef, orderByKey(), equalTo(String(gameID)));
+
+        const snapShot = await get(gameQuery);
+
+        if(snapShot.exists()){
+            return true;
+        }
+        else{
+            return false;
+        }
+
+    }catch (error){
+        console.log("Error med query til databasen: " + error);
+        return false;
+    }
 }

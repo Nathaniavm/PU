@@ -79,7 +79,7 @@ const LoggInn = () => {
             return;
           }
           login(usernameValue);
-          if(usernameValue === 'Admin'){
+          if(usernameValue === 'Admin'|| usernameValue === 'NewAdmin'){
             loginAdmin(); //need work, everyone should not be admin
           }
 

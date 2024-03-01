@@ -19,12 +19,19 @@ const OpprettLeker = () => {
 
     if (!title.trim()) {
       alert("Tittel er påkrevd")
+      // return
     } else if (!description.trim()) {
       alert("Beskrivelse er påkrevd")
+      // return
     }
     //Send data to backend
 
-    registerGame(title, description, nPeople, category); //added for database
+    //TEST
+    deleteGame(2);
+
+    //Sjekk for om spillet allerede finnes
+
+    //registerGame(title, description, nPeople, category); //added for database
 
 
     // Clear form inputs after submission
