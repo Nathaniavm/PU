@@ -22,8 +22,9 @@ Need to run this install to run: npm install @fortawesome/react-fontawesome @for
   {gameID: 4, title: 'Sista', description: 'Løpe etter hverandre', category: 'fysisk lek', nPeople: '4'},
 ]
 */
-
 var games = await getGameData();
+console.log(games);
+
 
 const Hjem = () => {
     const [searchInput, setSearchInput] = useState('')
@@ -78,6 +79,7 @@ const Hjem = () => {
                   value={searchInput}
                   onChange={handleSearchChange}
                   placeholder='Søk etter tittel'
+            
                   />
               </form>
             </div>
