@@ -23,6 +23,7 @@ const LoggInn = () => {
   const handleLogin = async () => {
     if(!IsLoggedIn){
 
+      console.log(10);
       const username = document.getElementById('username');
       const password = document.getElementById('password');
       var email = username;

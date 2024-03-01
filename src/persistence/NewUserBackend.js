@@ -1,6 +1,6 @@
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { ref, set } from 'firebase/database';
-import {auth, database} from '../firebaseConfig'; //Import firebase instance
+import { auth, database } from '../firebaseConfig'; //Import firebase instance
 import { emailExists, usernameExists } from './LoggInnBackend';
 
 // BACKEND FILE FOR REGISTERING NEW USERS IN THE DATABASE?
@@ -15,17 +15,18 @@ function isValidUsername(str){
 //Register new users to the database
 export async function register(username, password, email) {  
     //Optionally validate fields (email), unsure if frontend will handle this
+    //alert(1);
     if(await emailExists(email)){
       alert("Email already exists!");
-      return;
+      return false;
     }
     else if(await usernameExists(username)){
       alert("Username already exists");
-      return;
+      return false;
     }
     else if(!isValidUsername(username)) {
       alert("Usernames can only contain letters and numbers");
-      return;
+      return false;
     }
   
     //Register user
@@ -46,7 +47,7 @@ export async function register(username, password, email) {
       return set(ref(database, "users/" + user.uid), user_data)
       .then(() =>{
         console.log("Registration successful")
-        return;
+        return true;
       })
       .catch(error => {
         console.log("New error")
