@@ -118,7 +118,7 @@ const Hjem = () => {
                             </Link>
                         ))}
                     </div>
-                </div>
+      </div>
     </div>
 
     <div className='rightSideContainer'>

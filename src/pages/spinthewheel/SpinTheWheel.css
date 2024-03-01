@@ -13,3 +13,14 @@
     justify-content: center;
     margin-bottom: 3%;
 }
+
+.wheel {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.gameOverviewGrid .selected {
+    background-color: #cedbff;
+}
