@@ -1,28 +1,49 @@
-import { orderByChild, orderByKey } from "firebase/database";
-[]
-export async function getGameData(){
-    try{
-        //Create database reference to "games"
+import { ref, getDatabase, get } from "firebase/database";
+import { auth, database } from '../firebaseConfig'; //Import firebase instance
+
+
+async function getGameData() {
+    try {   
+        // Create a database reference to "games"
         const dbRef = ref(getDatabase(), "games");
+        
+        // Execute the query to get the snapshot
+        const snapshot = await get(dbRef);
 
-        //Create database query for games
-        const gameQuery = query(dbRef, orderByKey());
-
-        //Execute query
-        const snapshot = await get(gameQuery);
+        // Initialize an array to store placeholder games
+        const placeholderGames = [];
 
         if (snapshot.exists()) {
-            const gameData = snapshot.val()[Object.keys(snapshot.val())];
+            // Loop through each child node (game) of the snapshot
+            snapshot.forEach((childSnapshot) => {
+                // Get the gameId of each child node
+                const gameId = childSnapshot.key;
 
-            const userEmail = userData.email;
-            return userEmail; //User exists
+                // Get the game data under the gameId
+                const gameData = childSnapshot.val();
+
+                // Structure the game data in the placeholderGames format
+                const placeholderGame = {
+                    gameID: gameId,
+                    title: gameData.title,
+                    description: gameData.description,
+                    category: gameData.category,
+                    nPeople: gameData.nPeople
+                };
+
+                // Push the placeholder game to the placeholderGames array
+                placeholderGames.push(placeholderGame);
+            });
         }
-        else {
-            return null;
-        }
-    }
-    catch (error){
-        console.log("Error med query til databasen ved søking etter brukernavn: " + error);
-        return false;
+
+        // Return the array of placeholder games
+        return placeholderGames;
+    } catch (error) {
+        console.error("Error getting placeholder games:", error);
+        // Handle error appropriately, e.g., throw error or return a default value
+        throw error;
     }
 }
+
+// Export the getPlaceholderGames function
+export { getGameData };
