@@ -1,6 +1,7 @@
 import React from 'react'
 import { useParams } from 'react-router-dom';
 import './Games.css'
+import { reportGame } from '../../persistence/ReportGame';
 
 const Games = () => {
     //Retrieve the gameID from the URL
@@ -26,6 +27,9 @@ const Games = () => {
     const handleReportGame = () => {
         var alertedGameID = game.gameID;
         var alertedgGameTitle = game.title;
+
+        reportGame(alertedGameID);
+
         alert("Spillet " + alertedgGameTitle + " (ID: " + alertedGameID + ") ble rapportert")
     }
 
