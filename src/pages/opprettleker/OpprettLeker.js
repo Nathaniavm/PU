@@ -3,7 +3,6 @@ import { AuthContext } from '../../AuthContext';
 import { Link } from 'react-router-dom';
 import './Opprettleker.css';
 import { registerGame } from '../../persistence/OpprettLekerBackend';
-import { deleteGame } from '../../persistence/DeleteGamesBackend';
 
 const OpprettLeker = () => {
   const { isLoggedIn, username } = useContext(AuthContext);
