@@ -1,16 +1,83 @@
-import React from 'react'
+import React, { useState } from 'react';
 import { useAuth } from '../../AuthContext'
 import './MinSide.css'
 import { signOutUser } from '../../persistence/LoggInnBackend';
 import {Link } from 'react-router-dom';
+import '../hjem/Hjem.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTrashAlt } from '@fortawesome/free-solid-svg-icons'; 
+import { faStepBackward } from '@fortawesome/free-solid-svg-icons';
+import { faStepForward  } from '@fortawesome/free-solid-svg-icons';
+
 
 const MinSide = () => {
-  const { logout, isAdmin, isLoggedIn } = useAuth();
+  const { logout, isAdmin, isLoggedIn} = useAuth();
 
   const handleLogout = () => {
     signOutUser();
     logout();
   }
+  
+  const favoritePlaceholderGames = [
+    {gameID: 1, title: 'Stiv Heks', description: 'En blir valgt til å være heks, heksa skal løpe etter de andre og prøve å ta på dem, hvis man blir truffet av heksa må man stå med beina spredt, og man blir fri hvis noen kraber under beina dine'
+    , category: 'fysisk lek', nPeople: '10'},
+    {gameID: 2, title: 'Navnedyrleken', description: 'Alle sier navnet sitt, og et dyr med samme forbokstav som navnet', category: 'navnelek', nPeople: '1'},
+    {gameID: 3, title: 'Spille kort', description: 'Bare spille ett eller annet med kort', category: 'icebreaker', nPeople: '4'},
+    {gameID: 4, title: 'Sista', description: 'Løpe etter hverandre', category: 'fysisk lek', nPeople: '4'},
+    {gameID: 1, title: 'Stiv Heks', description: 'En blir valgt til å være heks, heksa skal løpe etter de andre og prøve å ta på dem, hvis man blir truffet av heksa må man stå med beina spredt, og man blir fri hvis noen kraber under beina dine'
+    , category: 'fysisk lek', nPeople: '10'},
+    {gameID: 2, title: 'Navnedyrleken', description: 'Alle sier navnet sitt, og et dyr med samme forbokstav som navnet', category: 'navnelek', nPeople: '1'},
+    {gameID: 4, title: 'Sista', description: 'Løpe etter hverandre', category: 'fysisk lek', nPeople: '4'},
+  ]
+
+   // State variable to store reported games
+   const [deletedGames, setDeletedGames] = useState([]);
+
+   // Function to handle reporting a game
+   const handleDeleteGame = (gameID) => {
+       // Add the reported game to the reportedGames state variable
+       setDeletedGames([...deletedGames, gameID]);
+       // You can also perform additional actions here such as making an API call to report the game to the backend
+       console.log("Spillet " + gameID + " er slettet");
+   };
+
+    // Placeholder games, will be switched with backend retreiving method
+    const placeholderGames = [
+      {gameID: 1, title: 'Stiv Heks', description: 'En blir valgt til å være heks, heksa skal løpe etter de andre og prøve å ta på dem, hvis man blir truffet av heksa må man stå med beina spredt, og man blir fri hvis noen kraber under beina dine'
+      , category: 'fysisk lek', nPeople: '10', reportCount: '2'},
+      {gameID: 2, title: 'Navnedyrleken', description: 'Alle sier navnet sitt, og et dyr med samme forbokstav som navnet', category: 'navnelek', nPeople: '1', reportCount: '2'},
+      {gameID: 3, title: 'Spille kort', description: 'Bare spille ett eller annet med kort', category: 'icebreaker', nPeople: '4', reportCount: '2'},
+      {gameID: 4, title: 'Sista', description: 'Løpe etter hverandre', category: 'fysisk lek', nPeople: '4', reportCount: '2'},
+    ];
+
+      const [currentIndex, setCurrentIndex] = useState(0);
+
+      const queuePlaceholderGames = [
+        {gameID: 1, title: 'Stiv Heks', description: 'En blir valgt til å være heks, heksa skal løpe etter de andre og prøve å ta på dem, hvis man blir truffet av heksa må man stå med beina spredt, og man blir fri hvis noen kraber under beina dine'
+        , category: 'fysisk lek', nPeople: '10', reportCount: '2'},
+        {gameID: 2, title: 'Navnedyrleken', description: 'Alle sier navnet sitt, og et dyr med samme forbokstav som navnet', category: 'navnelek', nPeople: '1', reportCount: '2'},
+        {gameID: 3, title: 'Spille kort', description: 'Bare spille ett eller annet med kort', category: 'icebreaker', nPeople: '4', reportCount: '2'},
+        {gameID: 4, title: 'Sista', description: 'Løpe etter hverandre', category: 'fysisk lek', nPeople: '4', reportCount: '2'},
+      ];
+    
+
+    const handleNext = () => {
+      setCurrentIndex((prevIndex) => (prevIndex +1) % queuePlaceholderGames.length);
+    }
+
+    const handlePrevious = () => {
+      setCurrentIndex((prevIndex) => prevIndex === 0 ? queuePlaceholderGames.length -1 : prevIndex -1);
+    };
+
+    const [showGameInfo, setShowGameInfo] = useState(false);
+    const game = queuePlaceholderGames[currentIndex];
+    
+    const handleShowMore = () => {
+      setShowGameInfo(!showGameInfo);
+    };
+
+
+    
 
   return (
     <>
@@ -24,18 +91,57 @@ const MinSide = () => {
 
           <div className='MyPageDiv'>
             <div className='FavoritesDiv'>
-              <div className='HeaderInDiv'>
+              <div className='HeaderInDiv2'>
                 <h1>
                   Favoritter
                 </h1>
               </div>
+              <div className='InputFavorites'>
+                <div className= 'gameOverviewGrid'>
+                      <div className= 'gameVerticalList'>
+                          {favoritePlaceholderGames.map((game, index) => (
+                              <Link to={`/game/${game.gameID}`} key={index} className= "gameSquareVerticalList">
+                                  <h4>{game.title}</h4>
+                                  <div className="gameSquare-p-content">
+                                      <p>Kategori: {game.category}</p>
+                                      <p>Antall: {game.nPeople}</p>
+                                  </div>
+                              </Link>
+                          ))}
+                      </div>
+                  </div>
+                
+              </div>
             </div>
             <div className='QueueDiv'>
-              <div className='HeaderInDiv'>
+              <div className='HeaderInDiv2'>
                 <h1>
                   Kø
                 </h1>
               </div>
+              <div className='InputQueue'> 
+              <FontAwesomeIcon icon={faStepBackward} className='icon' onClick={handlePrevious}></FontAwesomeIcon>
+              <div className='SquareGame'> 
+                <div className='queueHeaderDiv'>
+                  <h4>
+                    {game.title}
+                  </h4>
+                </div>
+                <div className='queueCategory'>
+                  <h5>Type: </h5> {game.category}
+                  <h5>Antall: </h5> {game.nPeople}
+                </div>
+                {showGameInfo && (
+                  <div className='queueGameInfo'>
+                   {game.description}
+                  </div>
+                )}
+                <button onClick={handleShowMore} className='showMoreButton'>
+                  {showGameInfo ? 'Vis mindre' : 'Vis mer'}
+                </button>
+              </div>
+              <FontAwesomeIcon icon={faStepForward} className='icon' onClick={handleNext}></FontAwesomeIcon>
+            </div>
             </div>
           </div>
 
@@ -48,6 +154,26 @@ const MinSide = () => {
               <div className='HeaderInDiv'>
                 <h1>Rapporterte spill</h1>
               </div>
+              <table className='ulReportedGame'>
+                <tr>
+                  <th>Navn</th>
+                  <th>Kategori</th>
+                  <th>Antall ganger rapportert</th>
+                  <th>Slett spill</th>
+                </tr>
+                {placeholderGames.map((game, index) => (
+                    <tr key={index}>
+                        <td className="ReportedGameTitle"> 
+                            <Link to={`/game/${game.gameID}`} key={index} className="gamesSquare">{game.title}</Link>
+                        </td>
+                        <td className="ReportedGameCategory">{game.category}</td>
+                        <td className="ReportedGameReportCount">Reports: {game.reportCount}</td>
+                        <td className='ReportedGameDelete' onClick={() => handleDeleteGame(game.gameID)}>
+                          <FontAwesomeIcon icon={faTrashAlt} />
+                        </td>
+                    </tr>
+                ))}
+              </table>
             </div>
           )}
         </div>
@@ -65,4 +191,4 @@ const MinSide = () => {
   )
 }
 
-export default MinSide
+export default MinSide;

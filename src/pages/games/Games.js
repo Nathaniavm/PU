@@ -23,10 +23,11 @@ const Games = () => {
         return <p>Fant ikke spillet.</p>;
     }
 
-    const handleReportGame = () => {
+    const handleReportGame = (game) => {
         var alertedGameID = game.gameID;
         var alertedgGameTitle = game.title;
         alert("Spillet " + alertedgGameTitle + " (ID: " + alertedGameID + ") ble rapportert")
+        console.log("Spillet " + alertedgGameTitle + " (ID: " + alertedGameID + ") ble rapportert");
     }
 
     return (
@@ -53,7 +54,7 @@ const Games = () => {
             <div className='buttonsContainer'>
                 <button className='moreButton favoriteButton' type='button'><i className="fa fa-heart"></i> Favoritt</button>
                 <button className='moreButton queueButton' type='button'><i className="fa fa-plus"></i> Legg til i kø</button>
-                <button className='moreButton reportButton' type='button' onClick={handleReportGame}>
+                <button className='moreButton reportButton' type='button' onClick={() => handleReportGame(game)}>
                     <i className="fa fa-flag"></i> Rapporter</button>
             </div>   
         </div>
