@@ -17,9 +17,14 @@ const SpinTheWheel = () => {
     const [prizeNumber, setPrizeNumber] = useState(0);
     const [selectedOption, setSelectedOption] = useState('');
     const [dataArray, setDataArray] = useState([]);
+    let audio = new Audio("/SpinTheWheelSound.mp3");
+
+    const [searchInput, setSearchInput] = useState('')
+    const [selectedCategory, setCategory] = useState('alle')
 
     const handleSpinClick = () => {
         if (!mustSpin && dataArray.length > 1) {
+            audio.play();
             const newPrizeNumber = Math.floor(Math.random() * dataArray.length);
             setPrizeNumber(newPrizeNumber);
             setMustSpin(true);
@@ -43,10 +48,74 @@ const SpinTheWheel = () => {
         }
     };
 
+
+    const handleSearchChange = (e) => {
+        setSearchInput(e.target.value);
+    }
+  
+    const handleCategoryChange = (e) => {
+        setCategory(e.target.value);
+    }
+
+    const filteredGames = placeholderGames.filter( game =>
+        (game.title.toLowerCase().includes(searchInput.toLowerCase()) || searchInput === '') &&
+        (selectedCategory === 'alle' || game.category === selectedCategory)
+    );
+
     return (
         <div className="spinTheWheelMain">
             <div className='title'>
                 <h1>Spin The Wheel</h1>
+            </div>
+                <div className="search-filter-container">
+                    <div className='searchBar'>
+                        <h4>Søk etter leker:</h4>
+                        <form>
+                            <label htmlFor="search"> </label>
+                            <input 
+                            className= 'homeInputField' 
+                            type='search' 
+                            id='search' 
+                            name='search'
+                            value={searchInput}
+                            onChange={handleSearchChange}
+                            placeholder='Søk etter tittel'
+                            />
+                        </form>
+                    </div>
+
+                <div className='filter'>
+                    <h4>Velg type lek:</h4>
+                    <select
+                        className='homeInputField'
+                        id='choiceBox'
+                        value={selectedCategory}
+                        onChange={handleCategoryChange}
+                    >
+                        <option value='alle'>Alle</option>
+                        <option value='navnelek'>Navnelek</option>
+                        <option value='icebreaker'>Icebreaker</option>
+                        <option value='fysisk lek'>Fysisk lek</option>
+                    </select>
+                </div>
+        </div>
+            <div className='gameOverviewGrid'>
+                <h4>Klikk på minimum to leker for å spinne:</h4>
+                <div className='gameVerticalList'>
+                    {filteredGames.map((game, index) => (
+                        <div
+                            className={dataArray.some(selectedGame => selectedGame.gameID === game.gameID) ? "gameSquareVerticalList selected" : "gameSquareVerticalList"}
+                            onClick={() => toggleGameSelection(game.gameID)}
+                            key={index}
+                        >
+                            <h4>{game.title}</h4>
+                            <div className="gameSquare-p-content-vertical">
+                                <p>Kategori: {game.category}</p>
+                                <p>Antall: {game.nPeople}</p>
+                            </div>
+                        </div>
+                    ))}
+                </div>
             </div>
             <div className="spinTheWheel">
                 {dataArray.length > 1 && (
@@ -54,6 +123,8 @@ const SpinTheWheel = () => {
                         <Wheel
                             mustStartSpinning={mustSpin}
                             prizeNumber={prizeNumber}
+                            spinDuration={0.9}
+                            numSpins={10}
                             data={dataArray.map(game => ({ option: game.title }))}
                             backgroundColors={['#3463e1', '#eaedff']}
                             onStopSpinning={onStopSpinning}
@@ -63,33 +134,15 @@ const SpinTheWheel = () => {
                 )}
             </div>
             {selectedOption &&
-                <div>
+                <div className='gameOverviewList'>
                     <Link to={`/game/${selectedOption.gameID}`} className="gameSquareHorisontalList">
                         <h4>{selectedOption.title}</h4>
-                        <div className="gameSquare-p-content">
+                        <div className="gameSquare-p-content-horisontal">
                             <p>Kategori: {selectedOption.category}</p>
                             <p>Antall: {selectedOption.nPeople}</p>
                         </div>
                     </Link>
                 </div>}
-            <div className='gameOverviewGrid'>
-                <h4>Klikk på minimum to leker for å spinne:</h4>
-                <div className='gameVerticalList'>
-                    {placeholderGames.map((game, index) => (
-                        <div
-                            className={dataArray.some(selectedGame => selectedGame.gameID === game.gameID) ? "gameSquareVerticalList selected" : "gameSquareVerticalList"}
-                            onClick={() => toggleGameSelection(game.gameID)}
-                            key={index}
-                        >
-                            <h4>{game.title}</h4>
-                            <div className="gameSquare-p-content">
-                                <p>Kategori: {game.category}</p>
-                                <p>Antall: {game.nPeople}</p>
-                            </div>
-                        </div>
-                    ))}
-                </div>
-            </div>
         </div>
     );
 };
