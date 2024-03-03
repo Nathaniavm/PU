@@ -67,7 +67,6 @@ const Hjem = () => {
             </h1>
           </div>
           <div className="search-filter-container">
-            <button onClick={reportGame}>Rapporter lek 1</button>
             <div className='searchBar'>
               <h4>Søk etter leker:</h4>
               <form>

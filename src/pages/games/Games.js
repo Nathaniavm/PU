@@ -27,17 +27,17 @@ const Games = () => {
     const handleReportGame = (game) => {
         var alertedGameID = game.gameID;
         var alertedgGameTitle = game.title;
-        alert("Spillet " + alertedgGameTitle + " ble rapportert")
-        console.log(alertedGameID);
+        
+        reportGame(alertedGameID);
+
+        alert("Spillet " + alertedgGameTitle + " (ID: " + alertedGameID + ") ble rapportert")
     }
 
     const handleMakeFavoriteGame = (game) => {
         var alertedGameID = game.gameID;
         var alertedgGameTitle = game.title;
 
-        reportGame(alertedGameID);
-
-        alert("Spillet " + alertedgGameTitle + " (ID: " + alertedGameID + ") ble rapportert")
+    
     }
 
     return (

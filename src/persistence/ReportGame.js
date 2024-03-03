@@ -1,11 +1,8 @@
 import { ref, set, update, query, get, orderByKey, equalTo } from 'firebase/database';
 import { database } from '../firebaseConfig';
-import { child } from '@firebase/database';
 
 export async function reportGame(gameKey){
     try {
-        gameKey = 2;
-        var database_ref = ref(database);
 
         var gameRef = ref(database, `games/${gameKey}`);
 
@@ -16,13 +13,7 @@ export async function reportGame(gameKey){
         if (snapshot.exists()) {
             
             const value = snapshot.val();
-            console.log(value);
-            for (const key in value) {
-                console.log(key);
-            }
-            const numberOfReports = child(database, `games`);
-            //snapshot.child("nReported").val();
-            console.log(numberOfReports);
+            const numberOfReports = Object.values(value)[0].nReported;
     
             var gameData = {
                 nReported: numberOfReports + 1
