@@ -1,10 +1,11 @@
-import { getDatabase, ref, set, query, get, limitToLast, orderByKey } from 'firebase/database';
+import { getDatabase, ref, set, query, get, limitToLast, orderByKey, equalTo, remove } from 'firebase/database';
 import { auth, database } from '../firebaseConfig'; //Import firebase instance
 
 
 // Function to get the number of game elements
-export async function getLastId(callback) {
-    const gamesRef = ref(getDatabase(), "games");
+// path variable determines table in database to store values
+export async function getLastId(path) {
+    const gamesRef = ref(getDatabase(), path);
     const lastGameQuery = query(gamesRef, orderByKey(), limitToLast(1));
     const snapshot = await get(lastGameQuery);
     if (snapshot.exists()) {
@@ -38,7 +39,7 @@ export async function registerGame(title, description, nPeople, category) {
     }
 
     // Get the current number of games
-    var gameKey = await getLastId() + 1; 
+    var gameKey = await getLastId("games") + 1; 
     
     // Save game data to database under 'games/gameKey'
     return set(ref(database, `games/${gameKey}`), gameData)
