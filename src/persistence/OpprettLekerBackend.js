@@ -1,4 +1,4 @@
-import { getDatabase, ref, set, query, get, limitToLast, orderByKey } from 'firebase/database';
+import { getDatabase, ref, set, query, get, limitToLast, orderByKey, equalTo } from 'firebase/database';
 import { auth, database } from '../firebaseConfig'; //Import firebase instance
 
 

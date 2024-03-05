@@ -1,5 +1,5 @@
 import { signInWithEmailAndPassword } from 'firebase/auth';
-import { equalTo, query, get, getDatabase, orderByChild, ref, update } from 'firebase/database';
+import { equalTo, query, get, getDatabase, orderByChild, ref, update, orderByKey } from 'firebase/database';
 import { auth, database } from '../firebaseConfig'; //Import firebase instance
 
 // BACKEND FILE FOR FETCHING USERS FROM DATABASE
@@ -48,6 +48,34 @@ export async function getEmailFromUsername(username){
         return false;
     }
 }
+export async function getUsernameFromID(userID){
+    
+    try{
+        //Create database reference to "users"
+        const dbRef = ref(getDatabase(), "users");
+
+        //Create database query for username
+        const userQuery = query(dbRef, orderByKey(), equalTo(String(userID)));
+
+        //Execute query
+        const snapshot = await get(userQuery);
+
+        if (snapshot.exists()) {
+            const userData = snapshot.val()[Object.keys(snapshot.val())[0]];
+            console.log(userData);
+            const userEmail = userData.username;
+            return userEmail; //User exists
+        }
+        else {
+            return null;
+        }
+    }
+    catch (error){
+        console.log("Error med query til databasen ved søking etter brukernavn: " + error);
+        return false;
+    }
+}
+
 export async function usernameExists(username){
     try{
         //Create database reference to "users"

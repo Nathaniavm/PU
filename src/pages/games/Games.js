@@ -1,6 +1,7 @@
 import React from 'react'
 import { useParams } from 'react-router-dom';
 import './Games.css'
+import { favoriteGame } from '../../persistence/favoriteBackend';
 
 const Games = () => {
     //Retrieve the gameID from the URL
@@ -37,6 +38,7 @@ const Games = () => {
         var alertedgGameTitle = game.title;
         alert("Spillet " + alertedgGameTitle + " ble lagt til i favoritter")
         console.log(alertedGameID);
+        favoriteGame(alertedGameID);
     }
 
     //Alterting user when game is added to queue and sends gameID to console log

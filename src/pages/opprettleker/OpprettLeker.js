@@ -27,7 +27,7 @@ const OpprettLeker = () => {
     //Send data to backend
 
     //TEST
-    deleteGame(2);
+    // deleteGame(2);
 
     //Sjekk for om spillet allerede finnes
 
