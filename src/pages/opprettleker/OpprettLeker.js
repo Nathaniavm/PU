@@ -26,12 +26,9 @@ const OpprettLeker = () => {
     }
     //Send data to backend
 
-    //TEST
-    // deleteGame(2);
-
     //Sjekk for om spillet allerede finnes
 
-    //registerGame(title, description, nPeople, category); //added for database
+    registerGame(title, description, nPeople, category); //added for database
 
 
     // Clear form inputs after submission
