@@ -4,7 +4,6 @@ import './Hjem.css'
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars, faThLarge } from '@fortawesome/free-solid-svg-icons';
-import { addGameToQueue } from '../../persistence/userQueues';
 
 /*
 Need to run this install to run: npm install @fortawesome/react-fontawesome @fortawesome/free-solid-svg-icons
@@ -67,7 +66,6 @@ const Hjem = () => {
             </h1>
           </div>
           <div className="search-filter-container">
-            <button onClick={() => addGameToQueue(1)}>Kø lek</button>
             <div className='searchBar'>
               <h4>Søk etter leker:</h4>
               <form>
