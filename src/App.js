@@ -6,7 +6,7 @@ import {
     Routes,
     Route,
 } from "react-router-dom";
-import {Hjem, OpprettLeker, LoggInn, MinSide, NewUser, Games} from './pages';
+import {Hjem, OpprettLeker, LoggInn, MinSide, NewUser, Games, SpinTheWheel} from './pages';
  
 function App() {
   return (
@@ -19,6 +19,7 @@ function App() {
               <Route path="/minside" element={<MinSide />} />
               <Route path="/newUser" element={<NewUser />} />
               <Route path="/game/:gameID" element={<Games />} />
+              <Route path="/spinthewheel" element={<SpinTheWheel />} />
           </Routes>
       </Router>
   );

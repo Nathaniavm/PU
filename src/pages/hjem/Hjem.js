@@ -111,14 +111,14 @@ const Hjem = () => {
                         {filteredGames.map((game, index) => (
                             <Link to={`game/${game.gameID}`} key={index} className={isListView ? "gameSquareHorisontalList" : "gameSquareVerticalList"}>
                                 <h4>{game.title}</h4>
-                                <div className="gameSquare-p-content">
+                                <div className={isListView ? "gameSquare-p-content-horisontal" : "gameSquare-p-content-vertical"}>
                                     <p>Kategori: {game.category}</p>
                                     <p>Antall: {game.nPeople}</p>
                                 </div>
                             </Link>
                         ))}
                     </div>
-                </div>
+      </div>
     </div>
 
     <div className='rightSideContainer'>
