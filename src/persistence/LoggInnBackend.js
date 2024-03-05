@@ -61,8 +61,7 @@ export async function getUsernameFromID(userID){
         const snapshot = await get(userQuery);
 
         if (snapshot.exists()) {
-            const userData = snapshot.val()[Object.keys(snapshot.val())[0]];
-            console.log(userData);
+            const userData = snapshot.val()[Object.keys(snapshot.val())];
             const userEmail = userData.username;
             return userEmail; //User exists
         }

@@ -36,8 +36,8 @@ const Games = () => {
     const handleMakeFavoriteGame = (game) => {
         var alertedGameID = game.gameID;
         var alertedgGameTitle = game.title;
-        alert("Spillet " + alertedgGameTitle + " ble lagt til i favoritter")
-        console.log(alertedGameID);
+        console.log("Spillet " + alertedgGameTitle + " ble lagt til i favoritter")
+        // console.log(alertedGameID);
         favoriteGame(alertedGameID);
     }
 
