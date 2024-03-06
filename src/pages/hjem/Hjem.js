@@ -23,7 +23,7 @@ Need to run this install to run: npm install @fortawesome/react-fontawesome @for
 ]
 */
 var games = await getGameData();
-console.log(games);
+// console.log(games);
 
 
 const Hjem = () => {

@@ -1,6 +1,6 @@
-import { equalTo, get, orderByChild, orderByKey, query, ref, set } from 'firebase/database';
+import { equalTo, get, orderByChild, orderByKey, push, query, ref, set } from 'firebase/database';
 import { auth, database } from '../firebaseConfig'; //Import firebase instance
-import { gameExists } from './OpprettLekerBackend';
+import { gameIDExists } from './OpprettLekerBackend';
 
 export async function isFavorited(userID, gameID){
     const dbRef = ref(database, "favorites");
@@ -10,46 +10,48 @@ export async function isFavorited(userID, gameID){
     const snapShot = await get(UIDQuery);
 
     if(snapShot.exists()){
-        console.log("User exists in favorites database");
-        const value = snapShot.val;
-        // console.log(value);
-        const favoritedGames = Object.values(value);
-        // console.log(favoritedGames);
+        // console.log("User exists in favorites database");
+        const value = snapShot.val();
 
-        for (const fg in favoritedGames) {
-            if (favoritedGames[fg].gameID == gameID){
-                console.log(favoritedGames[fg].gameID);
+        for (const key in value) {
+            if (Object.hasOwnProperty.call(value, key)) {
+                // console.log(value + ", " + key);
+                const entry = value[key];
+                if (entry.userID == userID && entry.gameID == gameID) {
+                    // console.log("Matching entry found. Key: " + key);
+                    return true;
+                }
             }
         }
+        return false;
     }
 }
 
 export async function favoriteGame(gameID) {
     var userID = auth.currentUser.uid;
     // console.log(userID)
+    // console.log("Current GameID: " + gameID);
 
     if (await isFavorited(userID, gameID)){
         console.log("User has already favoritized the game");
         return;
     }
-
-    // console.log("Current GameID: " + gameID);
+    if(! await gameIDExists(gameID)){
+        console.log("Game doesn't exist");
+        return;
+    }
 
     var favoriteData = {
         gameID: gameID,
         userID: userID,
-        listUpdated: Date.now()
     }
 
-    let favoriteID = 1;
+    const favoritesRef = ref(database, "favorites/");
+    const newFavoriteRef = push(favoritesRef);
 
-    if(! await gameExists(gameID)){
-        console.log("Game doesn't exist");
-        return;
-    }
     
     // console.log("Username: " + username);
-    return set(ref(database, "favorites/" + favoriteID), favoriteData)
+    return set(newFavoriteRef, favoriteData)
         .then(() => {
             console.log("Favoritization registered successfully");
             return true;

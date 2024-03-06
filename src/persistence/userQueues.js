@@ -1,11 +1,11 @@
-import { ref, query, get, orderByChild, equalTo, set } from 'firebase/database';
+import { ref, query, get, orderByChild, equalTo, set, push } from 'firebase/database';
 import { auth, database } from '../firebaseConfig'; //Import firebase instance
-import { gameExists, getLastId } from './OpprettLekerBackend';
+import { gameIDExists, getLastId } from './OpprettLekerBackend';
 
 
 export async function addGameToQueue(gameID){
 
-    if(await gameExists(gameID)){
+    if(await gameIDExists(gameID)){
 
         var userID = auth.currentUser.uid;
 
@@ -30,17 +30,29 @@ export async function addGameToQueue(gameID){
         else{
             try {        
                 // Insert into queuedGames if game is not already queued
-                const qgKey = await getLastId("queuedGames") + 1;
-                const queueRef = ref(database, `queuedGames/${qgKey}`);
+                const queueRef = ref(database, "queuedGames/");
+                const newQueueRef = push(queueRef);
+            
+
+                // const qgKey = await getLastId("queuedGames") + 1;
+                // const queueRef = ref(database, `queuedGames/${qgKey}`);
         
                 var queueData = {
                     userID: userID,
                     gameID: gameID
                 }
         
-                set(queueRef, queueData);
-
-            } catch (error) {
+                return set(newQueueRef, queueData)
+                    .then(() => {
+                        console.log("Game successfully added to queue");
+                        return "Game successfully added to queue";
+                    })
+                    .catch((error) => {
+                        console.error("Error adding game to queue:", error);
+                        throw error;
+                    });
+            }
+            catch (error) {
                 console.log("Error: ", error)
             }
         }
