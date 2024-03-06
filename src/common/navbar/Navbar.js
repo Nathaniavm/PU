@@ -23,6 +23,11 @@ export const Navbar = () => {
                   Min Side
                 </NavLink>
               </li>
+              <li className='nav-item-left'>
+                <NavLink exact="true" to="/spinthewheel" className={({ isActive }) => "nav-link" + (isActive ? "current" : "")}>
+                  Spin The Wheel
+                </NavLink>
+              </li>
               </ul>
             </div>
             <div className='rightDiv'>

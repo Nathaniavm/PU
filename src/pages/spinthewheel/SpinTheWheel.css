@@ -1,0 +1,30 @@
+.spinTheWheel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 5%;
+
+}
+
+.spinTheWheelMain{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 3%;
+
+    text-align: center;
+    height: auto;
+}
+
+.wheel {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.gameOverviewGrid .selected {
+    background-color: #cedbff;
+}

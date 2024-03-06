@@ -27,6 +27,7 @@ const Games = () => {
         return <p>Fant ikke spillet.</p>;
     }
 
+    //Alterting user when game is reported and sends gameID to console log
     const handleReportGame = (game) => {
         var alertedGameID = game.gameID;
         var alertedgGameTitle = game.title;
@@ -34,11 +35,20 @@ const Games = () => {
         console.log(alertedGameID);
     }
 
+    //Alterting user when game is favorited and sends gameID to console log
     const handleMakeFavoriteGame = (game) => {
         var alertedGameID = game.gameID;
         var alertedgGameTitle = game.title;
         alert("Spillet " + alertedgGameTitle + " ble lagt til i favoritter")
         console.log(alertedGameID);
+    }
+
+    //Alterting user when game is added to queue and sends gameID to console log
+    const handleAddToQueue = (game) => {
+        var queuedGameID = game.gameID;
+        var queuedGameTitle = game.title;
+        alert("Spillet " + queuedGameTitle + " ble lagt til i køen")
+        console.log(queuedGameID);
     }
 
     return (
@@ -64,7 +74,8 @@ const Games = () => {
 
             <div className='buttonsContainer'>
                 <button className='moreButton favoriteButton' type='button' onClick={() => handleMakeFavoriteGame(game)}><i className="fa fa-heart"></i> Favoritt</button>
-                <button className='moreButton queueButton' type='button'><i className="fa fa-plus"></i> Legg til i kø</button>
+                <button className='moreButton queueButton' type='button' onClick={() => handleAddToQueue(game)}><i className="fa fa-plus" 
+                ></i> Legg til i kø</button>
                 <button className='moreButton reportButton' type='button' onClick={() => handleReportGame(game)}>
                     <i className="fa fa-flag"></i> Rapporter</button>
             </div>   
