@@ -4,15 +4,13 @@ import './Hjem.css'
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars, faThLarge } from '@fortawesome/free-solid-svg-icons';
-import { addGameToQueue } from '../../persistence/userQueues';
+import { getGameData } from '../../persistence/HjemBackend';
 
 /*
 Need to run this install to run: npm install @fortawesome/react-fontawesome @fortawesome/free-solid-svg-icons
 */
 
-
-
-const placeholderGames = [
+/*const games = [
   {gameID: 1, title: 'Stiv Heks', description: 'En blir valgt til å være heks, heksa skal løpe etter de andre og prøve å ta på dem, hvis man blir truffet av heksa må man stå med beina spredt, og man blir fri hvis noen kraber under beina dine'
   , category: 'fysisk lek', nPeople: '10'},
   {gameID: 2, title: 'Navnedyrleken', description: 'Alle sier navnet sitt, og et dyr med samme forbokstav som navnet', category: 'navnelek', nPeople: '1'},
@@ -22,9 +20,11 @@ const placeholderGames = [
   , category: 'fysisk lek', nPeople: '10'},
   {gameID: 2, title: 'Navnedyrleken', description: 'Alle sier navnet sitt, og et dyr med samme forbokstav som navnet', category: 'navnelek', nPeople: '1'},
   {gameID: 4, title: 'Sista', description: 'Løpe etter hverandre', category: 'fysisk lek', nPeople: '4'},
-  
-  
 ]
+*/
+var games = await getGameData();
+console.log(games);
+
 
 const Hjem = () => {
     const [searchInput, setSearchInput] = useState('')
@@ -47,7 +47,7 @@ const Hjem = () => {
       setListView(true);
     }
 
-    const filteredGames = placeholderGames.filter( game =>
+    const filteredGames = games.filter( game =>
       (game.title.toLowerCase().includes(searchInput.toLowerCase()) || searchInput === '') &&
       (selectedCategory === 'alle' || game.category === selectedCategory)
       );
@@ -67,7 +67,6 @@ const Hjem = () => {
             </h1>
           </div>
           <div className="search-filter-container">
-            <button onClick={() => addGameToQueue(1)}>Kø lek</button>
             <div className='searchBar'>
               <h4>Søk etter leker:</h4>
               <form>
@@ -80,6 +79,7 @@ const Hjem = () => {
                   value={searchInput}
                   onChange={handleSearchChange}
                   placeholder='Søk etter tittel'
+            
                   />
               </form>
             </div>

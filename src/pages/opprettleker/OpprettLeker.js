@@ -2,7 +2,7 @@ import React, { useContext, useState } from 'react';
 import { AuthContext } from '../../AuthContext';
 import { Link } from 'react-router-dom';
 import './Opprettleker.css';
-import { registerGame } from '../../persistence/OpprettLekerBackend';
+import { gameIDExists, gameTitleExists, registerGame } from '../../persistence/OpprettLekerBackend';
 
 const OpprettLeker = () => {
   const { isLoggedIn, username } = useContext(AuthContext);
@@ -13,22 +13,29 @@ const OpprettLeker = () => {
     category: ''
   });
  
-  const handleCreateGame = () => {
+  const handleCreateGame = async () => {
     // Access form data from state
     const { title, description, nPeople, category } = formData;
 
     if (!title.trim()) {
       alert("Tittel er påkrevd")
-      // return
+      return
     } else if (!description.trim()) {
       alert("Beskrivelse er påkrevd")
-      // return
+      return
+    } else if (!category) {
+      alert("Velg en kategori!")
+      return
     }
     //Send data to backend
 
-    //Sjekk for om spillet allerede finnes
+    //TEST
 
-    registerGame(title, description, nPeople, category); //added for database
+    //Sjekk for om spillet allerede finnes
+    if (! await gameTitleExists(title)) {
+      registerGame(title, description, nPeople, category); //added for database
+      
+    }
 
 
     // Clear form inputs after submission
@@ -68,6 +75,7 @@ const OpprettLeker = () => {
                   name="title"
                   placeholder='Tittel, påkrevd informasjon'
                   value={formData.title}
+                  
                   onChange={handleInputChange}
                 />
               </div>

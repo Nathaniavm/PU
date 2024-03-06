@@ -1,4 +1,4 @@
-import { getDatabase, ref, set, query, get, limitToLast, orderByKey, equalTo, remove } from 'firebase/database';
+import { getDatabase, ref, set, query, get, limitToLast, orderByKey, orderByChild, remove, equalTo } from 'firebase/database';
 import { auth, database } from '../firebaseConfig'; //Import firebase instance
 
 
@@ -58,13 +58,36 @@ export function deleteGame(gameID){
     alert('Lek slettet')
 }
 
-export async function gameExists(gameID){
+export async function gameIDExists(gameID){
 
     try{
         const dbRef = ref(database, "games");
         // console.log("Database: Games" + dbRef);
 
         const gameQuery = query(dbRef, orderByKey(), equalTo(String(gameID)));
+
+        const snapShot = await get(gameQuery);
+
+        if(snapShot.exists()){
+            return true;
+        }
+        else{
+            return false;
+        }
+
+    }catch (error){
+        console.log("Error med query til databasen: " + error);
+        return false;
+    }
+}
+
+export async function gameTitleExists(title){
+
+    try{
+        const dbRef = ref(database, "games");
+        // console.log("Database: Games" + dbRef);
+
+        const gameQuery = query(dbRef, orderByChild("title"), equalTo(String(title)));
 
         const snapShot = await get(gameQuery);
 
