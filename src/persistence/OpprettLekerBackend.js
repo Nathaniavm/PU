@@ -1,10 +1,11 @@
-import { getDatabase, ref, set, query, get, remove, limitToLast, orderByKey, equalTo } from 'firebase/database';
+import { getDatabase, ref, set, query, get, remove, limitToLast, orderByKey, orderByChild, remove, equalTo, push, equalTo } from 'firebase/database';
 import { auth, database } from '../firebaseConfig'; //Import firebase instance
 
 
 // Function to get the number of game elements
-export async function getLastId(callback) {
-    const gamesRef = ref(getDatabase(), "games");
+// path variable determines table in database to store values
+export async function getLastId(path) {
+    const gamesRef = ref(getDatabase(), path);
     const lastGameQuery = query(gamesRef, orderByKey(), limitToLast(1));
     const snapshot = await get(lastGameQuery);
     if (snapshot.exists()) {
@@ -22,6 +23,7 @@ export async function registerGame(title, description, nPeople, category) {
     // Declare user variable
     var user = auth.currentUser;
 
+    var database_ref = ref(database);
     // Henter username fra localStorage
     const username = localStorage.getItem('username') || '';
 
@@ -38,12 +40,14 @@ export async function registerGame(title, description, nPeople, category) {
     }
 
     // Get the current number of games
-    var gameKey = await getLastId() + 1; 
+    // var gameKey = await getLastId("games") + 1;
+    
+    const gamesRef = ref(database, "games/");
+    const newGameRef = push(gamesRef);
 
-    var gameRef = ref(database, `games/${gameKey}`);
     
     // Save game data to database under 'games/gameKey'
-    return set(gameRef, gameData)
+    return set(ref(database, `games/${gameKey}`), gameData)
         .then(() => {
             console.log("Game registered successfully");
             return "Game registered successfully";
@@ -63,13 +67,36 @@ export function deleteGame(gameID){
     alert('Lek slettet')
 }
 
-export async function gameExists(gameID){
+export async function gameIDExists(gameID){
 
     try{
         const dbRef = ref(database, "games");
         // console.log("Database: Games" + dbRef);
 
         const gameQuery = query(dbRef, orderByKey(), equalTo(String(gameID)));
+
+        const snapShot = await get(gameQuery);
+
+        if(snapShot.exists()){
+            return true;
+        }
+        else{
+            return false;
+        }
+
+    }catch (error){
+        console.log("Error med query til databasen: " + error);
+        return false;
+    }
+}
+
+export async function gameTitleExists(title){
+
+    try{
+        const dbRef = ref(database, "games");
+        // console.log("Database: Games" + dbRef);
+
+        const gameQuery = query(dbRef, orderByChild("title"), equalTo(String(title)));
 
         const snapShot = await get(gameQuery);
 

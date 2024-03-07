@@ -4,15 +4,13 @@ import './Hjem.css'
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars, faThLarge } from '@fortawesome/free-solid-svg-icons';
-import { reportGame } from '../../persistence/ReportGame';
+import { getGameData } from '../../persistence/HjemBackend';
 
 /*
 Need to run this install to run: npm install @fortawesome/react-fontawesome @fortawesome/free-solid-svg-icons
 */
 
-
-
-const placeholderGames = [
+/*const games = [
   {gameID: 1, title: 'Stiv Heks', description: 'En blir valgt til å være heks, heksa skal løpe etter de andre og prøve å ta på dem, hvis man blir truffet av heksa må man stå med beina spredt, og man blir fri hvis noen kraber under beina dine'
   , category: 'fysisk lek', nPeople: '10'},
   {gameID: 2, title: 'Navnedyrleken', description: 'Alle sier navnet sitt, og et dyr med samme forbokstav som navnet', category: 'navnelek', nPeople: '1'},
@@ -22,9 +20,11 @@ const placeholderGames = [
   , category: 'fysisk lek', nPeople: '10'},
   {gameID: 2, title: 'Navnedyrleken', description: 'Alle sier navnet sitt, og et dyr med samme forbokstav som navnet', category: 'navnelek', nPeople: '1'},
   {gameID: 4, title: 'Sista', description: 'Løpe etter hverandre', category: 'fysisk lek', nPeople: '4'},
-  
-  
 ]
+*/
+var games = await getGameData();
+// console.log(games);
+
 
 const Hjem = () => {
     const [searchInput, setSearchInput] = useState('')
@@ -47,7 +47,7 @@ const Hjem = () => {
       setListView(true);
     }
 
-    const filteredGames = placeholderGames.filter( game =>
+    const filteredGames = games.filter( game =>
       (game.title.toLowerCase().includes(searchInput.toLowerCase()) || searchInput === '') &&
       (selectedCategory === 'alle' || game.category === selectedCategory)
       );
@@ -79,6 +79,7 @@ const Hjem = () => {
                   value={searchInput}
                   onChange={handleSearchChange}
                   placeholder='Søk etter tittel'
+            
                   />
               </form>
             </div>
@@ -112,14 +113,14 @@ const Hjem = () => {
                         {filteredGames.map((game, index) => (
                             <Link to={`game/${game.gameID}`} key={index} className={isListView ? "gameSquareHorisontalList" : "gameSquareVerticalList"}>
                                 <h4>{game.title}</h4>
-                                <div className="gameSquare-p-content">
+                                <div className={isListView ? "gameSquare-p-content-horisontal" : "gameSquare-p-content-vertical"}>
                                     <p>Kategori: {game.category}</p>
                                     <p>Antall: {game.nPeople}</p>
                                 </div>
                             </Link>
                         ))}
                     </div>
-                </div>
+      </div>
     </div>
 
     <div className='rightSideContainer'>
