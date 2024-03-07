@@ -1,6 +1,7 @@
 import React from 'react'
 import { useParams } from 'react-router-dom';
 import './Games.css'
+import { reportGame } from '../../persistence/ReportGame';
 import { favoriteGame } from '../../persistence/favoriteBackend';
 import { getGameData } from '../../persistence/HjemBackend';
 import { addGameToQueue } from '../../persistence/userQueues';
@@ -33,14 +34,18 @@ const Games = () => {
     const handleReportGame = (game) => {
         var alertedGameID = game.gameID;
         var alertedgGameTitle = game.title;
-        alert("Spillet " + alertedgGameTitle + " ble rapportert")
-        console.log(alertedGameID);
+        
+        reportGame(alertedGameID);
+
+        alert("Spillet " + alertedgGameTitle + " (ID: " + alertedGameID + ") ble rapportert")
     }
 
     //Alterting user when game is favorited and sends gameID to console log
     const handleMakeFavoriteGame = async (game) => {
         var alertedGameID = game.gameID;
         var alertedgGameTitle = game.title;
+
+    
         if (await favoriteGame(alertedGameID)) {
             console.log("Spillet " + alertedgGameTitle + " ble lagt til i favoritter")
         }
