@@ -20,10 +20,6 @@ export async function getLastId(path) {
 
 // Function to register a new game
 export async function registerGame(title, description, nPeople, category) {  
-    // Declare user variable
-    var user = auth.currentUser;
-
-    var database_ref = ref(database);
     // Henter username fra localStorage
     const username = localStorage.getItem('username') || '';
 
@@ -47,7 +43,7 @@ export async function registerGame(title, description, nPeople, category) {
 
     
     // Save game data to database under 'games/gameKey'
-    return set(ref(database, `games/${gameKey}`), gameData)
+    return set(newGameRef, gameData)
         .then(() => {
             console.log("Game registered successfully");
             return "Game registered successfully";
