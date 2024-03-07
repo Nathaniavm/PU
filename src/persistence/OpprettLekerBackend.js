@@ -1,5 +1,5 @@
-import { getDatabase, ref, set, query, get, limitToLast, orderByKey, orderByChild, remove, equalTo, push } from 'firebase/database';
-import { auth, database } from '../firebaseConfig'; //Import firebase instance
+import { getDatabase, ref, set, query, get, remove, limitToLast, orderByKey, orderByChild, equalTo, push } from 'firebase/database';
+import { database } from '../firebaseConfig'; //Import firebase instance
 
 
 // Function to get the number of game elements
@@ -62,7 +62,7 @@ export function deleteGame(gameID){
     alert('Lek slettet')
 }
 
-export async function gameIDExists(gameID){
+export async function gameIDExists(gameID){ 
 
     try{
         const dbRef = ref(database, "games");
