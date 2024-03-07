@@ -1,4 +1,4 @@
-import { getDatabase, ref, set, query, get, limitToLast, orderByKey, orderByChild, remove, equalTo } from 'firebase/database';
+import { getDatabase, ref, set, query, get, limitToLast, orderByKey, orderByChild, remove, equalTo, push } from 'firebase/database';
 import { auth, database } from '../firebaseConfig'; //Import firebase instance
 
 
@@ -20,10 +20,6 @@ export async function getLastId(path) {
 
 // Function to register a new game
 export async function registerGame(title, description, nPeople, category) {  
-    // Declare user variable
-    var user = auth.currentUser;
-
-    var database_ref = ref(database);
     // Henter username fra localStorage
     const username = localStorage.getItem('username') || '';
 
@@ -39,10 +35,14 @@ export async function registerGame(title, description, nPeople, category) {
     }
 
     // Get the current number of games
-    var gameKey = await getLastId("games") + 1; 
+    // var gameKey = await getLastId("games") + 1;
+    
+    const gamesRef = ref(database, "games/");
+    const newGameRef = push(gamesRef);
+
     
     // Save game data to database under 'games/gameKey'
-    return set(ref(database, `games/${gameKey}`), gameData)
+    return set(newGameRef, gameData)
         .then(() => {
             console.log("Game registered successfully");
             return "Game registered successfully";
