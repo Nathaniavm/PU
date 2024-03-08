@@ -1,4 +1,4 @@
-import { getDatabase, ref, set, query, get, remove, limitToLast, orderByKey, orderByChild, equalTo, push } from 'firebase/database';
+import { ref, set, query, get, remove, limitToLast, orderByKey, orderByChild, equalTo, push } from 'firebase/database';
 import { database } from '../firebaseConfig'; //Import firebase instance
 
 
@@ -56,10 +56,11 @@ export async function registerGame(title, description, nPeople, category) {
 
 export function deleteGame(gameID){
     
-    var game = ref(database, 'games/' + gameID)
+    let gameRef = ref(database, 'games/' + gameID)
+    // let favRef = ref(database, "favorites")
 
     //Does not throw error if gameID doesn't exist
-    remove(game)
+    remove(gameRef)
     alert('Lek slettet')
 }
 

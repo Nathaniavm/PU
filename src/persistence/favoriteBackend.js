@@ -2,6 +2,36 @@ import { equalTo, get, orderByChild, orderByKey, push, query, ref, set } from 'f
 import { auth, database } from '../firebaseConfig'; //Import firebase instance
 import { gameIDExists } from './OpprettLekerBackend';
 
+export async function listFavorites(){
+
+    var userID = auth.currentUser.uid;
+
+    const dbRef = ref(database, "favorites");
+
+    const UIDQuery = query(dbRef, orderByChild("userID"), equalTo(String(userID)));
+
+    const snapShot = await get(UIDQuery);
+
+    if(snapShot.exists()){
+        // console.log("User exists in favorites database");
+        const value = snapShot.val();
+        const gameIDs = [];
+        
+        for (const key in value) {
+            if (Object.hasOwnProperty.call(value, key)) {
+                const entry = value[key];
+                // console.log(value + ", " + key);
+                // console.log(entry.gameID);
+                gameIDs.push(entry.gameID);
+            }
+        }
+        console.log(gameIDs);
+        return gameIDs;
+    }
+    return [];
+}
+
+
 export async function isFavorited(userID, gameID){
     const dbRef = ref(database, "favorites");
 

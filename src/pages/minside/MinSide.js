@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useAuth } from '../../AuthContext'
 import './MinSide.css'
 import { signOutUser } from '../../persistence/LoggInnBackend';
@@ -8,15 +8,34 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrashAlt } from '@fortawesome/free-solid-svg-icons'; 
 import { faStepBackward } from '@fortawesome/free-solid-svg-icons';
 import { faStepForward  } from '@fortawesome/free-solid-svg-icons';
+import { listFavorites } from '../../persistence/favoriteBackend';
 
 
 const MinSide = () => {
   const { logout, isAdmin, isLoggedIn} = useAuth();
 
+  const [favoriteGames, setFavoriteGames] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchFavorites = async () => {
+      try {
+        const favorites = await listFavorites();
+        setFavoriteGames(favorites);
+        setLoading(false);
+      }
+      catch (error) {
+        console.error("Error fetching user favorites: ", error);
+      }
+    }
+    fetchFavorites();
+  }, []);
+
   const handleLogout = () => {
-    signOutUser();
-    logout();
+  
   }
+  
+
   
   const favoritePlaceholderGames = [
     {gameID: 1, title: 'Stiv Heks', description: 'En blir valgt til å være heks, heksa skal løpe etter de andre og prøve å ta på dem, hvis man blir truffet av heksa må man stå med beina spredt, og man blir fri hvis noen kraber under beina dine'
@@ -50,16 +69,16 @@ const MinSide = () => {
       {gameID: 4, title: 'Sista', description: 'Løpe etter hverandre', category: 'fysisk lek', nPeople: '4', reportCount: '2'},
     ];
 
-      const [currentIndex, setCurrentIndex] = useState(0);
+    const [currentIndex, setCurrentIndex] = useState(0);
 
-      const queuePlaceholderGames = [
-        {gameID: 1, title: 'Stiv Heks', description: 'En blir valgt til å være heks, heksa skal løpe etter de andre og prøve å ta på dem, hvis man blir truffet av heksa må man stå med beina spredt, og man blir fri hvis noen kraber under beina dine'
-        , category: 'fysisk lek', nPeople: '10', reportCount: '2'},
-        {gameID: 2, title: 'Navnedyrleken', description: 'Alle sier navnet sitt, og et dyr med samme forbokstav som navnet', category: 'navnelek', nPeople: '1', reportCount: '2'},
-        {gameID: 3, title: 'Spille kort', description: 'Bare spille ett eller annet med kort', category: 'icebreaker', nPeople: '4', reportCount: '2'},
-        {gameID: 4, title: 'Sista', description: 'Løpe etter hverandre', category: 'fysisk lek', nPeople: '4', reportCount: '2'},
-      ];
-    
+    const queuePlaceholderGames = [
+      {gameID: 1, title: 'Stiv Heks', description: 'En blir valgt til å være heks, heksa skal løpe etter de andre og prøve å ta på dem, hvis man blir truffet av heksa må man stå med beina spredt, og man blir fri hvis noen kraber under beina dine'
+      , category: 'fysisk lek', nPeople: '10', reportCount: '2'},
+      {gameID: 2, title: 'Navnedyrleken', description: 'Alle sier navnet sitt, og et dyr med samme forbokstav som navnet', category: 'navnelek', nPeople: '1', reportCount: '2'},
+      {gameID: 3, title: 'Spille kort', description: 'Bare spille ett eller annet med kort', category: 'icebreaker', nPeople: '4', reportCount: '2'},
+      {gameID: 4, title: 'Sista', description: 'Løpe etter hverandre', category: 'fysisk lek', nPeople: '4', reportCount: '2'},
+    ];
+  
 
     const handleNext = () => {
       setCurrentIndex((prevIndex) => (prevIndex +1) % queuePlaceholderGames.length);
@@ -99,7 +118,7 @@ const MinSide = () => {
               <div className='InputFavorites'>
                 <div className= 'gameOverviewGrid'>
                       <div className= 'gameVerticalList'>
-                          {favoritePlaceholderGames.map((game, index) => (
+                          {favoriteGames.map((game, index) => (
                               <Link to={`/game/${game.gameID}`} key={index} className= "gameSquareVerticalList">
                                   <h4>{game.title}</h4>
                                   <div className="gameSquare-p-content">
@@ -155,24 +174,27 @@ const MinSide = () => {
                 <h1>Rapporterte spill</h1>
               </div>
               <table className='ulReportedGame'>
-                <tr>
-                  <th>Navn</th>
-                  <th>Kategori</th>
-                  <th>Antall ganger rapportert</th>
-                  <th>Slett spill</th>
-                </tr>
-                {placeholderGames.map((game, index) => (
-                    <tr key={index}>
-                        <td className="ReportedGameTitle"> 
-                            <Link to={`/game/${game.gameID}`} key={index} className="gamesSquare">{game.title}</Link>
-                        </td>
-                        <td className="ReportedGameCategory">{game.category}</td>
-                        <td className="ReportedGameReportCount">Reports: {game.reportCount}</td>
-                        <td className='ReportedGameDelete' onClick={() => handleDeleteGame(game.gameID)}>
-                          <FontAwesomeIcon icon={faTrashAlt} />
-                        </td>
-                    </tr>
-                ))}
+                <thead>
+                  <tr>
+                    <th>Navn</th>
+                    <th>Kategori</th>
+                    <th>Antall ganger rapportert</th>
+                    <th>Slett spill</th>
+                  </tr>
+                  {placeholderGames.map((game, index) => (
+                      <tr key={index}>
+                          <td className="ReportedGameTitle"> 
+                              <Link to={`/game/${game.gameID}`} key={index} className="gamesSquare">{game.title}</Link>
+                          </td>
+                          <td className="ReportedGameCategory">{game.category}</td>
+                          <td className="ReportedGameReportCount">Reports: {game.reportCount}</td>
+                          <td className='ReportedGameDelete' onClick={() => handleDeleteGame(game.gameID)}>
+                            <FontAwesomeIcon icon={faTrashAlt} />
+                          </td>
+                      </tr>
+                  ))}
+                </thead>
+
               </table>
             </div>
           )}
