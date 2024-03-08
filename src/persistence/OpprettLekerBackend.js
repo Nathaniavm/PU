@@ -5,7 +5,7 @@ import { database } from '../firebaseConfig'; //Import firebase instance
 // Function to get the number of game elements
 // path variable determines table in database to store values
 export async function getLastId(path) {
-    const gamesRef = ref(getDatabase(), path);
+    const gamesRef = ref(database, path);
     const lastGameQuery = query(gamesRef, orderByKey(), limitToLast(1));
     const snapshot = await get(lastGameQuery);
     if (snapshot.exists()) {
