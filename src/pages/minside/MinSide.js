@@ -8,7 +8,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrashAlt } from '@fortawesome/free-solid-svg-icons'; 
 import { faStepBackward } from '@fortawesome/free-solid-svg-icons';
 import { faStepForward  } from '@fortawesome/free-solid-svg-icons';
+import { getGameData } from '../../persistence/HjemBackend';
 
+var games = await getGameData();
 
 const MinSide = () => {
   const { logout, isAdmin, isLoggedIn} = useAuth();
@@ -41,14 +43,6 @@ const MinSide = () => {
        console.log("Spillet " + gameID + " er slettet");
    };
 
-    // Placeholder games, will be switched with backend retreiving method
-    const placeholderGames = [
-      {gameID: 1, title: 'Stiv Heks', description: 'En blir valgt til å være heks, heksa skal løpe etter de andre og prøve å ta på dem, hvis man blir truffet av heksa må man stå med beina spredt, og man blir fri hvis noen kraber under beina dine'
-      , category: 'fysisk lek', nPeople: '10', reportCount: '2'},
-      {gameID: 2, title: 'Navnedyrleken', description: 'Alle sier navnet sitt, og et dyr med samme forbokstav som navnet', category: 'navnelek', nPeople: '1', reportCount: '2'},
-      {gameID: 3, title: 'Spille kort', description: 'Bare spille ett eller annet med kort', category: 'icebreaker', nPeople: '4', reportCount: '2'},
-      {gameID: 4, title: 'Sista', description: 'Løpe etter hverandre', category: 'fysisk lek', nPeople: '4', reportCount: '2'},
-    ];
 
       const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -76,8 +70,14 @@ const MinSide = () => {
       setShowGameInfo(!showGameInfo);
     };
 
+var reportedGamesList = [];
+for(var i = 0; i < games.length; i++) {
+    if (games[i].nReported > 0) {
+      reportedGamesList.push(games[i])
+    }
+}
+console.log(reportedGamesList);
 
-    
 
   return (
     <>
@@ -161,7 +161,7 @@ const MinSide = () => {
                   <th>Antall ganger rapportert</th>
                   <th>Slett spill</th>
                 </tr>
-                {placeholderGames.map((game, index) => (
+                {reportedGamesList.map((game, index) => (
                     <tr key={index}>
                         <td className="ReportedGameTitle"> 
                             <Link to={`/game/${game.gameID}`} key={index} className="gamesSquare">{game.title}</Link>
