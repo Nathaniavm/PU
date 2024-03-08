@@ -87,6 +87,10 @@
     background-color: #e27b7b;
 }
 
+.removeFavoriteButton {
+    background-color: #6c757d;
+}
+
 .queueButton {
     background-color: #67e384;
 }
