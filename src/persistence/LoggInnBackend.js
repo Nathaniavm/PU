@@ -25,7 +25,7 @@ export async function getEmailFromUsername(username){
     
     try{
         //Create database reference to "users"
-        const dbRef = ref(getDatabase(), "users");
+        const dbRef = ref(database, "users");
 
         //Create database query for username
         const userQuery = query(dbRef, orderByChild("username"), equalTo(username));
@@ -52,7 +52,7 @@ export async function getUsernameFromID(userID){
     
     try{
         //Create database reference to "users"
-        const dbRef = ref(getDatabase(), "users");
+        const dbRef = ref(database, "users");
 
         //Create database query for username
         const userQuery = query(dbRef, orderByKey(), equalTo(String(userID)));
@@ -78,7 +78,7 @@ export async function getUsernameFromID(userID){
 export async function usernameExists(username){
     try{
         //Create database reference to "users"
-        const dbRef = ref(getDatabase(), "users");
+        const dbRef = ref(database, "users");
 
         //Create database query for username
         //OBS! Må ha ".indexON": "username" som en rule i firebase databasen
@@ -103,7 +103,7 @@ export async function usernameExists(username){
 export async function emailExists(email){
     try{
         //Create database reference to "users"
-        const dbRef = ref(getDatabase(), "users");
+        const dbRef = ref(database, "users");
 
         //Create database query for email
         //OBS! Må ha ".indexON": "email" som en rule i firebase databasen

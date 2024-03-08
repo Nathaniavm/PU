@@ -1,11 +1,11 @@
-import { ref, getDatabase, get } from "firebase/database";
-import { auth, database } from '../firebaseConfig'; //Import firebase instance
+import { ref, get } from "firebase/database";
+import { database } from '../firebaseConfig'; //Import firebase instance
 
 
 async function getGameData() {
     try {   
         // Create a database reference to "games"
-        const dbRef = ref(getDatabase(), "games");
+        const dbRef = ref(database, "games");
         
         // Execute the query to get the snapshot
         const snapshot = await get(dbRef);
