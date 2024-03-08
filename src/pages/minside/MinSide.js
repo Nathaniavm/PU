@@ -168,7 +168,7 @@ console.log(reportedGamesList);
                             <Link to={`/game/${game.gameID}`} key={index} className="gamesSquare">{game.title}</Link>
                         </td>
                         <td className="ReportedGameCategory">{game.category}</td>
-                        <td className="ReportedGameReportCount">Reports: {game.reportCount}</td>
+                        <td className="ReportedGameReportCount">Reports: {game.nReported}</td>
                         <td className='ReportedGameDelete' onClick={() => handleDeleteGame(game.gameID)}>
                           <FontAwesomeIcon icon={faTrashAlt} />
                         </td>
