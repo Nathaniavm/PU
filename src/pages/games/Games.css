@@ -1,3 +1,7 @@
+
+/*.page{
+    display: flex;
+}*/
 .gamesContainer {
     display: flex;
     flex-direction: column;
@@ -5,6 +9,7 @@
     justify-content: center;
     background-color: var(--White-Background);
     border-radius: 100px 100px 100px 100px;
+    border: 2px solid var(--Header-Color); 
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.35);
     position: relative; 
     overflow: hidden;
@@ -17,6 +22,23 @@
     margin-bottom: 5%;
 }
 
+.timer{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--Body-Color);
+    border-radius: 100px 100px 100px 100px;
+    border: 2px solid var(--Header-Color);
+    position: relative; 
+    overflow: hidden;
+    width: 30%;
+    max-width: 60%;
+    height: 200px;
+    margin-top: 0%;
+    margin-bottom: 2%;
+}
+
 .gameTitle {
     color: var(--Header-Color);
     font-size: 1.5vw;
@@ -24,6 +46,7 @@
     max-width: 100%;
     max-height: 70px;
     margin-bottom: 5%;
+    margin-top: 5%;
 }
 
 .aboutGame {
@@ -51,6 +74,7 @@
     justify-content: center;
     text-align: center;
     margin-bottom: 15px;
+    max-width: 70%;
 }
 
 .gameDescription p {
@@ -66,6 +90,7 @@
     display: flex;
     justify-content: space-around;
     margin-top: 20px;
+    margin-bottom: 5%;
 }
 
 .moreButton {
@@ -99,3 +124,62 @@
     box-shadow: 0 3px 4px 0 #6c84c8, 0 4px 10px 0 #c0ccee;
 }
 
+.timeInputField{
+    background-color: var(--White-Background);
+    border: none;
+    margin: 10px 0;
+    margin-left: 7%;
+    padding: 5px 5px;
+    font-size: 10px;
+    border-radius: 8px;
+    width: 35px;
+    outline: none;
+    margin-bottom: 5%;
+}
+
+.timerContainer{
+    justify-content: center;
+}
+
+
+.inputTimerContainer{
+    display: flex;
+    justify-content: center;
+    margin-top: 10%; /*something*/
+    margin-left: 13%;
+    margin-right: 13%;
+    font-size: 10px;
+    text-align: center;
+    
+}
+
+.unit{
+    margin-left: 2%;
+    margin-top: 10%;
+}
+
+.timerButtonsContainer{
+    display: flex;
+    justify-content: center;
+    margin-bottom: 10%;
+}
+
+.timerContainer{
+    text-align: center;
+}
+
+.timerDiv h1{
+    font-size: 30px;
+    margin: 0;
+    margin-bottom: 5%;
+}
+
+
+.button{
+    max-width: 50%;
+ 
+}
+
+.button:hover{
+    box-shadow: 0 3px 4px 0 #6c84c8, 0 4px 10px 0 #c0ccee;
+}
