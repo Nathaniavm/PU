@@ -30,6 +30,22 @@ export async function reportGame(gameKey){
         console.log("Error med query til databasen ved søking etter lek: " + error);
         return false;
     }
+ 
+}
 
+
+export async function removeReports(gameKey){
+    try {
+        var gameRef = ref(database, `games/${gameKey}`);
+
+        var gameData = {
+            nReported: 0
+        }
     
+        update(gameRef, gameData);
+    }
+    catch (error){
+        console.log(error);
+        return false;
+    }
 }
