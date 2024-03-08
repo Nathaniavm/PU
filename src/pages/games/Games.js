@@ -31,11 +31,11 @@ const Games = () => {
     }
 
     //Alterting user when game is reported and sends gameID to console log
-    const handleReportGame = (game) => {
+    const handleReportGame = async (game) => {
         var alertedGameID = game.gameID;
         var alertedgGameTitle = game.title;
         
-        reportGame(alertedGameID);
+        await reportGame(alertedGameID);
 
         alert("Spillet " + alertedgGameTitle + " (ID: " + alertedGameID + ") ble rapportert")
     }
@@ -53,13 +53,12 @@ const Games = () => {
     }
 
     //Alterting user when game is added to queue and sends gameID to console log
-    const handleAddToQueue = (game) => {
+    const handleAddToQueue = async (game) => {
         var queuedGameID = game.gameID;
         var queuedGameTitle = game.title;
-        if (addGameToQueue(queuedGameID)) {
+        if (await addGameToQueue(queuedGameID)) {
             alert("Spillet " + queuedGameTitle + " ble lagt til i køen")
         }
-        console.log(queuedGameID);
     }
 
     return (
