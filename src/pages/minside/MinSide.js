@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useAuth } from '../../AuthContext'
 import './MinSide.css'
-import { signOutUser } from '../../persistence/LoggInnBackend';
 import { removeReports } from '../../persistence/ReportGame';
 import {Link } from 'react-router-dom';
 import '../hjem/Hjem.css';
@@ -12,12 +11,8 @@ import { faStepForward  } from '@fortawesome/free-solid-svg-icons';
 
 
 const MinSide = () => {
-  const { logout, isAdmin, isLoggedIn} = useAuth();
+  const { isAdmin, isLoggedIn} = useAuth();
 
-  const handleLogout = () => {
-    signOutUser();
-    logout();
-  }
   
   const favoritePlaceholderGames = [
     {gameID: 1, title: 'Stiv Heks', description: 'En blir valgt til å være heks, heksa skal løpe etter de andre og prøve å ta på dem, hvis man blir truffet av heksa må man stå med beina spredt, og man blir fri hvis noen kraber under beina dine'
@@ -144,10 +139,6 @@ const MinSide = () => {
               <FontAwesomeIcon icon={faStepForward} className='icon' onClick={handleNext}></FontAwesomeIcon>
             </div>
             </div>
-          </div>
-
-          <div className='LogoutDiv'>
-            <button className='LogoutButton' type='button' onClick={handleLogout}>Logg ut</button>
           </div>
 
           {isAdmin && (

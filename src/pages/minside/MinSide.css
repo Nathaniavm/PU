@@ -176,14 +176,6 @@
     text-align: center;
 }
 
-.LogoutDiv{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 8%;
-    margin-top: 8%;
-}
-
 .RapportedUsersDiv{
     display: flex;
     align-items: center;
@@ -200,26 +192,6 @@
     margin-bottom: 5%;
     margin-left: 10%;
     margin-right: 10%;
-}
-
-.LogoutButton{
-    background-color:#e36767;
-    border: none;
-    border-radius: 8px;
-    color: #FFFADD;
-    padding: 2% 5%;
-    display: inline-block;
-    margin: 5px;
-    margin-top: 10px;
-    cursor: pointer;
-    font-size:medium ;
-    font-weight: 500;
-    letter-spacing: 0.5px;
-    text-transform: uppercase;
-}
-
-.LogoutButton:hover{
-    box-shadow: 0 3px 4px 0 #6c84c8, 0 4px 10px 0 #c0ccee;
 }
 
 .ReportedGameContainer {
