@@ -1,8 +1,21 @@
 import React from 'react';
 import './Navbar.css' ;
 import { NavLink } from 'react-router-dom';
+import { signOutUser } from '../../persistence/LoggInnBackend';
+import { useAuth } from '../../AuthContext'
+
+
 
 export const Navbar = () => {
+
+  const { logout, isLoggedIn} = useAuth();
+
+  
+  const handleLogout = () => {
+    signOutUser();
+    logout();
+  }
+
   return (
     <nav>
       <div className='navbarContainer'>
@@ -33,10 +46,18 @@ export const Navbar = () => {
             <div className='rightDiv'>
               <ul>
               <li className='nav-item-right'>
+                { !isLoggedIn ? (
                 <NavLink exact="true" to="/LoggInn" className={({ isActive }) => "nav-link" + (isActive ? "current" : "")}>
                   Logg inn
                 </NavLink>
-              </li>
+                ) : (
+                  <div className="logoutNavbar">
+                    <p>
+                      <span className="hoverText" onClick={handleLogout}>Logg Ut</span> 
+                    </p>
+                  </div>
+                )}
+            </li>
         </ul>
         </div>
       </div>

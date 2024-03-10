@@ -1,35 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import { useAuth } from '../../AuthContext'
 import './MinSide.css'
-import { signOutUser } from '../../persistence/LoggInnBackend';
+import { removeReports } from '../../persistence/ReportGame';
 import {Link } from 'react-router-dom';
 import '../hjem/Hjem.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrashAlt } from '@fortawesome/free-solid-svg-icons'; 
 import { faStepBackward } from '@fortawesome/free-solid-svg-icons';
 import { faStepForward  } from '@fortawesome/free-solid-svg-icons';
+import { getGameData } from '../../persistence/HjemBackend';
 import { listFavorites } from '../../persistence/favoriteBackend';
 
+var games = await getGameData();
 
 const MinSide = () => {
-  const { logout, isAdmin, isLoggedIn} = useAuth();
-
-  const [favoriteGames, setFavoriteGames] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchFavorites = async () => {
-      try {
-        const favorites = await listFavorites();
-        setFavoriteGames(favorites);
-        setLoading(false);
-      }
-      catch (error) {
-        console.error("Error fetching user favorites: ", error);
-      }
-    }
-    fetchFavorites();
-  }, []);
+  const { isAdmin, isLoggedIn} = useAuth();
 
   const handleLogout = () => {
   
@@ -60,14 +45,6 @@ const MinSide = () => {
        console.log("Spillet " + gameID + " er slettet");
    };
 
-    // Placeholder games, will be switched with backend retreiving method
-    const placeholderGames = [
-      {gameID: 1, title: 'Stiv Heks', description: 'En blir valgt til å være heks, heksa skal løpe etter de andre og prøve å ta på dem, hvis man blir truffet av heksa må man stå med beina spredt, og man blir fri hvis noen kraber under beina dine'
-      , category: 'fysisk lek', nPeople: '10', reportCount: '2'},
-      {gameID: 2, title: 'Navnedyrleken', description: 'Alle sier navnet sitt, og et dyr med samme forbokstav som navnet', category: 'navnelek', nPeople: '1', reportCount: '2'},
-      {gameID: 3, title: 'Spille kort', description: 'Bare spille ett eller annet med kort', category: 'icebreaker', nPeople: '4', reportCount: '2'},
-      {gameID: 4, title: 'Sista', description: 'Løpe etter hverandre', category: 'fysisk lek', nPeople: '4', reportCount: '2'},
-    ];
 
     const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -95,8 +72,14 @@ const MinSide = () => {
       setShowGameInfo(!showGameInfo);
     };
 
+var reportedGamesList = [];
+for(var i = 0; i < games.length; i++) {
+    if (games[i].nReported > 0) {
+      reportedGamesList.push(games[i])
+    }
+}
+console.log(reportedGamesList);
 
-    
 
   return (
     <>
@@ -164,10 +147,6 @@ const MinSide = () => {
             </div>
           </div>
 
-          <div className='LogoutDiv'>
-            <button className='LogoutButton' type='button' onClick={handleLogout}>Logg ut</button>
-          </div>
-
           {isAdmin && (
             <div className='RapportedUsersDiv'>
               <div className='HeaderInDiv'>
@@ -181,13 +160,13 @@ const MinSide = () => {
                     <th>Antall ganger rapportert</th>
                     <th>Slett spill</th>
                   </tr>
-                  {placeholderGames.map((game, index) => (
+                  {reportedGamesList.map((game, index) => (
                       <tr key={index}>
                           <td className="ReportedGameTitle"> 
                               <Link to={`/game/${game.gameID}`} key={index} className="gamesSquare">{game.title}</Link>
                           </td>
                           <td className="ReportedGameCategory">{game.category}</td>
-                          <td className="ReportedGameReportCount">Reports: {game.reportCount}</td>
+                          <td className="ReportedGameReportCount">Reports: {game.nReported}</td>
                           <td className='ReportedGameDelete' onClick={() => handleDeleteGame(game.gameID)}>
                             <FontAwesomeIcon icon={faTrashAlt} />
                           </td>
