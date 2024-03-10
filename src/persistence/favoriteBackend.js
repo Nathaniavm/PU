@@ -1,4 +1,4 @@
-import { equalTo, get, orderByChild, orderByKey, push, query, ref, set } from 'firebase/database';
+import { equalTo, get, orderByChild, orderByKey, push, query, ref, set , remove, child } from 'firebase/database';
 import { auth, database } from '../firebaseConfig'; //Import firebase instance
 import { gameIDExists } from './OpprettLekerBackend';
 
@@ -47,7 +47,7 @@ export async function isFavorited(userID, gameID){
             if (Object.hasOwnProperty.call(value, key)) {
                 // console.log(value + ", " + key);
                 const entry = value[key];
-                if (entry.userID == userID && entry.gameID == gameID) {
+                if (entry.userID === userID && entry.gameID === gameID) {
                     // console.log("Matching entry found. Key: " + key);
                     return true;
                 }
@@ -90,4 +90,38 @@ export async function favoriteGame(gameID) {
             console.log("Error favorizing game: ", error);
             throw error;
         });
+}
+
+export async function removeFavoriteGame(gameID) {
+    var userID = auth.currentUser.uid;
+
+    // Check if the game is favorited by the user
+    if (!(await isFavorited(userID, gameID))) {
+        console.log("User has not favoritized the game");
+        return;
+    }
+
+    const favoritesRef = ref(database, "favorites/");
+    
+    // Find the favorite entry to remove
+    const queryRef = query(favoritesRef, orderByChild('gameID'), equalTo(gameID));
+    const snapshot = await get(queryRef);
+
+    if (snapshot.exists()) {
+        snapshot.forEach((childSnapshot) => {
+            const favoriteKey = childSnapshot.key;
+            // Remove the favorite entry
+            const favoriteToRemoveRef = child(favoritesRef, favoriteKey);
+            remove(favoriteToRemoveRef)
+                .then(() => {
+                    console.log("Game removed from favorites successfully");
+                })
+                .catch((error) => {
+                    console.log("Error removing game from favorites: ", error);
+                    throw error;
+                });
+        });
+    } else {
+        console.log("Game doesn't exist in favorites");
+    }
 }
