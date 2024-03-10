@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import './Games.css';
 import { reportGame } from '../../persistence/ReportGame';
-import { favoriteGame, isFavorited } from '../../persistence/favoriteBackend';
+import { favoriteGame, isFavorited, removeFavoriteGame } from '../../persistence/favoriteBackend';
 import { getGameData } from '../../persistence/HjemBackend';
-import { addGameToQueue } from '../../persistence/userQueues';
+import { addGameToQueue, isQueued, removeQueuedGame } from '../../persistence/userQueues';
 import { auth } from '../../firebaseConfig';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlay } from '@fortawesome/free-solid-svg-icons';
@@ -14,6 +14,7 @@ const Games = () => {
     const { gameID } = useParams();
     const [game, setGame] = useState(null);
     const [isFavoriteGame, setIsFavoriteGame] = useState(false);
+    const [isQueuedGame, setIsQueuedGame] = useState(false);
 
     useEffect(() => {
         const fetchGame = async () => {
@@ -24,7 +25,9 @@ const Games = () => {
                     setGame(foundGame);
                     const userID = auth.currentUser.uid;
                     const isFavoritedGame = await isFavorited(userID, foundGame.gameID);
+                    const isQueuedGame = await isQueued(userID, foundGame.gameID);
                     setIsFavoriteGame(isFavoritedGame);
+                    setIsQueuedGame(isQueuedGame);
                 } else {
                     console.log('Game not found.');
                 }
@@ -52,13 +55,14 @@ const Games = () => {
         setIsFavoriteGame(true);
     };
 
-    const handleAddToQueue = (game) => {
+    const handleAddToQueue = async (game) => {
         const queuedGameID = game.gameID;
         const queuedGameTitle = game.title;
-        if (addGameToQueue(queuedGameID)) {
-            alert(`Spillet ${queuedGameTitle} ble lagt til i køen`);
+        if (await addGameToQueue(queuedGameID)) {
+            console.log(`Spillet ${queuedGameTitle} ble lagt til i køen`);
         }
-        console.log(queuedGameID);
+        
+        setIsQueuedGame(true);
     };
 
     //minute and second- inputs 
@@ -116,7 +120,25 @@ const Games = () => {
 
     //remove favorite from backend
     const handleRemoveFavoriteGame = (game) => {
-      setIsFavoriteGame(false);
+        setIsFavoriteGame(false);
+        removeFavoriteGame(game.gameID)
+            .then(() => {
+                console.log("Game removed from favorites successfully");
+            })
+            .catch((error) => {
+                console.log("Error removing game from favorites: ", error);
+            })
+    }
+
+    const handleRemoveQueuedGame = (game) => {
+        setIsQueuedGame(false);
+        removeQueuedGame(game.gameID)
+            .then(() => {
+                console.log("Game removed from queued games successfully");
+            })
+            .catch((error) => {
+                console.log("Error removing game from queued games: ", error);
+            })
     }
 
 
@@ -206,14 +228,20 @@ const Games = () => {
                     <button className='moreButton favoriteButton' type='button' onClick={() => handleMakeFavoriteGame(game)}>
                         <i className="fa fa-heart"></i> Favoritt
                     </button>
-                    ) : (
-                    <button className='moreButton removeFavoriteButton' type='button' onClick={() => handleRemoveFavoriteGame(game)}>
-                    <i className="fa fa-heart"></i> Fjern Favoritt
+                ) : (
+                    <button className='moreButton removeButton' type='button' onClick={() => handleRemoveFavoriteGame(game)}>
+                        <i className="fa fa-heart"></i> Fjern Favoritt
                     </button>
-                    )}
+                )}
+                {!isQueuedGame ? (
                     <button className='moreButton queueButton' type='button' onClick={() => handleAddToQueue(game)}>
                         <i className="fa fa-plus"></i> Legg til i kø
                     </button>
+                ) : (
+                    <button className='moreButton removeButton' type='button' onClick={() => handleRemoveQueuedGame(game)}>
+                        <i className="fa fa-minus"></i> Fjern fra kø
+                    </button>
+                )}
 
                     <button className='moreButton reportButton' type='button' onClick={() => handleReportGame(game)}>
                         <i className="fa fa-flag"></i> Rapporter
