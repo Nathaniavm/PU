@@ -1,5 +1,7 @@
 import { ref, set, query, get, remove, limitToLast, orderByKey, orderByChild, equalTo, push } from 'firebase/database';
 import { database } from '../firebaseConfig'; //Import firebase instance
+import { removeFavoriteGame } from './favoriteBackend';
+import { removeQueuedGame } from './userQueues';
 
 
 // Function to get the number of game elements
@@ -70,14 +72,19 @@ export async function registerGame(title, description, nPeople, category) {
         });
 }
 
-export function deleteGame(gameID){
+export async function deleteGame(gameID){
     
-    let gameRef = ref(database, 'games/' + gameID)
-    // let favRef = ref(database, "favorites")
+    const gameRef = ref(database, 'games/' + gameID);
+
+    // FAVORITE
+    await removeFavoriteGame(gameID);
+
+    // QUEUE 
+    await removeQueuedGame(gameID);
 
     //Does not throw error if gameID doesn't exist
-    remove(gameRef)
-    alert('Lek slettet')
+    remove(gameRef);
+    alert('Lek slettet');
 }
 
 export async function gameIDExists(gameID){ 

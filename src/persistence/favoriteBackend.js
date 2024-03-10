@@ -90,7 +90,7 @@ export async function favoriteGame(gameID) {
     // console.log("Username: " + username);
     return set(newFavoriteRef, favoriteData)
         .then(() => {
-            console.log("Favoritization registered successfully");
+            // console.log("Favoritization registered successfully");
             return true;
         })
         .catch((error) => {
@@ -121,7 +121,7 @@ export async function removeFavoriteGame(gameID) {
             const favoriteToRemoveRef = child(favoritesRef, favoriteKey);
             remove(favoriteToRemoveRef)
                 .then(() => {
-                    console.log("Game removed from favorites successfully");
+                    // console.log("Game removed from favorites successfully");
                 })
                 .catch((error) => {
                     console.log("Error removing game from favorites: ", error);
