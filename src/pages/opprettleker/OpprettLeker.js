@@ -2,7 +2,7 @@ import React, { useContext, useState } from 'react';
 import { AuthContext } from '../../AuthContext';
 import { Link } from 'react-router-dom';
 import './Opprettleker.css';
-import { registerGame } from '../../persistence/OpprettLekerBackend';
+import { gameIDExists, gameTitleExists, registerGame } from '../../persistence/OpprettLekerBackend';
 
 const OpprettLeker = () => {
   const { isLoggedIn, username } = useContext(AuthContext);
@@ -13,42 +13,76 @@ const OpprettLeker = () => {
     category: ''
   });
  
-  const handleCreateGame = () => {
+  const handleCreateGame = async () => {
     // Access form data from state
-    const { title, description, nPeople, category } = formData;
+    let { title, description, nPeople, category } = formData;
 
     if (!title.trim()) {
       alert("Tittel er påkrevd")
-      // return
+      return
     } else if (!description.trim()) {
       alert("Beskrivelse er påkrevd")
-      // return
+      return
+    } else if (!category) {
+      alert("Velg en kategori!")
+      return
+    }
+    // console.log(nPeople);
+    // console.log(typeof nPeople);
+
+    //Sjekk om feltene er gyldige:
+    // console.log(title.trim());
+    if (isValidGameTitle(title.trim())){
+      if (title.length > 40){
+        alert("Game title is too long!");
+        return;
+      }
+    }
+    else {
+      alert("Game title can only be made with letters and numbers");
+      return;
+    }
+
+    if (nPeople == ""){
+      nPeople = "Ubegrenset"
     }
     //Send data to backend
 
-    //TEST
-    deleteGame(2);
-
     //Sjekk for om spillet allerede finnes
+    if (! await gameTitleExists(title)) {
+      registerGame(title, description, nPeople, category); //added for database 
 
-    //registerGame(title, description, nPeople, category); //added for database
+      // Clear form inputs after submission
+      setFormData({
+        title: '',
+        description: '',
+        nPeople: '',
+        category: ''
+      });
+    }
+    else {
+      console.log("Spillet finnes allerede");
+    }
 
 
-    // Clear form inputs after submission
-    setFormData({
-      title: '',
-      description: '',
-      nPeople: '',
-      category: ''
-    });
   };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      [name]: value
-    }));
+
+    if (name === "nPeople") {
+      const sanitizedValue = value.replace(/\D/g, '');
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        [name]: sanitizedValue
+      }));    
+    }
+    else {
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        [name]: value
+      }));  
+    }
   };
 
   return (
@@ -71,6 +105,7 @@ const OpprettLeker = () => {
                   name="title"
                   placeholder='Tittel, påkrevd informasjon'
                   value={formData.title}
+                  
                   onChange={handleInputChange}
                 />
               </div>
@@ -91,12 +126,13 @@ const OpprettLeker = () => {
               <div className="Opprettleker__form-nPeople Opprettleker__form-general">
                 <input
                   className='inputField'
-                  type="number"
+                  type="text"
                   id="nPeople"
                   name="nPeople"
-                  placeholder='Antall personer, la stå blank hvis ubegrenset antall'
                   value={formData.nPeople}
                   onChange={handleInputChange}
+                  placeholder='Antall personer som kan leke'
+                  pattern='[0-9]*'
                 />
               </div>
 
@@ -140,5 +176,16 @@ const OpprettLeker = () => {
     </div>
   );
 };
+
+function isValidGameTitle(str){
+  let alloweddChars = /^[a-zA-Z0-9\s]+$/;
+  if (alloweddChars.test(str)) {
+    return true;
+  }
+  else {
+    return false;
+  }
+}
+
 
 export default OpprettLeker;

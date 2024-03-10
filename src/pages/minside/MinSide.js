@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useAuth } from '../../AuthContext'
 import './MinSide.css'
 import { signOutUser } from '../../persistence/LoggInnBackend';
+import { removeReports } from '../../persistence/ReportGame';
 import {Link } from 'react-router-dom';
 import '../hjem/Hjem.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
