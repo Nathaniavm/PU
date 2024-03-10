@@ -3,6 +3,11 @@ import { Wheel } from 'react-custom-roulette';
 import { Link } from 'react-router-dom';
 import './SpinTheWheel.css';
 import '../hjem/Hjem.css';
+import { listFavorites } from '../../persistence/favoriteBackend';
+
+// HUSK IF LOGGED IN FOR Å BRUKE DETTE
+// const favoriteGames = await listFavorites();
+// console.log(favoriteGames);
 
 const placeholderGames = [
     {gameID: 1, title: 'Stiv Heks', description: 'En blir valgt til å være heks, heksa skal løpe etter de andre og prøve å ta på dem, hvis man blir truffet av heksa må man stå med beina spredt, og man blir fri hvis noen kraber under beina dine'

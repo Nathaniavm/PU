@@ -17,6 +17,22 @@ export async function getLastId(path) {
     }
 }
 
+export async function retrieveGameInfo(gameID) {
+
+    try {
+        let gameQuery = query(ref(database, "games"), orderByKey(), equalTo(String(gameID)));
+
+        let snapShot = await get(gameQuery);
+    
+        if (snapShot.exists()) {
+            let value = snapShot.val();
+            return value;
+        }
+    }
+    catch (error) {
+        console.error("Error retrieving game info: ", error);
+    }
+}
 
 // Function to register a new game
 export async function registerGame(title, description, nPeople, category) {  

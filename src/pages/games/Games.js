@@ -39,6 +39,12 @@ const Games = () => {
         fetchGame();
     }, [gameID]);
 
+    // Dette funka ikke så vi får se på det senere
+    // // WITH USE EFFECT THE GAME ISN'T LOADED WHEN LOADING IN A PAGE, AND WILL DISPLAY "Fant ikke spillet". TO INSTEAD SAY LOADING:
+    // if (!game) {
+    //     return <p>Loading...</p>;
+    // }
+
     const handleReportGame = (game) => {
         reportGame(game.gameID);
         alert(`Spillet ${game.title} (ID: ${game.gameID}) ble rapportert`);

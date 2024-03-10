@@ -1,6 +1,6 @@
 import { equalTo, get, orderByChild, orderByKey, push, query, ref, set , remove, child } from 'firebase/database';
 import { auth, database } from '../firebaseConfig'; //Import firebase instance
-import { gameIDExists } from './OpprettLekerBackend';
+import { gameIDExists, retrieveGameInfo } from './OpprettLekerBackend';
 
 export async function listFavorites(){
 
@@ -16,6 +16,7 @@ export async function listFavorites(){
         // console.log("User exists in favorites database");
         const value = snapShot.val();
         const gameIDs = [];
+        const gameArray = [];
         
         for (const key in value) {
             if (Object.hasOwnProperty.call(value, key)) {
@@ -25,8 +26,14 @@ export async function listFavorites(){
                 gameIDs.push(entry.gameID);
             }
         }
-        console.log(gameIDs);
-        return gameIDs;
+        // console.log(gameIDs);
+
+        // TO TURN THE ARRAY OF GAME IDS INTO ARRAY OF GAMES:
+        for (const gID of gameIDs) {
+            gameArray.push(await retrieveGameInfo(gID));
+        }
+        // console.log(gameArray);
+        return gameArray;
     }
     return [];
 }

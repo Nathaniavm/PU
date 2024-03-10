@@ -10,29 +10,45 @@ import { faStepBackward } from '@fortawesome/free-solid-svg-icons';
 import { faStepForward  } from '@fortawesome/free-solid-svg-icons';
 import { getGameData } from '../../persistence/HjemBackend';
 import { listFavorites } from '../../persistence/favoriteBackend';
+import { gameTitleExists, retrieveGameInfo } from '../../persistence/OpprettLekerBackend';
 
 var games = await getGameData();
 
 const MinSide = () => {
   const { isAdmin, isLoggedIn} = useAuth();
 
-  const handleLogout = () => {
-  
-  }
+  const [favoriteGames, setFavoriteGames] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchFavorites = async () => {
+      try {
+        const favorites = await listFavorites();
+        // console.log(favorites);
+
+        setFavoriteGames(favorites);
+        setLoading(false);
+      }
+      catch (error) {
+        console.error("Error fetching favorites: ", error);
+      }
+    };
+    fetchFavorites();
+  }, []);
   
 
   
-  const favoritePlaceholderGames = [
-    {gameID: 1, title: 'Stiv Heks', description: 'En blir valgt til å være heks, heksa skal løpe etter de andre og prøve å ta på dem, hvis man blir truffet av heksa må man stå med beina spredt, og man blir fri hvis noen kraber under beina dine'
-    , category: 'fysisk lek', nPeople: '10'},
-    {gameID: 2, title: 'Navnedyrleken', description: 'Alle sier navnet sitt, og et dyr med samme forbokstav som navnet', category: 'navnelek', nPeople: '1'},
-    {gameID: 3, title: 'Spille kort', description: 'Bare spille ett eller annet med kort', category: 'icebreaker', nPeople: '4'},
-    {gameID: 4, title: 'Sista', description: 'Løpe etter hverandre', category: 'fysisk lek', nPeople: '4'},
-    {gameID: 1, title: 'Stiv Heks', description: 'En blir valgt til å være heks, heksa skal løpe etter de andre og prøve å ta på dem, hvis man blir truffet av heksa må man stå med beina spredt, og man blir fri hvis noen kraber under beina dine'
-    , category: 'fysisk lek', nPeople: '10'},
-    {gameID: 2, title: 'Navnedyrleken', description: 'Alle sier navnet sitt, og et dyr med samme forbokstav som navnet', category: 'navnelek', nPeople: '1'},
-    {gameID: 4, title: 'Sista', description: 'Løpe etter hverandre', category: 'fysisk lek', nPeople: '4'},
-  ]
+  // const favoritePlaceholderGames = [
+  //   {gameID: 1, title: 'Stiv Heks', description: 'En blir valgt til å være heks, heksa skal løpe etter de andre og prøve å ta på dem, hvis man blir truffet av heksa må man stå med beina spredt, og man blir fri hvis noen kraber under beina dine'
+  //   , category: 'fysisk lek', nPeople: '10'},
+  //   {gameID: 2, title: 'Navnedyrleken', description: 'Alle sier navnet sitt, og et dyr med samme forbokstav som navnet', category: 'navnelek', nPeople: '1'},
+  //   {gameID: 3, title: 'Spille kort', description: 'Bare spille ett eller annet med kort', category: 'icebreaker', nPeople: '4'},
+  //   {gameID: 4, title: 'Sista', description: 'Løpe etter hverandre', category: 'fysisk lek', nPeople: '4'},
+  //   {gameID: 1, title: 'Stiv Heks', description: 'En blir valgt til å være heks, heksa skal løpe etter de andre og prøve å ta på dem, hvis man blir truffet av heksa må man stå med beina spredt, og man blir fri hvis noen kraber under beina dine'
+  //   , category: 'fysisk lek', nPeople: '10'},
+  //   {gameID: 2, title: 'Navnedyrleken', description: 'Alle sier navnet sitt, og et dyr med samme forbokstav som navnet', category: 'navnelek', nPeople: '1'},
+  //   {gameID: 4, title: 'Sista', description: 'Løpe etter hverandre', category: 'fysisk lek', nPeople: '4'},
+  // ]
 
    // State variable to store reported games
    const [deletedGames, setDeletedGames] = useState([]);
@@ -46,16 +62,16 @@ const MinSide = () => {
    };
 
 
-    const [currentIndex, setCurrentIndex] = useState(0);
+      const [currentIndex, setCurrentIndex] = useState(0);
 
-    const queuePlaceholderGames = [
-      {gameID: 1, title: 'Stiv Heks', description: 'En blir valgt til å være heks, heksa skal løpe etter de andre og prøve å ta på dem, hvis man blir truffet av heksa må man stå med beina spredt, og man blir fri hvis noen kraber under beina dine'
-      , category: 'fysisk lek', nPeople: '10', reportCount: '2'},
-      {gameID: 2, title: 'Navnedyrleken', description: 'Alle sier navnet sitt, og et dyr med samme forbokstav som navnet', category: 'navnelek', nPeople: '1', reportCount: '2'},
-      {gameID: 3, title: 'Spille kort', description: 'Bare spille ett eller annet med kort', category: 'icebreaker', nPeople: '4', reportCount: '2'},
-      {gameID: 4, title: 'Sista', description: 'Løpe etter hverandre', category: 'fysisk lek', nPeople: '4', reportCount: '2'},
-    ];
-  
+      const queuePlaceholderGames = [
+        {gameID: 1, title: 'Stiv Heks', description: 'En blir valgt til å være heks, heksa skal løpe etter de andre og prøve å ta på dem, hvis man blir truffet av heksa må man stå med beina spredt, og man blir fri hvis noen kraber under beina dine'
+        , category: 'fysisk lek', nPeople: '10', reportCount: '2'},
+        {gameID: 2, title: 'Navnedyrleken', description: 'Alle sier navnet sitt, og et dyr med samme forbokstav som navnet', category: 'navnelek', nPeople: '1', reportCount: '2'},
+        {gameID: 3, title: 'Spille kort', description: 'Bare spille ett eller annet med kort', category: 'icebreaker', nPeople: '4', reportCount: '2'},
+        {gameID: 4, title: 'Sista', description: 'Løpe etter hverandre', category: 'fysisk lek', nPeople: '4', reportCount: '2'},
+      ];
+    
 
     const handleNext = () => {
       setCurrentIndex((prevIndex) => (prevIndex +1) % queuePlaceholderGames.length);
@@ -78,7 +94,7 @@ for(var i = 0; i < games.length; i++) {
       reportedGamesList.push(games[i])
     }
 }
-console.log(reportedGamesList);
+// console.log(reportedGamesList);
 
 
   return (
@@ -101,15 +117,19 @@ console.log(reportedGamesList);
               <div className='InputFavorites'>
                 <div className= 'gameOverviewGrid'>
                       <div className= 'gameVerticalList'>
-                          {favoriteGames.map((game, index) => (
-                              <Link to={`/game/${game.gameID}`} key={index} className= "gameSquareVerticalList">
-                                  <h4>{game.title}</h4>
+                          {favoriteGames.map((game, index) => {
+                            const gameID = Object.keys(game)[0];
+                            const gameData = game[gameID];
+                            return (
+                              <Link to={`/game/${gameID}`} key={index} className= "gameSquareVerticalList">
+                                  <h4>{gameData.title}</h4>
                                   <div className="gameSquare-p-content">
-                                      <p>Kategori: {game.category}</p>
-                                      <p>Antall: {game.nPeople}</p>
+                                      <p>Kategori: {gameData.category}</p>
+                                      <p>Antall: {gameData.nPeople}</p>
                                   </div>
                               </Link>
-                          ))}
+                            )
+                            })}
                       </div>
                   </div>
                 
