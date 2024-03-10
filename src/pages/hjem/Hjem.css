@@ -57,6 +57,7 @@
 }
 
 h4 {
+    margin-top: 5%;
     color: var(--Header-Color);
     font-size: 1.5vw;
 }
@@ -120,6 +121,8 @@ h4 {
 .gameSquare-p-content-horisontal {
     display: flex;
     flex-direction: row;
+    margin-top: 5%;
+    margin-bottom: 5%;
 }
 
 /* For Vertical view */
