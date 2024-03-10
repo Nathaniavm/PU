@@ -1,7 +1,31 @@
-import { ref, query, get, orderByChild, equalTo, set, push } from 'firebase/database';
+import { ref, query, get, orderByChild, equalTo, set, push, remove, child } from 'firebase/database';
 import { auth, database } from '../firebaseConfig'; //Import firebase instance
 import { gameIDExists, getLastId } from './OpprettLekerBackend';
 
+export async function isQueued(userID, gameID){
+    const dbRef = ref(database, "queuedGames");
+
+    const UIDQuery = query(dbRef, orderByChild("userID"), equalTo(String(userID)));
+
+    const snapShot = await get(UIDQuery);
+
+    if(snapShot.exists()){
+        // console.log("User exists in favorites database");
+        const value = snapShot.val();
+
+        for (const key in value) {
+            if (Object.hasOwnProperty.call(value, key)) {
+                // console.log(value + ", " + key);
+                const entry = value[key];
+                if (entry.userID === userID && entry.gameID === gameID) {
+                    // console.log("Matching entry found. Key: " + key);
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+}
 
 export async function addGameToQueue(gameID){
 
@@ -25,7 +49,7 @@ export async function addGameToQueue(gameID){
         }
 
         if(existsInQ){
-            alert("Lek finnes allerede i brukers kø")
+            console.log("Lek finnes allerede i brukers kø")
         }
         else{
             try {        
@@ -88,4 +112,38 @@ export async function retrieveQueue(){
         console.log("Error: ", error)
     }
     
+}
+
+export async function removeQueuedGame(gameID) {
+    var userID = auth.currentUser.uid;
+
+    // Check if the game is queued by the user
+    if (!(await isQueued(userID, gameID))) {
+        console.log("User has not queued the game");
+        return;
+    }
+
+    const queuedRef = ref(database, "queuedGames/");
+    
+    // Find the queued entry to remove
+    const queryRef = query(queuedRef, orderByChild('gameID'), equalTo(gameID));
+    const snapshot = await get(queryRef);
+
+    if (snapshot.exists()) {
+        snapshot.forEach((childSnapshot) => {
+            const queuedKey = childSnapshot.key;
+            // Remove the queued entry
+            const queuedToRemoveRef = child(queuedRef, queuedKey);
+            remove(queuedToRemoveRef)
+                .then(() => {
+                    console.log("Game removed from queue successfully");
+                })
+                .catch((error) => {
+                    console.log("Error removing game from queue: ", error);
+                    throw error;
+                });
+        });
+    } else {
+        console.log("Game doesn't exist in queue");
+    }
 }
