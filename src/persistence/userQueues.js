@@ -88,7 +88,6 @@ export async function addGameToQueue(gameID){
 
 
 export async function retrieveQueue(){
-
     try {
         var userID = auth.currentUser.uid;
 
