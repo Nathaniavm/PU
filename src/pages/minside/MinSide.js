@@ -25,8 +25,11 @@ const MinSide = () => {
       try {
         const favorites = await listFavorites();
         // console.log(favorites);
-
-        setFavoriteGames(favorites);
+        for(let i = 0; i < favorites.length; i++) {
+          const selectedGame = games.find(game => game.gameID === favorites[i].gameID);
+          setFavoriteGames(prevFavoriteGames => [...prevFavoriteGames, selectedGame]);
+        }
+        //setFavoriteGames(favorites);
         setLoading(false);
       }
       catch (error) {
@@ -95,7 +98,6 @@ for(var i = 0; i < games.length; i++) {
     }
 }
 // console.log(reportedGamesList);
-
 
   return (
     <>
