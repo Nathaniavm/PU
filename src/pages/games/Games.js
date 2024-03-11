@@ -26,6 +26,9 @@ const Games = () => {
                     const userID = auth.currentUser.uid;
                     const isFavoritedGame = await isFavorited(userID, foundGame.gameID);
                     const isQueuedGame = await isQueued(userID, foundGame.gameID);
+                    const foundMinutes = foundGame.time;
+                    const foundMinutesInt = parseInt(foundMinutes)
+                    setInitialMinutes(foundMinutesInt);
                     setIsFavoriteGame(isFavoritedGame);
                     setIsQueuedGame(isQueuedGame);
                 } else {
@@ -44,7 +47,6 @@ const Games = () => {
     // if (!game) {
     //     return <p>Loading...</p>;
     // }
-
     const handleReportGame = (game) => {
         reportGame(game.gameID);
         alert(`Spillet ${game.title} (ID: ${game.gameID}) ble rapportert`);
@@ -70,6 +72,8 @@ const Games = () => {
         
         setIsQueuedGame(true);
     };
+
+    //let recommendedMinutes= game.time;
 
     //minute and second- inputs 
     const [initialMinutes, setInitialMinutes] = useState(0);
@@ -110,14 +114,6 @@ const Games = () => {
     const handleSecondInputChange = (e) => {
         setInitialSeconds(parseInt(e.target.value));
     };
-
-    const placeholderGames = [
-        {gameID: 1, title: 'Stiv Heks', description: 'En blir valgt til å være heks, heksa skal løpe etter de andre og prøve å ta på dem, hvis man blir truffet av heksa må man stå med beina spredt, og man blir fri hvis noen kraber under beina dine'
-        , category: 'fysisk lek', nPeople: '10'},
-        {gameID: 2, title: 'Navnedyrleken', description: 'Alle sier navnet sitt, og et dyr med samme forbokstav som navnet', category: 'navnelek', nPeople: '1'},
-        {gameID: 3, title: 'Spille kort', description: 'Bare spille ett eller annet med kort', category: 'icebreaker', nPeople: '4'},
-        {gameID: 4, title: 'Sista', description: 'Løpe etter hverandre', category: 'fysisk lek', nPeople: '4'},
-    ];
 
 
     if (!game) {
@@ -183,7 +179,7 @@ const Games = () => {
 
                   <div className='aboutGame'>
                       <div className='aboutItem'>
-                          <h4>Antall: {game.nPeople}</h4>
+                          <h4>Antall: {game.nPeopleMin} - {game.nPeopleMax}</h4>
                       </div>
                       <div className='aboutItem'>
                           <h4>Kategori: {game.category}</h4>
