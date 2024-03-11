@@ -3,39 +3,49 @@ import { auth, database } from '../firebaseConfig'; //Import firebase instance
 import { gameIDExists, retrieveGameInfo } from './OpprettLekerBackend';
 
 export async function listFavorites(){
+    try {
+        var userID = auth.currentUser.uid;
 
-    var userID = auth.currentUser.uid;
+        const dbRef = ref(database, "favorites");
 
-    const dbRef = ref(database, "favorites");
+        const UIDQuery = query(dbRef, orderByChild("userID"), equalTo(String(userID)));
 
-    const UIDQuery = query(dbRef, orderByChild("userID"), equalTo(String(userID)));
+        const snapShot = await get(UIDQuery);
 
-    const snapShot = await get(UIDQuery);
+        if(snapShot.exists()){
+            // console.log("User exists in favorites database");
+            const value = snapShot.val();
+            const favoriteGames = Object.values(value);
 
-    if(snapShot.exists()){
-        // console.log("User exists in favorites database");
-        const value = snapShot.val();
-        const gameIDs = [];
-        const gameArray = [];
-        
-        for (const key in value) {
-            if (Object.hasOwnProperty.call(value, key)) {
-                const entry = value[key];
-                // console.log(value + ", " + key);
-                // console.log(entry.gameID);
-                gameIDs.push(entry.gameID);
+            return favoriteGames;
+            /*
+            const gameIDs = [];
+            const gameArray = [];
+            
+            for (const key in value) {
+                if (Object.hasOwnProperty.call(value, key)) {
+                    const entry = value[key];
+                    // console.log(value + ", " + key);
+                    // console.log(entry.gameID);
+                    gameIDs.push(entry.gameID);
+                }
             }
-        }
-        // console.log(gameIDs);
+            // console.log(gameIDs);
 
-        // TO TURN THE ARRAY OF GAME IDS INTO ARRAY OF GAMES:
-        for (const gID of gameIDs) {
-            gameArray.push(await retrieveGameInfo(gID));
+            // TO TURN THE ARRAY OF GAME IDS INTO ARRAY OF GAMES:
+            for (const gID of gameIDs) {
+                gameArray.push(await retrieveGameInfo(gID));
+            }
+            // console.log(gameArray);
+            return gameArray;
+            */
         }
-        // console.log(gameArray);
-        return gameArray;
+
+        console.log("Bruker har ingen favorittleker");
+        return [];
+    } catch (error) {
+        console.log("Error: ", error);
     }
-    return [];
 }
 
 
