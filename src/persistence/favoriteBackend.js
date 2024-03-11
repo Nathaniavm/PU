@@ -1,6 +1,43 @@
 import { equalTo, get, orderByChild, orderByKey, push, query, ref, set , remove, child } from 'firebase/database';
 import { auth, database } from '../firebaseConfig'; //Import firebase instance
-import { gameIDExists } from './OpprettLekerBackend';
+import { gameIDExists, retrieveGameInfo } from './OpprettLekerBackend';
+
+export async function listFavorites(){
+
+    var userID = auth.currentUser.uid;
+
+    const dbRef = ref(database, "favorites");
+
+    const UIDQuery = query(dbRef, orderByChild("userID"), equalTo(String(userID)));
+
+    const snapShot = await get(UIDQuery);
+
+    if(snapShot.exists()){
+        // console.log("User exists in favorites database");
+        const value = snapShot.val();
+        const gameIDs = [];
+        const gameArray = [];
+        
+        for (const key in value) {
+            if (Object.hasOwnProperty.call(value, key)) {
+                const entry = value[key];
+                // console.log(value + ", " + key);
+                // console.log(entry.gameID);
+                gameIDs.push(entry.gameID);
+            }
+        }
+        // console.log(gameIDs);
+
+        // TO TURN THE ARRAY OF GAME IDS INTO ARRAY OF GAMES:
+        for (const gID of gameIDs) {
+            gameArray.push(await retrieveGameInfo(gID));
+        }
+        // console.log(gameArray);
+        return gameArray;
+    }
+    return [];
+}
+
 
 export async function isFavorited(userID, gameID){
     const dbRef = ref(database, "favorites");
@@ -53,7 +90,7 @@ export async function favoriteGame(gameID) {
     // console.log("Username: " + username);
     return set(newFavoriteRef, favoriteData)
         .then(() => {
-            console.log("Favoritization registered successfully");
+            // console.log("Favoritization registered successfully");
             return true;
         })
         .catch((error) => {
@@ -84,7 +121,7 @@ export async function removeFavoriteGame(gameID) {
             const favoriteToRemoveRef = child(favoritesRef, favoriteKey);
             remove(favoriteToRemoveRef)
                 .then(() => {
-                    console.log("Game removed from favorites successfully");
+                    // console.log("Game removed from favorites successfully");
                 })
                 .catch((error) => {
                     console.log("Error removing game from favorites: ", error);
