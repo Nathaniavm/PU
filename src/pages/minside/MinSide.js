@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useAuth } from '../../AuthContext'
 import './MinSide.css'
 import { removeReports } from '../../persistence/ReportGame';
@@ -9,24 +9,46 @@ import { faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 import { faStepBackward } from '@fortawesome/free-solid-svg-icons';
 import { faStepForward  } from '@fortawesome/free-solid-svg-icons';
 import { getGameData } from '../../persistence/HjemBackend';
+import { listFavorites } from '../../persistence/favoriteBackend';
+import { gameTitleExists, retrieveGameInfo } from '../../persistence/OpprettLekerBackend';
 
 var games = await getGameData();
 
 const MinSide = () => {
   const { isAdmin, isLoggedIn} = useAuth();
 
+  const [favoriteGames, setFavoriteGames] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchFavorites = async () => {
+      try {
+        const favorites = await listFavorites();
+        // console.log(favorites);
+
+        setFavoriteGames(favorites);
+        setLoading(false);
+      }
+      catch (error) {
+        console.error("Error fetching favorites: ", error);
+      }
+    };
+    fetchFavorites();
+  }, []);
   
-  const favoritePlaceholderGames = [
-    {gameID: 1, title: 'Stiv Heks', description: 'En blir valgt til å være heks, heksa skal løpe etter de andre og prøve å ta på dem, hvis man blir truffet av heksa må man stå med beina spredt, og man blir fri hvis noen kraber under beina dine'
-    , category: 'fysisk lek', nPeople: '10'},
-    {gameID: 2, title: 'Navnedyrleken', description: 'Alle sier navnet sitt, og et dyr med samme forbokstav som navnet', category: 'navnelek', nPeople: '1'},
-    {gameID: 3, title: 'Spille kort', description: 'Bare spille ett eller annet med kort', category: 'icebreaker', nPeople: '4'},
-    {gameID: 4, title: 'Sista', description: 'Løpe etter hverandre', category: 'fysisk lek', nPeople: '4'},
-    {gameID: 1, title: 'Stiv Heks', description: 'En blir valgt til å være heks, heksa skal løpe etter de andre og prøve å ta på dem, hvis man blir truffet av heksa må man stå med beina spredt, og man blir fri hvis noen kraber under beina dine'
-    , category: 'fysisk lek', nPeople: '10'},
-    {gameID: 2, title: 'Navnedyrleken', description: 'Alle sier navnet sitt, og et dyr med samme forbokstav som navnet', category: 'navnelek', nPeople: '1'},
-    {gameID: 4, title: 'Sista', description: 'Løpe etter hverandre', category: 'fysisk lek', nPeople: '4'},
-  ]
+
+  
+  // const favoritePlaceholderGames = [
+  //   {gameID: 1, title: 'Stiv Heks', description: 'En blir valgt til å være heks, heksa skal løpe etter de andre og prøve å ta på dem, hvis man blir truffet av heksa må man stå med beina spredt, og man blir fri hvis noen kraber under beina dine'
+  //   , category: 'fysisk lek', nPeople: '10'},
+  //   {gameID: 2, title: 'Navnedyrleken', description: 'Alle sier navnet sitt, og et dyr med samme forbokstav som navnet', category: 'navnelek', nPeople: '1'},
+  //   {gameID: 3, title: 'Spille kort', description: 'Bare spille ett eller annet med kort', category: 'icebreaker', nPeople: '4'},
+  //   {gameID: 4, title: 'Sista', description: 'Løpe etter hverandre', category: 'fysisk lek', nPeople: '4'},
+  //   {gameID: 1, title: 'Stiv Heks', description: 'En blir valgt til å være heks, heksa skal løpe etter de andre og prøve å ta på dem, hvis man blir truffet av heksa må man stå med beina spredt, og man blir fri hvis noen kraber under beina dine'
+  //   , category: 'fysisk lek', nPeople: '10'},
+  //   {gameID: 2, title: 'Navnedyrleken', description: 'Alle sier navnet sitt, og et dyr med samme forbokstav som navnet', category: 'navnelek', nPeople: '1'},
+  //   {gameID: 4, title: 'Sista', description: 'Løpe etter hverandre', category: 'fysisk lek', nPeople: '4'},
+  // ]
 
    // State variable to store reported games
    const [deletedGames, setDeletedGames] = useState([]);
@@ -72,7 +94,7 @@ for(var i = 0; i < games.length; i++) {
       reportedGamesList.push(games[i])
     }
 }
-console.log(reportedGamesList);
+// console.log(reportedGamesList);
 
 
   return (
@@ -95,15 +117,19 @@ console.log(reportedGamesList);
               <div className='InputFavorites'>
                 <div className= 'gameOverviewGrid'>
                       <div className= 'gameVerticalList'>
-                          {favoritePlaceholderGames.map((game, index) => (
-                              <Link to={`/game/${game.gameID}`} key={index} className= "gameSquareVerticalList">
-                                  <h4>{game.title}</h4>
+                          {favoriteGames.map((game, index) => {
+                            const gameID = Object.keys(game)[0];
+                            const gameData = game[gameID];
+                            return (
+                              <Link to={`/game/${gameID}`} key={index} className= "gameSquareVerticalList">
+                                  <h4>{gameData.title}</h4>
                                   <div className="gameSquare-p-content">
-                                      <p>Kategori: {game.category}</p>
-                                      <p>Antall: {game.nPeople}</p>
+                                      <p>Kategori: {gameData.category}</p>
+                                      <p>Antall: {gameData.nPeople}</p>
                                   </div>
                               </Link>
-                          ))}
+                            )
+                            })}
                       </div>
                   </div>
                 
@@ -147,24 +173,27 @@ console.log(reportedGamesList);
                 <h1>Rapporterte spill</h1>
               </div>
               <table className='ulReportedGame'>
-                <tr>
-                  <th>Navn</th>
-                  <th>Kategori</th>
-                  <th>Antall ganger rapportert</th>
-                  <th>Slett spill</th>
-                </tr>
-                {reportedGamesList.map((game, index) => (
-                    <tr key={index}>
-                        <td className="ReportedGameTitle"> 
-                            <Link to={`/game/${game.gameID}`} key={index} className="gamesSquare">{game.title}</Link>
-                        </td>
-                        <td className="ReportedGameCategory">{game.category}</td>
-                        <td className="ReportedGameReportCount">Reports: {game.nReported}</td>
-                        <td className='ReportedGameDelete' onClick={() => handleDeleteGame(game.gameID)}>
-                          <FontAwesomeIcon icon={faTrashAlt} />
-                        </td>
-                    </tr>
-                ))}
+                <thead>
+                  <tr>
+                    <th>Navn</th>
+                    <th>Kategori</th>
+                    <th>Antall ganger rapportert</th>
+                    <th>Slett spill</th>
+                  </tr>
+                  {reportedGamesList.map((game, index) => (
+                      <tr key={index}>
+                          <td className="ReportedGameTitle"> 
+                              <Link to={`/game/${game.gameID}`} key={index} className="gamesSquare">{game.title}</Link>
+                          </td>
+                          <td className="ReportedGameCategory">{game.category}</td>
+                          <td className="ReportedGameReportCount">Reports: {game.nReported}</td>
+                          <td className='ReportedGameDelete' onClick={() => handleDeleteGame(game.gameID)}>
+                            <FontAwesomeIcon icon={faTrashAlt} />
+                          </td>
+                      </tr>
+                  ))}
+                </thead>
+
               </table>
             </div>
           )}

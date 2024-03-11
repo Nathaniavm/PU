@@ -3,6 +3,11 @@ import { Wheel } from 'react-custom-roulette';
 import { Link } from 'react-router-dom';
 import './SpinTheWheel.css';
 import '../hjem/Hjem.css';
+import { listFavorites } from '../../persistence/favoriteBackend';
+
+// HUSK IF LOGGED IN FOR Å BRUKE DETTE
+// const favoriteGames = await listFavorites();
+// console.log(favoriteGames);
 import { getGameData } from '../../persistence/HjemBackend';
 import { retrieveQueue } from '../../persistence/userQueues';
 
@@ -59,13 +64,23 @@ const SpinTheWheel = () => {
         (selectedCategory === 'alle' || game.category === selectedCategory)
     );
 
-    const handleAddFavoritesToWheel = () => {
-
+    const handleAddFavoritesToWheel = async () => {
+        try {
+            const favorites = await listFavorites();
+            console.log(games);
+            for (let i = 0; i < favorites.length; i++) {
+                const selectedGame = games.find(game => game.gameID === favorites[i].gameID);
+                if (selectedGame && dataArray.indexOf(selectedGame) === -1) {
+                    setDataArray(prevDataArray => [...prevDataArray, selectedGame]);
+                }
+            }
+        } catch (error) {
+            console.error("Error adding queue to wheel: ", error);
+        }
     }
 
     const handleAddQueueToWheel = async () => {
         try {
-            console.log("her")
             const queue = await retrieveQueue();
             for (let i = 0; i < queue.length; i++) {
                 const selectedGame = games.find(game => game.gameID === queue[i].gameID);
