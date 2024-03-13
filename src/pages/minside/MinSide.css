@@ -252,3 +252,10 @@ h4 {
 .showMoreButton:hover{
     box-shadow: 0 3px 4px 0 #6c84c8, 0 4px 10px 0 #c0ccee;
 }
+
+.timerQueue {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
