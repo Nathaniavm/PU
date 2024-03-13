@@ -127,5 +127,4 @@ export async function removeQueuedGame(gameID) {
             console.log("Game doesn't exist in queue");
         }
     }
-    
 }
