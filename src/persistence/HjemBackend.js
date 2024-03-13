@@ -28,8 +28,10 @@ async function getGameData() {
                     title: gameData.title,
                     description: gameData.description,
                     category: gameData.category,
-                    nPeople: gameData.nPeople,
-                    nReported: gameData.nReported
+                    nPeopleMin: gameData.nPeopleMin,
+                    nPeopleMax: gameData.nPeopleMax,
+                    nReported: gameData.nReported,
+                    time: gameData.time,
                 };
 
                 // Push the placeholder game to the placeholderGames array

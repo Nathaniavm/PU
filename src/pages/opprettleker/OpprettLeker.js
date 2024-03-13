@@ -9,13 +9,15 @@ const OpprettLeker = () => {
   const [formData, setFormData] = useState({
     title: '',
     description: '',
-    nPeople: '',
-    category: ''
+    nPeopleMin: '',
+    nPeopleMax: '',
+    category: '',
+    time: ''
   });
  
   const handleCreateGame = async () => {
     // Access form data from state
-    let { title, description, nPeople, category } = formData;
+    let { title, description, nPeopleMin, nPeopleMax, category, time } = formData;
 
     if (!title.trim()) {
       alert("Tittel er påkrevd")
@@ -43,21 +45,27 @@ const OpprettLeker = () => {
       return;
     }
 
-    if (nPeople == ""){
-      nPeople = "Ubegrenset"
+    if (nPeopleMin == ""){
+      nPeopleMin = "0"
+    }
+
+    if (nPeopleMax == ""){
+      nPeopleMax = "Ubegrenset"
     }
     //Send data to backend
 
     //Sjekk for om spillet allerede finnes
     if (! await gameTitleExists(title)) {
-      registerGame(title, description, nPeople, category); //added for database 
+      registerGame(title, description, nPeopleMin, nPeopleMax, category, time); //added for database 
 
       // Clear form inputs after submission
       setFormData({
         title: '',
         description: '',
-        nPeople: '',
-        category: ''
+        nPeopleMin: '',
+        nPeopleMax: '',
+        category: '',
+        time: ''
       });
     }
     else {
@@ -70,7 +78,7 @@ const OpprettLeker = () => {
   const handleInputChange = (e) => {
     const { name, value } = e.target;
 
-    if (name === "nPeople") {
+    if (name === "nPeopleMin" || name === "nPeopleMax") {
       const sanitizedValue = value.replace(/\D/g, '');
       setFormData((prevFormData) => ({
         ...prevFormData,
@@ -122,20 +130,30 @@ const OpprettLeker = () => {
                   onChange={handleInputChange}
                 ></textarea>
               </div>
-
-              <div className="Opprettleker__form-nPeople Opprettleker__form-general">
-                <input
-                  className='inputField'
-                  type="text"
-                  id="nPeople"
-                  name="nPeople"
-                  value={formData.nPeople}
-                  onChange={handleInputChange}
-                  placeholder='Antall personer som kan leke'
-                  pattern='[0-9]*'
-                />
+              <div className='Opprettleker__form-nPeoplediv'>
+                  <input
+                    className='inputFieldnPeople'
+                    type="text"
+                    id="nPeopleMin"
+                    name="nPeopleMin"
+                    value={formData.nPeopleMin}
+                    onChange={handleInputChange}
+                    placeholder='Minimum antall deltakere'
+                    pattern='[0-9]*'
+                  />
+                
+                  <input
+                    className='inputFieldnPeople'
+                    type="text"
+                    id="nPeopleMax"
+                    name="nPeopleMax"
+                    value={formData.nPeopleMax}
+                    onChange={handleInputChange}
+                    placeholder='Maksimim antall deltakere'
+                    pattern='[0-9]*'
+                  />
+                
               </div>
-
               <div className='Opprettleker__form-category Opprettleker__form-general'>
                 <select required
                   className={`selectField ${formData.category === '' ? 'placeholder' : ''}`}
@@ -152,6 +170,20 @@ const OpprettLeker = () => {
                   <option value='icebreaker'>Icebreaker</option>
                   <option value='fysisk lek'>Fysisk lek</option>
                 </select>
+              </div>
+
+              <div className="Opprettleker__form-time Opprettleker__form-general">
+                <input
+                  className='inputField'
+                  type="text"
+                  id="time"
+                  name="time"
+                  placeholder='Anbefalt antall minutter å spille'
+                  value={formData.time}
+                  
+                  onChange={handleInputChange}
+                  pattern='[0-9]*'
+                />
               </div>
 
               <div className="Opprettleker__form-btn Opprettleker__form-general">

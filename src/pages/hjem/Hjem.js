@@ -115,7 +115,7 @@ const Hjem = () => {
                                 <h4>{game.title}</h4>
                                 <div className={isListView ? "gameSquare-p-content-horisontal" : "gameSquare-p-content-vertical"}>
                                     <p>Kategori: {game.category}</p>
-                                    <p>Antall: {game.nPeople}</p>
+                                    <p>Antall: {game.nPeopleMin} - {game.nPeopleMax}</p>
                                 </div>
                             </Link>
                         ))}

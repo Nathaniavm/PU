@@ -25,8 +25,11 @@ const MinSide = () => {
       try {
         const favorites = await listFavorites();
         // console.log(favorites);
-
-        setFavoriteGames(favorites);
+        for(let i = 0; i < favorites.length; i++) {
+          const selectedGame = games.find(game => game.gameID === favorites[i].gameID);
+          setFavoriteGames(prevFavoriteGames => [...prevFavoriteGames, selectedGame]);
+        }
+        //setFavoriteGames(favorites);
         setLoading(false);
       }
       catch (error) {
@@ -96,7 +99,6 @@ for(var i = 0; i < games.length; i++) {
 }
 // console.log(reportedGamesList);
 
-
   return (
     <>
       {isLoggedIn ? (
@@ -117,19 +119,15 @@ for(var i = 0; i < games.length; i++) {
               <div className='InputFavorites'>
                 <div className= 'gameOverviewGrid'>
                       <div className= 'gameVerticalList'>
-                          {favoriteGames.map((game, index) => {
-                            const gameID = Object.keys(game)[0];
-                            const gameData = game[gameID];
-                            return (
-                              <Link to={`/game/${gameID}`} key={index} className= "gameSquareVerticalList">
-                                  <h4>{gameData.title}</h4>
+                          {favoriteGames.map((game, index) => (
+                              <Link to={`/game/${game.gameID}`} key={index} className= "gameSquareVerticalList">
+                                  <h4>{game.title}</h4>
                                   <div className="gameSquare-p-content">
-                                      <p>Kategori: {gameData.category}</p>
-                                      <p>Antall: {gameData.nPeople}</p>
+                                      <p>Kategori: {game.category}</p>
+                                      <p>Antall: {game.nPeopleMin} - {game.nPeopleMax}</p>
                                   </div>
                               </Link>
-                            )
-                            })}
+                            ))}
                       </div>
                   </div>
                 
