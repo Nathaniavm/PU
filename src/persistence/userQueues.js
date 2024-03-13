@@ -1,4 +1,4 @@
-import { ref, query, get, orderByChild, equalTo, set, push } from 'firebase/database';
+import { ref, query, get, orderByChild, equalTo, set, push, remove, child } from 'firebase/database';
 import { auth, database } from '../firebaseConfig'; //Import firebase instance
 import { gameIDExists, getLastId } from './OpprettLekerBackend';
 
@@ -67,7 +67,6 @@ export async function addGameToQueue(gameID){
 
 
 export async function retrieveQueue(){
-
     try {
         var userID = auth.currentUser.uid;
 
@@ -100,4 +99,38 @@ export async function retrieveQueue(){
         console.log("Error: ", error)
     }
     
+}
+
+export async function removeQueuedGame(gameID) {
+    var userID = auth.currentUser.uid;
+
+    // Check if the game is queued by the user
+    if (!(await isQueued(userID, gameID))) {
+        console.log("User has not queued the game");
+        return;
+    }
+
+    const queuedRef = ref(database, "queuedGames/");
+    
+    // Find the queued entry to remove
+    const queryRef = query(queuedRef, orderByChild('gameID'), equalTo(gameID));
+    const snapshot = await get(queryRef);
+
+    if (snapshot.exists()) {
+        snapshot.forEach((childSnapshot) => {
+            const queuedKey = childSnapshot.key;
+            // Remove the queued entry
+            const queuedToRemoveRef = child(queuedRef, queuedKey);
+            remove(queuedToRemoveRef)
+                .then(() => {
+                    console.log("Game removed from queue successfully");
+                })
+                .catch((error) => {
+                    console.log("Error removing game from queue: ", error);
+                    throw error;
+                });
+        });
+    } else {
+        console.log("Game doesn't exist in queue");
+    }
 }

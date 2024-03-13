@@ -1,5 +1,7 @@
-import { getDatabase, ref, set, query, get, remove, limitToLast, orderByKey, orderByChild, equalTo, push } from 'firebase/database';
+import { ref, set, query, get, remove, limitToLast, orderByKey, orderByChild, equalTo, push } from 'firebase/database';
 import { database } from '../firebaseConfig'; //Import firebase instance
+import { removeFavoriteGame } from './favoriteBackend';
+import { removeQueuedGame } from './userQueues';
 
 
 // Function to get the number of game elements
@@ -17,9 +19,25 @@ export async function getLastId(path) {
     }
 }
 
+export async function retrieveGameInfo(gameID) {
+
+    try {
+        let gameQuery = query(ref(database, "games"), orderByKey(), equalTo(String(gameID)));
+
+        let snapShot = await get(gameQuery);
+    
+        if (snapShot.exists()) {
+            let value = snapShot.val();
+            return value;
+        }
+    }
+    catch (error) {
+        console.error("Error retrieving game info: ", error);
+    }
+}
 
 // Function to register a new game
-export async function registerGame(title, description, nPeople, category) {  
+export async function registerGame(title, description, nPeopleMin, nPeopleMax, category, time) {  
     // Henter username fra localStorage
     const username = localStorage.getItem('username') || '';
 
@@ -28,10 +46,12 @@ export async function registerGame(title, description, nPeople, category) {
     var gameData = {
         title: title,
         description: description,
-        nPeople: nPeople, 
+        nPeopleMin: nPeopleMin,
+        nPeopleMax: nPeopleMax,
         registered: Date.now(),
         username: username,
         category: category,
+        time: time,
         nReported: 0
     }
 
@@ -54,13 +74,19 @@ export async function registerGame(title, description, nPeople, category) {
         });
 }
 
-export function deleteGame(gameID){
+export async function deleteGame(gameID){
     
-    var game = ref(database, 'games/' + gameID)
+    const gameRef = ref(database, 'games/' + gameID);
+
+    // FAVORITE
+    await removeFavoriteGame(gameID);
+
+    // QUEUE 
+    await removeQueuedGame(gameID);
 
     //Does not throw error if gameID doesn't exist
-    remove(game)
-    alert('Lek slettet')
+    remove(gameRef);
+    alert('Lek slettet');
 }
 
 export async function gameIDExists(gameID){ 

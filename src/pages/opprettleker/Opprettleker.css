@@ -85,6 +85,31 @@
     margin-bottom: 5%;
 }
 
+.Opprettleker__form-nPeoplediv{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    width: 80%;
+    gap: 5px;
+    margin-right: 10%;
+    margin-left: 10%;
+    margin-bottom: 5%;
+}
+
+.inputFieldnPeople {
+    background-color: #eee;
+    border: none;
+    padding: 10px 15px;
+    font-size: 13px;
+    border-radius: 8px;
+    max-width: 47%;
+    min-width: 47%;
+    outline: none;
+    margin-right: 0;
+    
+}
+
 .placeholder{
     color: rgb(116, 116, 116)
 }
