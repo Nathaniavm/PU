@@ -49,7 +49,7 @@ const useTimer = (initialMinutes, initialSeconds) => {
         setSeconds(initialSeconds);
     };
 
-    return { minutes, seconds, isActive, startCountdown, resetCountdown, setMinutes };
+    return { minutes, seconds, isActive, startCountdown, resetCountdown, setMinutes, setIsActive };
 };
 
 export default useTimer;

@@ -27,7 +27,7 @@ const MinSide = () => {
   //Timer variables
   const [initialMinutes, setInitialMinutes] = useState(1);
   const [initialSeconds, setInitialSeconds] = useState(0);
-  const { minutes, seconds, isActive, startCountdown, resetCountdown, setMinutes } = useTimer(initialMinutes, initialSeconds);
+  const { minutes, seconds, isActive, startCountdown, resetCountdown, setMinutes, setIsActive } = useTimer(initialMinutes, initialSeconds);
 
   // State variable to store reported games
   const [deletedGames, setDeletedGames] = useState([]);
@@ -41,6 +41,7 @@ const MinSide = () => {
     // console.log(newIndex)
     setInitialMinutes(queuedGames[newIndex].time);
     setMinutes(queuedGames[newIndex].time);
+    setIsActive(false);
   }, [currentIndex, queuedGames, setMinutes]);
 
   useEffect(() => {
