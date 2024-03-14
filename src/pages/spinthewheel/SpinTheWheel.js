@@ -83,7 +83,7 @@ const SpinTheWheel = () => {
         try {
             const queue = await retrieveQueue();
             for (let i = 0; i < queue.length; i++) {
-                const selectedGame = games.find(game => game.gameID === queue[i].gameID);
+                const selectedGame = games.find(game => game.gameID === Object.keys(queue[i])[0]);
                 if (selectedGame && dataArray.indexOf(selectedGame) === -1) {
                     setDataArray(prevDataArray => [...prevDataArray, selectedGame]);
                 }
