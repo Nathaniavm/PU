@@ -10,7 +10,7 @@ import { faStepBackward } from '@fortawesome/free-solid-svg-icons';
 import { faStepForward  } from '@fortawesome/free-solid-svg-icons';
 import { getGameData } from '../../persistence/HjemBackend';
 import { listFavorites } from '../../persistence/favoriteBackend';
-import { gameTitleExists, retrieveGameInfo } from '../../persistence/OpprettLekerBackend';
+import { deleteGame, gameTitleExists, retrieveGameInfo } from '../../persistence/OpprettLekerBackend';
 import { retrieveQueue } from '../../persistence/userQueues';
 import useTimer from '../../common/timer/Timer';
 import { faPlay, faUndo } from '@fortawesome/free-solid-svg-icons';
@@ -85,6 +85,7 @@ const MinSide = () => {
 
    // Function to handle reporting a game
    const handleDeleteGame = (gameID) => {
+      deleteGame(gameID);
        // Add the reported game to the reportedGames state variable
        setDeletedGames([...deletedGames, gameID]);
        // You can also perform additional actions here such as making an API call to report the game to the backend
