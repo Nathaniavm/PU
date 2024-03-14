@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import './SpinTheWheel.css';
 import '../hjem/Hjem.css';
 import { listFavorites } from '../../persistence/favoriteBackend';
+import { useAuth } from '../../AuthContext';
 
 // HUSK IF LOGGED IN FOR Å BRUKE DETTE
 // const favoriteGames = await listFavorites();
@@ -23,6 +24,9 @@ const SpinTheWheel = () => {
 
     const [searchInput, setSearchInput] = useState('')
     const [selectedCategory, setCategory] = useState('alle')
+
+    const { isLoggedIn} = useAuth();
+
 
     const handleSpinClick = () => {
         if (!mustSpin && dataArray.length > 1) {
@@ -132,6 +136,7 @@ const SpinTheWheel = () => {
                         </select>
                     </div>
                 </div>
+                { isLoggedIn ? (
                 <div className="favorite-queue-container">
                     <button className='moreButton favoriteButton' type='button' onClick={() => handleAddFavoritesToWheel()}>
                         <i className="fa fa-heart"></i> Legg til alle favoritter
@@ -140,6 +145,9 @@ const SpinTheWheel = () => {
                         <i className="fa fa-plus"></i> Legg til hele køen
                     </button>
                 </div>
+                ) : (
+                    <div></div>
+                )}
             <div className='gameOverviewGrid'>
                 <h4>Klikk på minimum to leker for å spinne:</h4>
                 <div className='gameVerticalList'>
