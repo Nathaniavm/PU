@@ -37,7 +37,7 @@ const NewUser = () => {
     else{
       const result = await register(username, password, email);
       if (result){
-        console.log("Bruker opprettet!")
+        // console.log("Bruker opprettet!")
               //if backend is OK:
         loginData(email,password);
         login(username)

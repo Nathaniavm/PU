@@ -14,7 +14,7 @@ export function signOutUser() {
     return auth.signOut()
     .then(function() {
         //Sign out successful
-        console.log("User signed out");
+        // console.log("User signed out");
     })
     .catch(function(error) {
         //An error occured

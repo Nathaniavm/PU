@@ -65,7 +65,7 @@ export async function registerGame(title, description, nPeopleMin, nPeopleMax, c
     // Save game data to database under 'games/gameKey'
     return set(newGameRef, gameData)
         .then(() => {
-            console.log("Game registered successfully");
+            // console.log("Game registered successfully");
             return "Game registered successfully";
         })
         .catch((error) => {

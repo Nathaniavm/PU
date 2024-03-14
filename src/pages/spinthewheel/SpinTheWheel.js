@@ -67,7 +67,7 @@ const SpinTheWheel = () => {
     const handleAddFavoritesToWheel = async () => {
         try {
             const favorites = await listFavorites();
-            console.log(games);
+            // console.log(games);
             for (let i = 0; i < favorites.length; i++) {
                 const selectedGame = games.find(game => game.gameID === favorites[i].gameID);
                 if (selectedGame && dataArray.indexOf(selectedGame) === -1) {
@@ -152,7 +152,7 @@ const SpinTheWheel = () => {
                             <h4>{game.title}</h4>
                             <div className="gameSquare-p-content-vertical">
                                 <p>Kategori: {game.category}</p>
-                                <p>Antall: {game.nPeople}</p>
+                                <p>Antall: {game.nPeopleMin} - {game.nPeopleMax}</p>
                             </div>
                         </div>
                     ))}
@@ -180,7 +180,7 @@ const SpinTheWheel = () => {
                         <h4>{selectedOption.title}</h4>
                         <div className="gameSquare-p-content-horisontal">
                             <p>Kategori: {selectedOption.category}</p>
-                            <p>Antall: {selectedOption.nPeople}</p>
+                            <p>Antall: {selectedOption.nPeopleMin} - {selectedOption.nPeopleMax}</p>
                         </div>
                     </Link>
                 </div>}

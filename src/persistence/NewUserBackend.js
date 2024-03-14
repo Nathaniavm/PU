@@ -46,7 +46,7 @@ export async function register(username, password, email) {
       //Save user data to database
       return set(ref(database, "users/" + user.uid), user_data)
       .then(() =>{
-        console.log("Registration successful")
+        // console.log("Registration successful")
         return true;
       })
       .catch(error => {
