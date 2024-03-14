@@ -24,7 +24,7 @@ const Games = () => {
                     setGame(foundGame);
                     const userID = auth.currentUser.uid;
                     const isFavoritedGame = await isFavorited(userID, foundGame.gameID);
-                    const isQueuedGame = await isQueued(userID, foundGame.gameID);
+                    const isQueuedGame = await isQueued(foundGame.gameID);
                     const foundMinutes = foundGame.time;
                     const foundMinutesInt = parseInt(foundMinutes)
                     setInitialMinutes(foundMinutesInt);
