@@ -32,6 +32,7 @@
 
 .QueueDiv{
     margin-top: 2%;
+    width: 50%;
 }
 
 .InputQueue{
@@ -258,4 +259,32 @@ h4 {
     flex-direction: column;
     align-items: center;
     justify-content: center;
+}
+
+.queueDisplay {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.leftDivQueue {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 25%;
+}
+
+.rightDivQueue {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 25%;
+}
+
+.rightDivQueue h6 {
+    color: var(--Header-Color);
+    gap: 0;
+    margin: 5px;
 }
