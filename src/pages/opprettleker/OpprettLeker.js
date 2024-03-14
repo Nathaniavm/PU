@@ -210,8 +210,8 @@ const OpprettLeker = () => {
 };
 
 function isValidGameTitle(str){
-  let alloweddChars = /^[a-zA-Z0-9\s]+$/;
-  if (alloweddChars.test(str)) {
+  let allowedChars = /^[a-zA-Z0-9\sæÆøØåÅ!?-]+$/;
+  if (allowedChars.test(str)) {
     return true;
   }
   else {

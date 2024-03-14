@@ -42,7 +42,7 @@ export async function addGameToQueue(gameID){
         
                 return set(newQueueRef, queueData)
                     .then(() => {
-                        console.log("Game successfully added to queue");
+                        // console.log("Game successfully added to queue");
                         return "Game successfully added to queue";
                     })
                     .catch((error) => {
@@ -87,7 +87,7 @@ export async function retrieveQueue(){
             return games;
         }
 
-        console.log("Bruker har ingen leker i køen");
+        // console.log("Bruker har ingen leker i køen");
         return [];
         
     } catch (error) {
@@ -116,7 +116,7 @@ export async function removeQueuedGame(gameID) {
                 const queuedToRemoveRef = child(queuedRef, queuedKey);
                 remove(queuedToRemoveRef)
                     .then(() => {
-                        console.log("Game removed from queue successfully");
+                        // console.log("Game removed from queue successfully");
                     })
                     .catch((error) => {
                         console.log("Error removing game from queue: ", error);

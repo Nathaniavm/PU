@@ -56,7 +56,7 @@ const Games = () => {
         const alertedGameTitle = game.title;
 
         if (await favoriteGame(alertedGameID)) {
-            console.log(`Spillet ${alertedGameTitle} ble lagt til i favoritter`);
+            // console.log(`Spillet ${alertedGameTitle} ble lagt til i favoritter`);
         }
 
         setIsFavoriteGame(true);
@@ -66,7 +66,7 @@ const Games = () => {
         const queuedGameID = game.gameID;
         const queuedGameTitle = game.title;
         if (await addGameToQueue(queuedGameID)) {
-            console.log(`Spillet ${queuedGameTitle} ble lagt til i køen`);
+            // console.log(`Spillet ${queuedGameTitle} ble lagt til i køen`);
         }
         
         setIsQueuedGame(true);
@@ -124,7 +124,7 @@ const Games = () => {
         setIsFavoriteGame(false);
         removeFavoriteGame(game.gameID)
             .then(() => {
-                console.log("Game removed from favorites successfully");
+                // console.log("Game removed from favorites successfully");
             })
             .catch((error) => {
                 console.log("Error removing game from favorites: ", error);
@@ -135,7 +135,7 @@ const Games = () => {
         setIsQueuedGame(false);
         removeQueuedGame(game.gameID)
             .then(() => {
-                console.log("Game removed from queued games successfully");
+                // console.log("Game removed from queued games successfully");
             })
             .catch((error) => {
                 console.log("Error removing game from queued games: ", error);

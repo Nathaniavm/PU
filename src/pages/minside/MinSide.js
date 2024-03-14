@@ -38,7 +38,7 @@ const MinSide = () => {
     let index = currentIndex;
     setCurrentIndex((prevIndex) => (prevIndex +1) % queuedGames.length);
     let newIndex = (index + 1) % queuedGames.length;
-    console.log(newIndex)
+    // console.log(newIndex)
     setInitialMinutes(queuedGames[newIndex].time);
     setMinutes(queuedGames[newIndex].time);
   }, [currentIndex, queuedGames, setMinutes]);
@@ -48,7 +48,7 @@ const MinSide = () => {
       try {
         const favorites = await listFavorites();
         const queue = await retrieveQueue()
-        console.log(queue)
+        // console.log(queue)
         for(let i = 0; i < favorites.length; i++) {
           const selectedGame = games.find(game => game.gameID === favorites[i].gameID);
           setFavoriteGames(prevFavoriteGames => [...prevFavoriteGames, selectedGame]);
@@ -88,7 +88,7 @@ const MinSide = () => {
        // Add the reported game to the reportedGames state variable
        setDeletedGames([...deletedGames, gameID]);
        // You can also perform additional actions here such as making an API call to report the game to the backend
-       console.log("Spillet " + gameID + " er slettet");
+      //  console.log("Spillet " + gameID + " er slettet");
    };
 
 
@@ -105,15 +105,15 @@ const MinSide = () => {
       else{
         newIndex = index -1;
       }
-      console.log(newIndex)
+      // console.log(newIndex)
       setInitialMinutes(queuedGames[newIndex].time);
       setMinutes(queuedGames[newIndex].time);
     };
 
     const [showGameInfo, setShowGameInfo] = useState(false);
-    console.log(queuedGames)
+    // console.log(queuedGames)
     const queuedgame = queuedGames[currentIndex];
-    console.log(queuedgame)
+    // console.log(queuedgame)
     //setInitialMinutes(queuedgame.time)
     const handleShowMore = () => {
       setShowGameInfo(!showGameInfo);
