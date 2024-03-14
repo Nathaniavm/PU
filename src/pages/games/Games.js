@@ -7,8 +7,7 @@ import { getGameData } from '../../persistence/HjemBackend';
 import { addGameToQueue, isQueued, removeQueuedGame } from '../../persistence/userQueues';
 import { auth } from '../../firebaseConfig';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlay } from '@fortawesome/free-solid-svg-icons';
-import { faUndo } from '@fortawesome/free-solid-svg-icons';
+import { faPlay, faUndo } from '@fortawesome/free-solid-svg-icons';
 
 const Games = () => {
     const { gameID } = useParams();
