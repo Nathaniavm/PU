@@ -55,7 +55,7 @@ const MinSide = () => {
         }
 
         for(let i = 0; i < queue.length; i++) {
-          const selectedGame = games.find(game => game.gameID === queue[i].gameID);
+          const selectedGame = games.find(game => game.gameID === Object.keys(queue[i])[0]);
           setQueuedGames(prevQueuedGames => [...prevQueuedGames, selectedGame]);
           if(i === 0){
             setInitialMinutes(selectedGame.time)
