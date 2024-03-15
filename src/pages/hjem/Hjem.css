@@ -135,6 +135,7 @@ h4 {
 }
 
 .gameVerticalList {
+    margin-top: 15px;
     display: flex;
     flex-direction: row;
     gap: 10px; 
@@ -159,6 +160,9 @@ h4 {
     border: 2px solid var(--Header-Color); 
     border-radius: 30px; 
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.35); 
+
+    padding-right: 10px;
+    padding-left: 10px;
 
     transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
