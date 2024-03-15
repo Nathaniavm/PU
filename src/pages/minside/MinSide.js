@@ -24,7 +24,7 @@ const MinSide = () => {
   //Timer variables
   const [initialMinutes, setInitialMinutes] = useState(1);
   const [initialSeconds, setInitialSeconds] = useState(0);
-  const { minutes, seconds, isActive, startCountdown, resetCountdown, setMinutes, setIsActive } = useTimer(initialMinutes, initialSeconds);
+  const { minutes, seconds, isActive, startCountdown, resetCountdown, setMinutes, setSeconds, setIsActive } = useTimer(initialMinutes, initialSeconds);
 
   // State variable to store reported games
   const [deletedGames, setDeletedGames] = useState([]);
@@ -76,7 +76,11 @@ const MinSide = () => {
     if(minutes === 0 && seconds === 0){
       handleNext()
     }
-  },[minutes, seconds, handleNext]);
+    if(minutes < 0 || seconds < 0) {
+      setMinutes(10)
+      setSeconds(0)
+    }
+  },[minutes, seconds, handleNext, setMinutes, setSeconds]);
 
 
    // Function to handle reporting a game

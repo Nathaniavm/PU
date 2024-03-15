@@ -107,11 +107,28 @@ const Games = () => {
     
 
     const handleMinuteInputChange = (e) => {
-        setInitialMinutes(parseInt(e.target.value));
+        const newValue = e.target.value === "" ? 0 : parseInt(e.target.value);
+        if (!isNaN(newValue) && newValue >= 0) {
+            setInitialMinutes(newValue);
+        } else {
+            // Optionally handle invalid input, e.g., set to 0 or leave unchanged
+            setInitialMinutes(0);
+        }
     };
         
     const handleSecondInputChange = (e) => {
-        setInitialSeconds(parseInt(e.target.value));
+        let newValue = e.target.value === "" ? 0 : parseInt(e.target.value);
+        if (!isNaN(newValue) && newValue >= 0) {
+            // Check if seconds exceed 60 and adjust minutes and seconds accordingly
+            const extraMinutes = Math.floor(newValue / 60);
+            const adjustedSeconds = newValue % 60;
+            // Update minutes and seconds based on the calculation
+            setInitialMinutes((prevMinutes) => prevMinutes + extraMinutes);
+            setInitialSeconds(adjustedSeconds);
+        } else {
+            // Optionally handle invalid input, e.g., set to 0 or leave unchanged
+            setInitialSeconds(0);
+        }
     };
 
 
@@ -144,7 +161,11 @@ const Games = () => {
 
 
     const startCountdown = () => {
-      if(isActive){
+        if (initialMinutes < 0 || initialSeconds < 0) {
+            console.error('Initial time cannot be negative.');
+            return;
+        }
+        if(isActive){
         setIsActive(false);
         setMinutes(minutes);
         setSeconds(seconds);
@@ -194,18 +215,18 @@ const Games = () => {
                       <input
                         className='timeInputField'
                         type="number"
-                        value={initialMinutes}
+                        value={initialMinutes === 0 ? "" : initialMinutes}
                         onChange={handleMinuteInputChange}
                         disabled={isActive}
-                      />
-                      <span className='unit'> minutter </span>
-                      <input
+                    />
+
+                    <input
                         className='timeInputField'
                         type="number"
-                        value={initialSeconds}
+                        value={initialSeconds === 0 ? "" : initialSeconds}
                         onChange={handleSecondInputChange}
                         disabled={isActive}
-                      />
+                    />
                       <span className='unit'> sekunder </span>
                       </div>
                       <div className='timerDiv'>
