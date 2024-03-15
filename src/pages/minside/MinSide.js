@@ -123,6 +123,9 @@ const MinSide = () => {
         }
     }
 
+    var reportedReviewsList = [];
+
+
 
     // Event handlers for timer input fields
     const handleMinuteInputChange = (e) => {
@@ -133,6 +136,15 @@ const MinSide = () => {
         setInitialSeconds(parseInt(e.target.value));
     };
 
+    const handleDeleteReview = (reviewID) => {
+      //backend delete review
+      //alert("Slettet vurderingen")
+    }
+
+    const handleKeepReview = (reviewID) => {
+      //backend keep review
+      //alert("Fjernet rapporteringen av vurderingen")
+    }
     
 
   return (
@@ -261,6 +273,7 @@ const MinSide = () => {
             )}
           </div>
           {isAdmin && (
+          <div className="adminViewMinSide">
             <div className='RapportedUsersDiv'>
               <div className='HeaderInDiv'>
                 <h1>Rapporterte spill</h1>
@@ -293,6 +306,39 @@ const MinSide = () => {
 
               </table>
             </div>
+            <div className="reportedReviews RapportedUsersDiv">
+              <div className='HeaderInDiv'>
+                <h1>Rapporterte vurderinger</h1>
+              </div>
+              <table className='ulReportedGame'>
+                <thead>
+                  <tr>
+                    <th>Navn på spill</th>
+                    <th>Rapportert vurdering</th>
+                    <th>Antall ganger rapportert</th>
+                    <th>Slett vurdering</th>
+                    <th>Behold vurdering</th>
+                  </tr>
+                  {reportedGamesList.map((game, index) => (
+                      <tr key={index}>
+                          <td className="ReportedGameTitle"> 
+                              <Link to={`/game/${game.gameID}`} key={index} className="gamesSquare">{game.title}</Link>
+                          </td>
+                          <td className="ReportedGameCategory">{game.category}</td>
+                          <td className="ReportedGameReportCount">Reports: {game.nReported}</td>
+                          <td className='ReportedGameDelete' onClick={() => handleDeleteReview(game.gameID)}>
+                            <FontAwesomeIcon icon={faTrashAlt} />
+                          </td>
+                          <td className='ReportedGameKeep' onClick={() => handleKeepReview(game.gameID)}>
+                            <FontAwesomeIcon icon={faSquareCheck}/>
+                          </td>
+                      </tr>
+                  ))}
+                </thead>
+
+              </table>
+            </div>
+          </div>
           )}
         </div>
       ) : (
