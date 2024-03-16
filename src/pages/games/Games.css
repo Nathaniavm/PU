@@ -1,7 +1,3 @@
-
-/*.page{
-    display: flex;
-}*/
 .gamesContainer {
     display: flex;
     flex-direction: column;
@@ -20,6 +16,274 @@
     margin-left: 20%;
     margin-right: 25%;
     margin-bottom: 5%;
+}
+
+.reviewContainer{
+    background-color: var(--Body-Color);
+    min-height: 100px;
+    padding: 10px;
+    margin: 10px;
+}
+
+.reviewTitle{
+    font-size: 2vw;
+    background-image: linear-gradient(to left, var(--Header-Color), #a5b2ff);
+    color: transparent;
+    background-clip: text;
+    margin-left: 2.5%;
+    margin-right: 2.5%;
+
+}
+
+.myReviewBox{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative; 
+    overflow: hidden;
+    width: 100%;
+    max-width: 100%;
+    min-width: 100%;
+    min-height: 50px;
+   
+}
+
+.othersReviewBox{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative; 
+    overflow: hidden;
+    width: 100%;
+    max-width: 100%;
+    min-width: 100%;
+    min-height: 50px;
+}
+
+.profilePhotoBox {
+    margin-left: 5%;
+    width: 77px;
+    height: 68px;
+    border-radius: 80px 80px 80px 80px; 
+    overflow: hidden;
+    
+}
+
+.profileImage {
+    width: 100%; 
+    height: auto;
+    display: block;
+    
+    
+}
+
+.writeReviewDiv{
+    width: 100%;
+    min-height: 200px; 
+
+}
+
+.textAreaDiv{
+    width: 80%;
+    height: fit-content;
+}
+
+
+
+.othersWriteReviewBox{
+    display: space-between;
+    background-color: var(--White-Background);
+    border: none;
+    margin-left: 2.5%;
+    margin-right: 2.5%;
+    margin-top: 5%;
+    margin-bottom: 5%;
+    padding: 10px 15px;
+    font-size: 15px;
+    border-radius: 80px 80px 80px 80px;
+    width: 100%;
+    min-height: 40px;
+    padding-top: 3%;
+    padding-left: 4%;
+    padding-right:2%;
+    outline: none;
+    resize: vertical; 
+}
+
+.othersWriteReviewBox h2{
+    margin-top: 1.5%;
+    margin-left: 3%;
+    
+}
+
+.othersWriteReviewBox h5{
+    margin-top: 0%;
+    margin-left: 3%;
+    font-size: 15px;
+    font-weight:normal;
+    width: 100%;
+}
+
+.actualOthersReview{
+    display:flex;
+    height: 50px;
+}
+
+.writeReviewBox{
+    background-color: var(--White-Background);
+    border: none;
+    margin-left: 2.5%;
+    margin-right: 2.5%;
+    margin-top: 5%;
+    margin-bottom: 5%;
+    padding: 10px 15px;
+    font-size: 15px;
+    border-radius: 80px 80px 80px 80px;
+    width: 100%;
+    min-height: 40px;
+    padding-top: 3%;
+    padding-left: 4%;
+    padding-right:2%;
+    outline: none;
+    margin-bottom: 5%;
+    resize: vertical; 
+    
+}
+
+.ratingDiv{
+    display: flex;
+    margin-left: 5%;
+    width: 100%;
+    height: 100px;
+    margin-top: 0%;
+    overflow: hidden; 
+    font-size: small;   
+
+}
+
+.othersRatingDiv{
+    display: flex;
+    width: 30%;
+    height: 100px;
+    margin-top: 0%;
+    overflow: hidden; 
+    font-size: small;  
+}
+
+.othersRatingDiv h1{
+    margin-top: 0%;
+    margin-left: 45%;
+}
+
+.ratingDiv h2{
+    margin-top:2%;
+    color: var(--White-Background);
+
+    
+}
+
+.sendButton{
+    margin-left: 57%;
+    padding-top: 0.5%;
+    height: 40px;
+    width: 90px;
+    background-color: #a5b2ff;
+    text-align: center;
+    border-radius: 10px;
+    cursor: pointer;
+    
+}
+
+.commentToTrash{
+
+    font-size: 24px; 
+    color: black; 
+    cursor: pointer;
+}
+
+.starsReviewed{
+    display: flex;
+    margin-left: 23%;
+}
+
+.myTrashDiv{
+    display: flex;
+    align-items: center; 
+    position: absolute;
+    top: 0;
+    font-size: 20px; 
+    margin-top: 6%;
+    margin-left: 10%;
+    width: 18%;
+    color: #79baff;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.trashDiv{
+    display: flex;
+    align-items: center; 
+    position: absolute;
+    top: 0;
+    font-size: 20px; 
+    margin-top: 6%;
+    margin-left: 3.5%;
+    width: 18%;
+    color: #79baff;
+    font-weight: bold;
+    cursor: pointer;
+  
+}
+
+
+.trashDiv .icon {
+    margin-left: 10px; /* Adjust the margin as needed to create space between the text and the icon */
+    font-size: medium;
+    margin-top: 3%;
+    top: 0;
+    color: #79baff;
+}
+
+
+
+.mySentStar{
+    font-size: 24px; 
+    color: black; 
+    cursor: pointer;
+    transition: color 0.2s;
+    padding: 0 5px;
+}
+.mySentStar.active {
+    color: orange; 
+}
+
+.star {
+    font-size: 24px; 
+    color: black; 
+    cursor: pointer;
+    transition: color 0.2s;
+    padding: 0 5px; 
+  }
+  
+.star:hover {
+    color: orange; 
+}
+  
+.star.active {
+    color: orange; 
+}
+
+  .othersStar {
+    font-size: 24px; 
+    color: orange; 
+    transition: color 0.2s; 
+    padding: 0 5px; 
+    margin-left:2%;
+    margin-top: 6%;
+  }
+
+.reportComment{
+    font-size: 24px; 
 }
 
 .timer{
@@ -88,8 +352,7 @@
 
 .buttonsContainer {
     display: flex;
-    justify-content: space-around;
-    margin-top: 20px;
+    justify-content: center;
     margin-bottom: 5%;
 }
 
@@ -149,7 +412,7 @@
 .inputTimerContainer{
     display: flex;
     justify-content: center;
-    margin-top: 10%; /*something*/
+    margin-top: 10%;
     margin-left: 13%;
     margin-right: 13%;
     font-size: 10px;
