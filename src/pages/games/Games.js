@@ -1,20 +1,34 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext} from 'react';
 import { useParams } from 'react-router-dom';
+import { AuthContext } from '../../AuthContext';
 import './Games.css';
+import './profilePhoto.jpg';
 import { reportGame } from '../../persistence/ReportGame';
 import { favoriteGame, isFavorited, removeFavoriteGame } from '../../persistence/favoriteBackend';
 import { getGameData } from '../../persistence/HjemBackend';
 import { addGameToQueue, isQueued, removeQueuedGame } from '../../persistence/userQueues';
 import { auth } from '../../firebaseConfig';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlay } from '@fortawesome/free-solid-svg-icons';
-import { faUndo } from '@fortawesome/free-solid-svg-icons';
+import { faPlay, faUndo, faStar, faTrashAlt, faBan} from '@fortawesome/free-solid-svg-icons';
 
 const Games = () => {
     const { gameID } = useParams();
+    const { isLoggedIn, username } = useContext(AuthContext);
     const [game, setGame] = useState(null);
     const [isFavoriteGame, setIsFavoriteGame] = useState(false);
     const [isQueuedGame, setIsQueuedGame] = useState(false);
+    //minute and second- inputs 
+    const [initialMinutes, setInitialMinutes] = useState(0);
+    const [initialSeconds, setInitialSeconds] = useState(0);
+    //whether the timer is active 
+    const [isActive, setIsActive] = useState(false);
+    //the minutes that are actually count down 
+    const [minutes, setMinutes] = useState(0);
+    const [seconds, setSeconds] = useState(0);
+    //comments for a review
+    const [comments, setComments] = useState([]);
+    const [myReview, setMyReview] = useState('');
+    const [myStarReview, setMyStarReview] = useState('');
 
     useEffect(() => {
         const fetchGame = async () => {
@@ -70,15 +84,6 @@ const Games = () => {
         
         setIsQueuedGame(true);
     };
-
-    //minute and second- inputs 
-    const [initialMinutes, setInitialMinutes] = useState(0);
-    const [initialSeconds, setInitialSeconds] = useState(0);
-    //whether the timer is active 
-    const [isActive, setIsActive] = useState(false);
-    //the minutes that are actually count down 
-    const [minutes, setMinutes] = useState(0);
-    const [seconds, setSeconds] = useState(0);
       
     useEffect(() => {
         let intervalId;
@@ -110,15 +115,6 @@ const Games = () => {
     const handleSecondInputChange = (e) => {
         setInitialSeconds(parseInt(e.target.value));
     };
-
-    const placeholderGames = [
-        {gameID: 1, title: 'Stiv Heks', description: 'En blir valgt til å være heks, heksa skal løpe etter de andre og prøve å ta på dem, hvis man blir truffet av heksa må man stå med beina spredt, og man blir fri hvis noen kraber under beina dine'
-        , category: 'fysisk lek', nPeople: '10'},
-        {gameID: 2, title: 'Navnedyrleken', description: 'Alle sier navnet sitt, og et dyr med samme forbokstav som navnet', category: 'navnelek', nPeople: '1'},
-        {gameID: 3, title: 'Spille kort', description: 'Bare spille ett eller annet med kort', category: 'icebreaker', nPeople: '4'},
-        {gameID: 4, title: 'Sista', description: 'Løpe etter hverandre', category: 'fysisk lek', nPeople: '4'},
-    ];
-
 
     if (!game) {
         return <p>Fant ikke spillet.</p>;
@@ -171,6 +167,58 @@ const Games = () => {
       setMinutes(initialMinutes);
       setSeconds(initialSeconds);
     };
+
+    const highlightStars = (event) => {
+        const index = parseInt(event.target.getAttribute('data-index'));
+        const stars = document.querySelectorAll('.star');
+        let numStars = 0;
+        for (let i = 0; i < stars.length; i++) {
+            if (i < index) {
+                stars[i].classList.add('active');
+                numStars ++;
+            } else {
+                stars[i].classList.remove('active');
+            }
+        }
+        setMyStarReview(numStars);
+    };
+
+
+    const resetHighlight = (event) => {
+        const stars = document.querySelectorAll('.star');
+        stars.forEach(star => {
+            star.classList.remove('active');
+        });
+        setMyStarReview(0);
+
+    }
+
+    //for testing
+    const handleMyReviewEditing = (event) =>{
+        setMyReview(event.target.value);
+        console.log('Message: ', myReview);
+        console.log('Num stars:', myStarReview);
+    }
+
+    const handleSendComment = () => {
+        const newComment = {
+            username: localStorage.getItem('username') || '',
+            comment: myReview,
+            stars: myStarReview
+        };
+        setComments(prevComments => [...prevComments, newComment]);
+        setMyReview('');
+        resetHighlight();
+        
+    };
+
+    const handleDeleteMyReview = (event) => {
+        let deleteDiv = event.target.parentNode;
+        for (let i = 0; i < 7; i++) {
+            deleteDiv = deleteDiv.parentNode;
+        }
+        deleteDiv.remove();
+    }
 
     return (
         <div>
@@ -253,6 +301,117 @@ const Games = () => {
                         <i className="fa fa-flag"></i> Rapporter
                     </button>
                 </div>
+            </div>
+            <div className='reviewContainer'>
+                <div className='reviewTitle'>
+                    <h1>Anmeldelser</h1>
+                </div>
+                {isLoggedIn ? (
+                <div className='myReviewBox'>
+                    <div class='profilePhotoBox'>
+                        <img src={require('./profilePhoto2.jpg')} alt='Profile Photo' class='profileImage' />
+                    </div>
+                    <div className='writeReviewDiv'>
+                        <div className='textAreaDiv'>
+                            <textarea className='writeReviewBox'value={myReview || ''} placeholder='Skriv din anmeldelse' onChange={handleMyReviewEditing}>
+                            </textarea>
+                        </div>
+                        <div class='ratingDiv'>
+                            <FontAwesomeIcon icon={faStar} className='star' data-index="1" onClick={highlightStars} onMouseOut={() => {setMyReview(0)}}/>
+                            <FontAwesomeIcon icon={faStar} className='star' data-index="2" onClick={highlightStars} onMouseOut={() => {setMyReview(0)}}/>
+                            <FontAwesomeIcon icon={faStar} className='star' data-index="3" onClick={highlightStars} onMouseOut={() => {setMyReview(0)}}/>
+                            <FontAwesomeIcon icon={faStar} className='star' data-index="4" onClick={highlightStars} onMouseOut={() => {setMyReview(0)}}/>
+                            <FontAwesomeIcon icon={faStar} className='star' data-index="5" onClick={highlightStars} onMouseOut={() => {setMyReview(0)}}/>
+                            <div className='sendButton' onClick={handleSendComment}>
+                                <h2>Send</h2>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                ):(
+                    <div></div>
+                )}
+                {comments.map((comment, index) => (
+                    <div key={index} className='othersReviewBox'>
+                        <div className='profilePhotoBox'>
+                            <img src={require('./profilePhoto2.jpg')} alt='Profile Photo' class='profileImage' />
+                        </div>
+                        <div className='writeReviewDiv'>
+                            <div className='textAreaDiv'>
+                                <div className='othersWriteReviewBox'>
+                                    <h2>{comment.username}</h2>
+                                    <div className='actualOthersReview'>
+                                        <h5>{comment.comment}</h5>
+                                        <div class='othersRatingDiv'>
+                                            <div class='starsReviewed'>
+                                                <h1>{comment.stars}/5</h1>
+                                                <FontAwesomeIcon icon={faStar} className='othersStar'/>
+                                            </div>
+                                            <div className='myTrashDiv'>
+                                                <FontAwesomeIcon icon={faTrashAlt} className='commentToTrash' onClick={handleDeleteMyReview}/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                    </div>
+                ))}
+                
+
+                <div className='othersReviewBox'>
+                    <div class='profilePhotoBox'>
+                        <img src={require('./profilePhoto2.jpg')} alt='Profile Photo' class='profileImage' />
+                    </div>
+                    <div className='writeReviewDiv'>
+                        <div className='textAreaDiv'>
+                            <div className='othersWriteReviewBox'>
+                                <h2> James Heui </h2>
+                                <div className='actualOthersReview'>
+                                    <h5> Artig spill!</h5>
+                                    <div class='othersRatingDiv'>
+                                        <div class='starsReviewed'>
+                                            <h1>4/5</h1>
+                                            <FontAwesomeIcon icon={faStar} className='othersStar'/>
+                                        </div>
+                                        <div className='trashDiv'>
+                                        <span>Rapporter</span> 
+                                        <span className="icon"><i className="fa fa-flag"></i></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div className='othersReviewBox'>
+                    <div class='profilePhotoBox'>
+                        <img src={require('./profilePhoto2.jpg')} alt='Profile Photo' class='profileImage' />
+                    </div>
+                    <div className='writeReviewDiv'>
+                        <div className='textAreaDiv'>
+                            <div className='othersWriteReviewBox'>
+                                <h2> Brukernavn123 </h2>
+                                <div className='actualOthersReview'>
+                                    <h5> Fantastisk nettside! Elsker spesielt dette spillet!</h5>
+                                    <div class='othersRatingDiv'>
+                                        <div class='starsReviewed'>
+                                            <h1>5/5</h1>
+                                            <FontAwesomeIcon icon={faStar} className='othersStar'/>
+                                        </div>
+                                        <div className='trashDiv'>
+                                        <span>Rapporter</span> 
+                                        <span className="icon"><i className="fa fa-flag"></i></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
       </div>
