@@ -23,7 +23,6 @@ const LoggInn = () => {
   const handleLogin = async () => {
     if(!IsLoggedIn){
 
-      console.log(10);
       const username = document.getElementById('username');
       const password = document.getElementById('password');
       var email = username;
@@ -71,7 +70,7 @@ const LoggInn = () => {
           try{
             //console.log(loginData(email, password))
             await loginData(emailValue, passwordValue);
-            console.log("Success");
+            // console.log("Success");
           }
           catch(error){
             console.log("Error ?: " + error);

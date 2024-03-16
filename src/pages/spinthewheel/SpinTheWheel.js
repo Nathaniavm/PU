@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import './SpinTheWheel.css';
 import '../hjem/Hjem.css';
 import { listFavorites } from '../../persistence/favoriteBackend';
+import { useAuth } from '../../AuthContext';
 
 // HUSK IF LOGGED IN FOR Å BRUKE DETTE
 // const favoriteGames = await listFavorites();
@@ -23,6 +24,9 @@ const SpinTheWheel = () => {
 
     const [searchInput, setSearchInput] = useState('')
     const [selectedCategory, setCategory] = useState('alle')
+
+    const { isLoggedIn} = useAuth();
+
 
     const handleSpinClick = () => {
         if (!mustSpin && dataArray.length > 1) {
@@ -67,7 +71,7 @@ const SpinTheWheel = () => {
     const handleAddFavoritesToWheel = async () => {
         try {
             const favorites = await listFavorites();
-            console.log(games);
+            // console.log(games);
             for (let i = 0; i < favorites.length; i++) {
                 const selectedGame = games.find(game => game.gameID === favorites[i].gameID);
                 if (selectedGame && dataArray.indexOf(selectedGame) === -1) {
@@ -83,7 +87,7 @@ const SpinTheWheel = () => {
         try {
             const queue = await retrieveQueue();
             for (let i = 0; i < queue.length; i++) {
-                const selectedGame = games.find(game => game.gameID === queue[i].gameID);
+                const selectedGame = games.find(game => game.gameID === Object.keys(queue[i])[0]);
                 if (selectedGame && dataArray.indexOf(selectedGame) === -1) {
                     setDataArray(prevDataArray => [...prevDataArray, selectedGame]);
                 }
@@ -132,6 +136,7 @@ const SpinTheWheel = () => {
                         </select>
                     </div>
                 </div>
+                { isLoggedIn ? (
                 <div className="favorite-queue-container">
                     <button className='moreButton favoriteButton' type='button' onClick={() => handleAddFavoritesToWheel()}>
                         <i className="fa fa-heart"></i> Legg til alle favoritter
@@ -140,6 +145,9 @@ const SpinTheWheel = () => {
                         <i className="fa fa-plus"></i> Legg til hele køen
                     </button>
                 </div>
+                ) : (
+                    <div></div>
+                )}
             <div className='gameOverviewGrid'>
                 <h4>Klikk på minimum to leker for å spinne:</h4>
                 <div className='gameVerticalList'>
@@ -152,7 +160,7 @@ const SpinTheWheel = () => {
                             <h4>{game.title}</h4>
                             <div className="gameSquare-p-content-vertical">
                                 <p>Kategori: {game.category}</p>
-                                <p>Antall: {game.nPeople}</p>
+                                <p>Antall: {game.nPeopleMin} - {game.nPeopleMax}</p>
                             </div>
                         </div>
                     ))}
@@ -180,7 +188,7 @@ const SpinTheWheel = () => {
                         <h4>{selectedOption.title}</h4>
                         <div className="gameSquare-p-content-horisontal">
                             <p>Kategori: {selectedOption.category}</p>
-                            <p>Antall: {selectedOption.nPeople}</p>
+                            <p>Antall: {selectedOption.nPeopleMin} - {selectedOption.nPeopleMax}</p>
                         </div>
                     </Link>
                 </div>}

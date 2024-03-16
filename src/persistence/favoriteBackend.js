@@ -41,7 +41,7 @@ export async function listFavorites(){
             */
         }
 
-        console.log("Bruker har ingen favorittleker");
+        // console.log("Bruker har ingen favorittleker");
         return [];
     } catch (error) {
         console.log("Error: ", error);
@@ -79,10 +79,10 @@ export async function favoriteGame(gameID) {
     // console.log(userID)
     // console.log("Current GameID: " + gameID);
 
-    if (await isFavorited(userID, gameID)){
-        console.log("User has already favoritized the game");
-        return;
-    }
+    // if (await isFavorited(userID, gameID)){
+    //     console.log("User has already favoritized the game");
+    //     return;
+    // }
     if(! await gameIDExists(gameID)){
         console.log("Game doesn't exist");
         return;
@@ -114,7 +114,7 @@ export async function removeFavoriteGame(gameID) {
 
     // Check if the game is favorited by the user
     if (!(await isFavorited(userID, gameID))) {
-        console.log("User has not favoritized the game");
+        // console.log("User has not favoritized the game");
         return;
     }
 

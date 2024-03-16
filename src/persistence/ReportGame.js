@@ -43,6 +43,7 @@ export async function removeReports(gameKey){
         }
     
         update(gameRef, gameData);
+        alert("Spillet ble fjernet fra rapporterte spill!")
     }
     catch (error){
         console.log(error);

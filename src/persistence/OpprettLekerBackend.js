@@ -37,7 +37,7 @@ export async function retrieveGameInfo(gameID) {
 }
 
 // Function to register a new game
-export async function registerGame(title, description, nPeople, category) {  
+export async function registerGame(title, description, nPeopleMin, nPeopleMax, category, time) {  
     // Henter username fra localStorage
     const username = localStorage.getItem('username') || '';
 
@@ -46,10 +46,12 @@ export async function registerGame(title, description, nPeople, category) {
     var gameData = {
         title: title,
         description: description,
-        nPeople: nPeople, 
+        nPeopleMin: nPeopleMin,
+        nPeopleMax: nPeopleMax,
         registered: Date.now(),
         username: username,
         category: category,
+        time: time,
         nReported: 0
     }
 
@@ -63,7 +65,7 @@ export async function registerGame(title, description, nPeople, category) {
     // Save game data to database under 'games/gameKey'
     return set(newGameRef, gameData)
         .then(() => {
-            console.log("Game registered successfully");
+            // console.log("Game registered successfully");
             return "Game registered successfully";
         })
         .catch((error) => {

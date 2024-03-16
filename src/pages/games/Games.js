@@ -2,14 +2,13 @@ import React, { useState, useEffect, useContext} from 'react';
 import { useParams } from 'react-router-dom';
 import { AuthContext } from '../../AuthContext';
 import './Games.css';
-import './profilePhoto.jpg';
 import { reportGame } from '../../persistence/ReportGame';
 import { favoriteGame, isFavorited, removeFavoriteGame } from '../../persistence/favoriteBackend';
 import { getGameData } from '../../persistence/HjemBackend';
 import { addGameToQueue, isQueued, removeQueuedGame } from '../../persistence/userQueues';
 import { auth } from '../../firebaseConfig';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlay, faUndo, faStar, faTrashAlt, faBan} from '@fortawesome/free-solid-svg-icons';
+import { faPlay, faUndo, faStar, faTrashAlt} from '@fortawesome/free-solid-svg-icons';
 
 const Games = () => {
     const { gameID } = useParams();
@@ -39,7 +38,10 @@ const Games = () => {
                     setGame(foundGame);
                     const userID = auth.currentUser.uid;
                     const isFavoritedGame = await isFavorited(userID, foundGame.gameID);
-                    const isQueuedGame = await isQueued(userID, foundGame.gameID);
+                    const isQueuedGame = await isQueued(foundGame.gameID);
+                    const foundMinutes = foundGame.time;
+                    const foundMinutesInt = parseInt(foundMinutes)
+                    setInitialMinutes(foundMinutesInt);
                     setIsFavoriteGame(isFavoritedGame);
                     setIsQueuedGame(isQueuedGame);
                 } else {
@@ -58,7 +60,6 @@ const Games = () => {
     // if (!game) {
     //     return <p>Loading...</p>;
     // }
-
     const handleReportGame = (game) => {
         reportGame(game.gameID);
         alert(`Spillet ${game.title} (ID: ${game.gameID}) ble rapportert`);
@@ -69,7 +70,7 @@ const Games = () => {
         const alertedGameTitle = game.title;
 
         if (await favoriteGame(alertedGameID)) {
-            console.log(`Spillet ${alertedGameTitle} ble lagt til i favoritter`);
+            // console.log(`Spillet ${alertedGameTitle} ble lagt til i favoritter`);
         }
 
         setIsFavoriteGame(true);
@@ -79,11 +80,13 @@ const Games = () => {
         const queuedGameID = game.gameID;
         const queuedGameTitle = game.title;
         if (await addGameToQueue(queuedGameID)) {
-            console.log(`Spillet ${queuedGameTitle} ble lagt til i køen`);
+            // console.log(`Spillet ${queuedGameTitle} ble lagt til i køen`);
         }
         
         setIsQueuedGame(true);
     };
+
+  
       
     useEffect(() => {
         let intervalId;
@@ -109,12 +112,30 @@ const Games = () => {
     
 
     const handleMinuteInputChange = (e) => {
-        setInitialMinutes(parseInt(e.target.value));
+        const newValue = e.target.value === "" ? 0 : parseInt(e.target.value);
+        if (!isNaN(newValue) && newValue >= 0) {
+            setInitialMinutes(newValue);
+        } else {
+            // Optionally handle invalid input, e.g., set to 0 or leave unchanged
+            setInitialMinutes(0);
+        }
     };
         
     const handleSecondInputChange = (e) => {
-        setInitialSeconds(parseInt(e.target.value));
+        let newValue = e.target.value === "" ? 0 : parseInt(e.target.value);
+        if (!isNaN(newValue) && newValue >= 0) {
+            // Check if seconds exceed 60 and adjust minutes and seconds accordingly
+            const extraMinutes = Math.floor(newValue / 60);
+            const adjustedSeconds = newValue % 60;
+            // Update minutes and seconds based on the calculation
+            setInitialMinutes((prevMinutes) => prevMinutes + extraMinutes);
+            setInitialSeconds(adjustedSeconds);
+        } else {
+            // Optionally handle invalid input, e.g., set to 0 or leave unchanged
+            setInitialSeconds(0);
+        }
     };
+
 
     if (!game) {
         return <p>Fant ikke spillet.</p>;
@@ -125,7 +146,7 @@ const Games = () => {
         setIsFavoriteGame(false);
         removeFavoriteGame(game.gameID)
             .then(() => {
-                console.log("Game removed from favorites successfully");
+                // console.log("Game removed from favorites successfully");
             })
             .catch((error) => {
                 console.log("Error removing game from favorites: ", error);
@@ -136,7 +157,7 @@ const Games = () => {
         setIsQueuedGame(false);
         removeQueuedGame(game.gameID)
             .then(() => {
-                console.log("Game removed from queued games successfully");
+                // console.log("Game removed from queued games successfully");
             })
             .catch((error) => {
                 console.log("Error removing game from queued games: ", error);
@@ -145,7 +166,11 @@ const Games = () => {
 
 
     const startCountdown = () => {
-      if(isActive){
+        if (initialMinutes < 0 || initialSeconds < 0) {
+            console.error('Initial time cannot be negative.');
+            return;
+        }
+        if(isActive){
         setIsActive(false);
         setMinutes(minutes);
         setSeconds(seconds);
@@ -231,7 +256,7 @@ const Games = () => {
 
                   <div className='aboutGame'>
                       <div className='aboutItem'>
-                          <h4>Antall: {game.nPeople}</h4>
+                          <h4>Antall: {game.nPeopleMin} - {game.nPeopleMax}</h4>
                       </div>
                       <div className='aboutItem'>
                           <h4>Kategori: {game.category}</h4>
@@ -247,18 +272,18 @@ const Games = () => {
                       <input
                         className='timeInputField'
                         type="number"
-                        value={initialMinutes}
+                        value={initialMinutes === 0 ? "" : initialMinutes}
                         onChange={handleMinuteInputChange}
                         disabled={isActive}
-                      />
-                      <span className='unit'> minutter </span>
-                      <input
+                    />
+
+                    <input
                         className='timeInputField'
                         type="number"
-                        value={initialSeconds}
+                        value={initialSeconds === 0 ? "" : initialSeconds}
                         onChange={handleSecondInputChange}
                         disabled={isActive}
-                      />
+                    />
                       <span className='unit'> sekunder </span>
                       </div>
                       <div className='timerDiv'>
@@ -317,11 +342,11 @@ const Games = () => {
                             </textarea>
                         </div>
                         <div class='ratingDiv'>
-                            <FontAwesomeIcon icon={faStar} className='star' data-index="1" onClick={highlightStars} onMouseOut={() => {setMyReview(0)}}/>
-                            <FontAwesomeIcon icon={faStar} className='star' data-index="2" onClick={highlightStars} onMouseOut={() => {setMyReview(0)}}/>
-                            <FontAwesomeIcon icon={faStar} className='star' data-index="3" onClick={highlightStars} onMouseOut={() => {setMyReview(0)}}/>
-                            <FontAwesomeIcon icon={faStar} className='star' data-index="4" onClick={highlightStars} onMouseOut={() => {setMyReview(0)}}/>
-                            <FontAwesomeIcon icon={faStar} className='star' data-index="5" onClick={highlightStars} onMouseOut={() => {setMyReview(0)}}/>
+                            <FontAwesomeIcon icon={faStar} className='star' data-index="1" onClick={highlightStars}/>
+                            <FontAwesomeIcon icon={faStar} className='star' data-index="2" onClick={highlightStars}/>
+                            <FontAwesomeIcon icon={faStar} className='star' data-index="3" onClick={highlightStars}/>
+                            <FontAwesomeIcon icon={faStar} className='star' data-index="4" onClick={highlightStars}/>
+                            <FontAwesomeIcon icon={faStar} className='star' data-index="5" onClick={highlightStars}/>
                             <div className='sendButton' onClick={handleSendComment}>
                                 <h2>Send</h2>
                             </div>
