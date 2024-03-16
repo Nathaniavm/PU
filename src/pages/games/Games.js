@@ -8,6 +8,7 @@ import { addGameToQueue, isQueued, removeQueuedGame } from '../../persistence/us
 import { auth } from '../../firebaseConfig';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlay, faUndo } from '@fortawesome/free-solid-svg-icons';
+import { addReview } from '../../persistence/GameReviews';
 
 const Games = () => {
     const { gameID } = useParams();
@@ -167,6 +168,11 @@ const Games = () => {
       setSeconds(initialSeconds);
     };
 
+    const handleAddReview = async (game) => {
+        const text = document.getElementById('minid').value;
+        const a = await addReview(game.gameID, 2, text);
+    }
+
     return (
         <div>
             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
@@ -248,6 +254,9 @@ const Games = () => {
                         <i className="fa fa-flag"></i> Rapporter
                     </button>
                 </div>
+
+            <button onClick={() => handleAddReview(game)}>Klikk på meg!</button>
+            <input type="text" id="minid" name="minid"></input>
             </div>
         </div>
       </div>

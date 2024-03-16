@@ -1,4 +1,4 @@
-import { ref, set, query, get, remove, limitToLast, orderByKey, orderByChild, equalTo, push } from 'firebase/database';
+import { ref, set, query, get, remove, update, limitToLast, orderByKey, orderByChild, equalTo, push } from 'firebase/database';
 import { database } from '../firebaseConfig'; //Import firebase instance
 import { removeFavoriteGame } from './favoriteBackend';
 import { removeQueuedGame } from './userQueues';
@@ -52,7 +52,9 @@ export async function registerGame(title, description, nPeopleMin, nPeopleMax, c
         username: username,
         category: category,
         time: time,
-        nReported: 0
+        nReported: 0,
+        nEvaluations: 0,
+        averageScore: 0
     }
 
     // Get the current number of games
@@ -73,6 +75,36 @@ export async function registerGame(title, description, nPeopleMin, nPeopleMax, c
             throw error;
         });
 }
+
+
+export async function updateAverageScore(gameID, score){
+
+    var gameRef = ref(database, `games/${gameID}`);
+
+    const gamesRef = ref(database, "games");
+    const scoreGameRef = query(gamesRef, orderByKey(), equalTo(gameID));
+    const snapshot = await get(scoreGameRef);
+
+    if (snapshot.exists()) {
+        const scoreGame = Object.values(snapshot.val())[0];
+
+        const oldAverageScore = scoreGame.averageScore;
+        console.log(scoreGame);
+        const n = scoreGame.nEvaluations;
+        const newAverageScore = (oldAverageScore * n + score) / (n + 1);
+
+        const newScoreData = {
+            averageScore: newAverageScore,
+            nEvaluations: n + 1
+        }
+        
+        update(gameRef, newScoreData);
+        console.log("nyscore: ", newAverageScore);
+    }
+
+
+}
+
 
 export async function deleteGame(gameID){
     
