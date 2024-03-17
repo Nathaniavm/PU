@@ -1,5 +1,5 @@
 import { gameIDExists, updateAverageScore } from "./OpprettLekerBackend";
-import { ref, set, query, get, orderByChild, equalTo, push } from 'firebase/database';
+import { ref, set, update, query, get, orderByChild, equalTo, push } from 'firebase/database';
 import { auth, database } from '../firebaseConfig';
 
 
@@ -64,6 +64,41 @@ export async function retrieveReviews(gameID){
     }
     
 }
+
+
+export async function reportReview(reviewID){
+    try {
+        var userID = auth.currentUser.uid;
+
+        var reviewRef = ref(database, `gameReviews/${reviewID}`);
+
+        const reviewsRef = ref(database, "gameReviews");
+        const reportedReviewQuery = query(reviewsRef, orderByChild("gameID"), equalTo(String(reviewID)));
+        const snapshot = await get(reportedReviewQuery);
+
+        if (snapshot.exists()) {
+            
+            const value = snapshot.val();
+            const numberOfReports = Object.values(value)[0].nReported;
+    
+            var reviewData = {
+                nReported: numberOfReports + 1
+            }
+        
+            update(reviewRef, reviewData);
+        }
+        else {
+            alert("Evaluering eksisterer ikke");
+        }
+    }
+    catch (error){
+        console.log("Error med query til databasen ved søking etter evaluering: " + error);
+        return false;
+    }
+ 
+}
+
+
 
 export async function deleteReview(gameID){
 

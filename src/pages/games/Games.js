@@ -328,8 +328,6 @@ const Games = () => {
                     </button>
                 </div>
 
-            <button onClick={() => handleAddReview(game)}>Klikk på meg!</button>
-            <input type="text" id="minid" name="minid"></input>
             </div>
             <div className='reviewContainer'>
                 <div className='reviewTitle'>
