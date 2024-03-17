@@ -3,10 +3,6 @@ import { ref, set, query, get, orderByChild, equalTo, push } from 'firebase/data
 import { auth, database } from '../firebaseConfig';
 
 
-
-
-
-
 export async function addReview(gameID, rating, evaluation){
 
     if(await gameIDExists(gameID)){

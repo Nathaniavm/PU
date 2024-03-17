@@ -32,6 +32,7 @@ async function getGameData() {
                     nPeopleMax: gameData.nPeopleMax,
                     nReported: gameData.nReported,
                     time: gameData.time,
+                    averageScore: gameData.averageScore,
                 };
 
                 // Push the placeholder game to the placeholderGames array

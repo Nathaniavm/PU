@@ -450,3 +450,30 @@
 .button:hover{
     box-shadow: 0 3px 4px 0 #6c84c8, 0 4px 10px 0 #c0ccee;
 }
+
+.headerContainer{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+}
+.gameHeaderLeft{
+    display: flex;
+    align-items: center;
+    width: 21%;
+}
+.gameTitle{
+    width: 58%;
+    display: flex;
+    justify-content: center;
+}
+.gameHeaderRight{
+
+    color: var(--Header-Color);
+    font-size: 2vw;
+    text-align: center;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 21%;
+}
