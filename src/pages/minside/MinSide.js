@@ -5,15 +5,12 @@ import { removeReports } from '../../persistence/ReportGame';
 import {Link } from 'react-router-dom';
 import '../hjem/Hjem.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTrashAlt } from '@fortawesome/free-solid-svg-icons'; 
-import { faStepBackward } from '@fortawesome/free-solid-svg-icons';
-import { faStepForward  } from '@fortawesome/free-solid-svg-icons';
 import { getGameData } from '../../persistence/HjemBackend';
 import { listFavorites } from '../../persistence/favoriteBackend';
 import { deleteGame, gameTitleExists, retrieveGameInfo } from '../../persistence/OpprettLekerBackend';
 import { retrieveQueue } from '../../persistence/userQueues';
 import useTimer from '../../common/timer/Timer';
-import { faPlay, faUndo } from '@fortawesome/free-solid-svg-icons';
+import { faPlay, faUndo, faTrashAlt, faStepBackward, faStepForward, faSquareCheck } from '@fortawesome/free-solid-svg-icons';
 
 var games = await getGameData();
 
@@ -27,7 +24,7 @@ const MinSide = () => {
   //Timer variables
   const [initialMinutes, setInitialMinutes] = useState(1);
   const [initialSeconds, setInitialSeconds] = useState(0);
-  const { minutes, seconds, isActive, startCountdown, resetCountdown, setMinutes, setIsActive } = useTimer(initialMinutes, initialSeconds);
+  const { minutes, seconds, isActive, startCountdown, resetCountdown, setMinutes, setSeconds, setIsActive } = useTimer(initialMinutes, initialSeconds);
 
   // State variable to store reported games
   const [deletedGames, setDeletedGames] = useState([]);
@@ -42,7 +39,7 @@ const MinSide = () => {
     setInitialMinutes(queuedGames[newIndex].time);
     setMinutes(queuedGames[newIndex].time);
     setIsActive(false);
-  }, [currentIndex, queuedGames, setMinutes]);
+  }, [currentIndex, queuedGames, setMinutes, setIsActive]);
 
   useEffect(() => {
     const fetchFavoritesAndQueue = async () => {
@@ -79,23 +76,25 @@ const MinSide = () => {
     if(minutes === 0 && seconds === 0){
       handleNext()
     }
-  },[minutes, seconds, handleNext]);
-
-
+    if(minutes < 0 || seconds < 0) {
+      setMinutes(10)
+      setSeconds(0)
+    }
+  },[minutes, seconds, handleNext, setMinutes, setSeconds]);
 
 
    // Function to handle reporting a game
-   const handleDeleteGame = (gameID) => {
+    const handleDeleteGame = (gameID) => {
       deleteGame(gameID);
        // Add the reported game to the reportedGames state variable
        setDeletedGames([...deletedGames, gameID]);
        // You can also perform additional actions here such as making an API call to report the game to the backend
       //  console.log("Spillet " + gameID + " er slettet");
-   };
+    };
 
-
-
-    
+    const handleKeepGame = (gameID) => {
+      removeReports(gameID);
+    }
 
     const handlePrevious = () => {
       let index = currentIndex;
@@ -128,6 +127,9 @@ const MinSide = () => {
         }
     }
 
+    var reportedReviewsList = [];
+
+
 
     // Event handlers for timer input fields
     const handleMinuteInputChange = (e) => {
@@ -138,6 +140,15 @@ const MinSide = () => {
         setInitialSeconds(parseInt(e.target.value));
     };
 
+    const handleDeleteReview = (reviewID) => {
+      //backend delete review
+      //alert("Slettet vurderingen")
+    }
+
+    const handleKeepReview = (reviewID) => {
+      //backend keep review
+      //alert("Fjernet rapporteringen av vurderingen")
+    }
     
 
   return (
@@ -266,6 +277,7 @@ const MinSide = () => {
             )}
           </div>
           {isAdmin && (
+          <div className="adminViewMinSide">
             <div className='RapportedUsersDiv'>
               <div className='HeaderInDiv'>
                 <h1>Rapporterte spill</h1>
@@ -277,6 +289,7 @@ const MinSide = () => {
                     <th>Kategori</th>
                     <th>Antall ganger rapportert</th>
                     <th>Slett spill</th>
+                    <th>Behold spill</th>
                   </tr>
                   {reportedGamesList.map((game, index) => (
                       <tr key={index}>
@@ -288,12 +301,48 @@ const MinSide = () => {
                           <td className='ReportedGameDelete' onClick={() => handleDeleteGame(game.gameID)}>
                             <FontAwesomeIcon icon={faTrashAlt} />
                           </td>
+                          <td className='ReportedGameKeep' onClick={() => handleKeepGame(game.gameID)}>
+                            <FontAwesomeIcon icon={faSquareCheck}/>
+                          </td>
                       </tr>
                   ))}
                 </thead>
 
               </table>
             </div>
+            <div className="reportedReviews RapportedUsersDiv">
+              <div className='HeaderInDiv'>
+                <h1>Rapporterte vurderinger</h1>
+              </div>
+              <table className='ulReportedGame'>
+                <thead>
+                  <tr>
+                    <th>Navn på spill</th>
+                    <th>Rapportert vurdering</th>
+                    <th>Antall ganger rapportert</th>
+                    <th>Slett vurdering</th>
+                    <th>Behold vurdering</th>
+                  </tr>
+                  {reportedGamesList.map((game, index) => (
+                      <tr key={index}>
+                          <td className="ReportedGameTitle"> 
+                              <Link to={`/game/${game.gameID}`} key={index} className="gamesSquare">{game.title}</Link>
+                          </td>
+                          <td className="ReportedGameCategory">{game.category}</td>
+                          <td className="ReportedGameReportCount">Reports: {game.nReported}</td>
+                          <td className='ReportedGameDelete' onClick={() => handleDeleteReview(game.gameID)}>
+                            <FontAwesomeIcon icon={faTrashAlt} />
+                          </td>
+                          <td className='ReportedGameKeep' onClick={() => handleKeepReview(game.gameID)}>
+                            <FontAwesomeIcon icon={faSquareCheck}/>
+                          </td>
+                      </tr>
+                  ))}
+                </thead>
+
+              </table>
+            </div>
+          </div>
           )}
         </div>
       ) : (
