@@ -4,9 +4,6 @@ import { auth, database } from '../firebaseConfig';
 
 
 
-
-
-
 export async function addReview(gameID, rating, evaluation){
 
     if(await gameIDExists(gameID)){
@@ -47,8 +44,6 @@ export async function addReview(gameID, rating, evaluation){
 
 export async function retrieveReviews(gameID){
     try {
-        var userID = auth.currentUser.uid;
-
         const reviewRef = ref(database, "gameReviews");
         const reviewsForGameQuery = query(reviewRef, orderByChild("gameID"), equalTo(gameID));
         const snapshot = await get(reviewsForGameQuery);
