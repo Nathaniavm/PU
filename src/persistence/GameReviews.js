@@ -163,3 +163,22 @@ export async function keepReview(reviewID){
         console.log("The game is no longer flagged");
     }
 }
+
+export async function updateReview(reviewID, content) {
+    // FÅR IKKE TESTA KODEN SÅ IKKE 100% SIKKER PÅ AT DET FUNKER
+
+    const revRef = ref(database, "gameReviews/" + reviewID);
+
+    const snapshot = await get(revRef);
+
+    if (snapshot.exists()) {
+        const newUpdateValue = {
+            evaluation: content
+        }
+        update(revRef, newUpdateValue);
+        console.log("The review has been updated");
+    }
+    else {
+        console.log("The review doesn't exist!");
+    }
+}
