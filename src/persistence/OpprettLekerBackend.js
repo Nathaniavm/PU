@@ -78,7 +78,7 @@ export async function registerGame(title, description, nPeopleMin, nPeopleMax, c
 }
 
 
-export async function updateAverageScore(gameID, score){
+export async function updateAverageScore(gameID, score, removed){
 
     var gameRef = ref(database, `games/${gameID}`);
 
@@ -92,7 +92,14 @@ export async function updateAverageScore(gameID, score){
         const oldAverageScore = scoreGame.averageScore;
         // console.log("Gammel score: " + scoreGame);
         const n = scoreGame.nEvaluations;
-        const newAverageScore = (oldAverageScore * n + score) / (n + 1);
+
+        // removed is true if a review is deleted, false if a new review is written 
+        if(removed){
+            const newAverageScore = (oldAverageScore * n - score) / (n - 1);
+        }
+        else{
+            const newAverageScore = (oldAverageScore * n + score) / (n + 1);
+        }
 
         const newScoreData = {
             averageScore: newAverageScore,

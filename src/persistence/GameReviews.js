@@ -22,7 +22,7 @@ export async function addReview(gameID, rating, evaluation){
                 nReported: 0
             }
 
-            updateAverageScore(gameID, rating);
+            updateAverageScore(gameID, rating, false);
     
             return set(newReviewRef, reviewData)
                 .then(() => {
@@ -68,8 +68,6 @@ export async function retrieveReviews(gameID){
 
 export async function reportReview(reviewID){
     try {
-        var userID = auth.currentUser.uid;
-
         var reviewRef = ref(database, `gameReviews/${reviewID}`);
 
         const reviewsRef = ref(database, "gameReviews");
@@ -110,6 +108,10 @@ export async function deleteReviewByGameID(gameID){
         snapshot.forEach((childSnapshot) => {
             const reviewKey = childSnapshot.key;
 
+
+            updateAverageScore(gameID, rating, true);
+
+
             const reviewToRemoveRef = child(reviewRef, reviewKey);
             remove(reviewToRemoveRef)
             .then(() => {
@@ -125,8 +127,23 @@ export async function deleteReviewByGameID(gameID){
     // }
 }
 
-export function deleteReviewByReviewID(reviewID){
+export async function deleteReviewByReviewID(reviewID){
     reviewRef = ref(database, "gameReviews/" + reviewID);
+
+
+
+    //FINNES SIKKERT BEDRE LØSNING
+
+    //get gameID to update average score
+    const reviewsRef = ref(database, "gameReviews");
+    const reportedReviewQuery = query(reviewsRef, orderByKey(), equalTo(String(reviewID)));
+    const snapshot = await get(reportedReviewQuery);
+    if (snapshot.exists()) {
+        const gameID = Object.values(snapshot.val())[0].gameID;
+
+        updateAverageScore(gameID, rating, true);
+    }
+
 
     remove(reviewRef);
 }
