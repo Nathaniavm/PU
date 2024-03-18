@@ -99,14 +99,16 @@ export async function reportReview(reviewID){
 
 
 export async function deleteReviewByGameID(gameID){
-    reviewRef = ref(database, "gameReviews/");
+    const reviewRef = ref(database, "gameReviews/");
 
-    reviewQuery = query(reviewRef, orderByChild(gameID), equalTo(gameID));
+    const reviewQuery = query(reviewRef, orderByChild(gameID), equalTo(gameID));
     const snapshot = await get(reviewQuery);
 
     if (snapshot.exists()) {
         snapshot.forEach((childSnapshot) => {
             const reviewKey = childSnapshot.key;
+
+            const rating = Object.values(snapshot.val())[0].rating;
 
 
             updateAverageScore(gameID, rating, true);
@@ -128,7 +130,7 @@ export async function deleteReviewByGameID(gameID){
 }
 
 export async function deleteReviewByReviewID(reviewID){
-    reviewRef = ref(database, "gameReviews/" + reviewID);
+    const reviewRef = ref(database, "gameReviews/" + reviewID);
 
 
 
@@ -139,7 +141,9 @@ export async function deleteReviewByReviewID(reviewID){
     const reportedReviewQuery = query(reviewsRef, orderByKey(), equalTo(String(reviewID)));
     const snapshot = await get(reportedReviewQuery);
     if (snapshot.exists()) {
-        const gameID = Object.values(snapshot.val())[0].gameID;
+        const values = Object.values(snapshot.val())[0];
+        const gameID = values.gameID;
+        const rating = values.rating;
 
         updateAverageScore(gameID, rating, true);
     }

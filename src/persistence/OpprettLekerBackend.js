@@ -93,12 +93,13 @@ export async function updateAverageScore(gameID, score, removed){
         // console.log("Gammel score: " + scoreGame);
         const n = scoreGame.nEvaluations;
 
+        var newAverageScore;
         // removed is true if a review is deleted, false if a new review is written 
         if(removed){
-            const newAverageScore = (oldAverageScore * n - score) / (n - 1);
+            newAverageScore = (oldAverageScore * n - score) / (n - 1);
         }
         else{
-            const newAverageScore = (oldAverageScore * n + score) / (n + 1);
+            newAverageScore = (oldAverageScore * n + score) / (n + 1);
         }
 
         const newScoreData = {
