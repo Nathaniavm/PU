@@ -37,14 +37,16 @@ const Games = () => {
                 const foundGame = games.find(game => game.gameID === gameID);
                 if (foundGame) {
                     setGame(foundGame);
-                    const userID = auth.currentUser.uid;
-                    const isFavoritedGame = await isFavorited(userID, foundGame.gameID);
-                    const isQueuedGame = await isQueued(foundGame.gameID);
+                    if (isLoggedIn) {
+                        const userID = auth.currentUser.uid;
+                        const isFavoritedGame = await isFavorited(userID, foundGame.gameID);
+                        const isQueuedGame = await isQueued(foundGame.gameID);  
+                        setIsFavoriteGame(isFavoritedGame);
+                        setIsQueuedGame(isQueuedGame);      
+                    }
                     const foundMinutes = foundGame.time;
                     const foundMinutesInt = parseInt(foundMinutes)
                     setInitialMinutes(foundMinutesInt);
-                    setIsFavoriteGame(isFavoritedGame);
-                    setIsQueuedGame(isQueuedGame);
                 } else {
                     console.log('Game not found.');
                 }
@@ -304,13 +306,16 @@ const Games = () => {
                     </div>
                 </div>
                 <div className='buttonsContainer'>
+                {/* If the user is logged in: */}
+                { isLoggedIn && (
+                    <>
                 {!isFavoriteGame ? (
                     <button className='moreButton favoriteButton' type='button' onClick={() => handleMakeFavoriteGame(game)}>
-                        <i className="fa fa-heart"></i> Favoritt
+                        <i className="fa fa-heart"></i> Favorisér
                     </button>
                 ) : (
                     <button className='moreButton removeButton' type='button' onClick={() => handleRemoveFavoriteGame(game)}>
-                        <i className="fa fa-heart"></i> Fjern Favoritt
+                        <i className="fa fa-heart"></i> Fjern Favorisering
                     </button>
                 )}
                 {!isQueuedGame ? (
@@ -322,10 +327,19 @@ const Games = () => {
                         <i className="fa fa-minus"></i> Fjern fra kø
                     </button>
                 )}
+                </>
+                )}
+                {/* If the user is not logged in: */}
+                { !isLoggedIn && (
+                    <>
+                    <span>Logg inn for å få tilgang til å favorisere leker, eller lage en kø</span>
+                    </>
+                    )}
 
                     <button className='moreButton reportButton' type='button' onClick={() => handleReportGame(game)}>
-                        <i className="fa fa-flag"></i> Rapporter
+                        <i className="fa fa-flag"></i> rapportér
                     </button>
+
                 </div>
 
             </div>
@@ -335,15 +349,15 @@ const Games = () => {
                 </div>
                 {isLoggedIn ? (
                 <div className='myReviewBox'>
-                    <div class='profilePhotoBox'>
-                        <img src={require('./profilePhoto2.jpg')} alt='Profile Photo' class='profileImage' />
+                    <div className='profilePhotoBox'>
+                        <img src={require('./profilePhoto2.jpg')} alt='Profile Photo' className='profileImage' />
                     </div>
                     <div className='writeReviewDiv'>
                         <div className='textAreaDiv'>
                             <textarea className='writeReviewBox'value={myReview || ''} placeholder='Skriv din anmeldelse' onChange={handleMyReviewEditing}>
                             </textarea>
                         </div>
-                        <div class='ratingDiv'>
+                        <div className='ratingDiv'>
                             <FontAwesomeIcon icon={faStar} className='star' data-index="1" onClick={highlightStars}/>
                             <FontAwesomeIcon icon={faStar} className='star' data-index="2" onClick={highlightStars}/>
                             <FontAwesomeIcon icon={faStar} className='star' data-index="3" onClick={highlightStars}/>
@@ -361,7 +375,7 @@ const Games = () => {
                 {comments.map((comment, index) => (
                     <div key={index} className='othersReviewBox'>
                         <div className='profilePhotoBox'>
-                            <img src={require('./profilePhoto2.jpg')} alt='Profile Photo' class='profileImage' />
+                            <img src={require('./profilePhoto2.jpg')} alt='Profile Photo' className='profileImage' />
                         </div>
                         <div className='writeReviewDiv'>
                             <div className='textAreaDiv'>
@@ -369,8 +383,8 @@ const Games = () => {
                                     <h2>{comment.username}</h2>
                                     <div className='actualOthersReview'>
                                         <h5>{comment.comment}</h5>
-                                        <div class='othersRatingDiv'>
-                                            <div class='starsReviewed'>
+                                        <div className='othersRatingDiv'>
+                                            <div className='starsReviewed'>
                                                 <h1>{comment.stars}/5</h1>
                                                 <FontAwesomeIcon icon={faStar} className='othersStar'/>
                                             </div>
@@ -388,8 +402,8 @@ const Games = () => {
                 
 
                 <div className='othersReviewBox'>
-                    <div class='profilePhotoBox'>
-                        <img src={require('./profilePhoto2.jpg')} alt='Profile Photo' class='profileImage' />
+                    <div className='profilePhotoBox'>
+                        <img src={require('./profilePhoto2.jpg')} alt='Profile Photo' className='profileImage' />
                     </div>
                     <div className='writeReviewDiv'>
                         <div className='textAreaDiv'>
@@ -397,13 +411,13 @@ const Games = () => {
                                 <h2> James Heui </h2>
                                 <div className='actualOthersReview'>
                                     <h5> Artig spill!</h5>
-                                    <div class='othersRatingDiv'>
-                                        <div class='starsReviewed'>
+                                    <div className='othersRatingDiv'>
+                                        <div className='starsReviewed'>
                                             <h1>4/5</h1>
                                             <FontAwesomeIcon icon={faStar} className='othersStar'/>
                                         </div>
                                         <div className='trashDiv'>
-                                        <span>Rapporter</span> 
+                                        <span>Rapportér</span> 
                                         <span className="icon"><i className="fa fa-flag"></i></span>
                                         </div>
                                     </div>
@@ -414,8 +428,8 @@ const Games = () => {
                 </div>
 
                 <div className='othersReviewBox'>
-                    <div class='profilePhotoBox'>
-                        <img src={require('./profilePhoto2.jpg')} alt='Profile Photo' class='profileImage' />
+                    <div className='profilePhotoBox'>
+                        <img src={require('./profilePhoto2.jpg')} alt='Profile Photo' className='profileImage' />
                     </div>
                     <div className='writeReviewDiv'>
                         <div className='textAreaDiv'>
@@ -423,13 +437,13 @@ const Games = () => {
                                 <h2> Brukernavn123 </h2>
                                 <div className='actualOthersReview'>
                                     <h5> Fantastisk nettside! Elsker spesielt dette spillet!</h5>
-                                    <div class='othersRatingDiv'>
-                                        <div class='starsReviewed'>
+                                    <div className='othersRatingDiv'>
+                                        <div className='starsReviewed'>
                                             <h1>5/5</h1>
                                             <FontAwesomeIcon icon={faStar} className='othersStar'/>
                                         </div>
                                         <div className='trashDiv'>
-                                        <span>Rapporter</span> 
+                                        <span>rapportér</span> 
                                         <span className="icon"><i className="fa fa-flag"></i></span>
                                         </div>
                                     </div>
@@ -446,15 +460,15 @@ const Games = () => {
                 </div>
                 {isLoggedIn ? (
                 <div className='myReviewBox'>
-                    <div class='profilePhotoBox'>
-                        <img src={require('./profilePhoto2.jpg')} alt='Profile Photo' class='profileImage' />
+                    <div className='profilePhotoBox'>
+                        <img src={require('./profilePhoto2.jpg')} alt='Profile Photo' className='profileImage' />
                     </div>
                     <div className='writeReviewDiv'>
                         <div className='textAreaDiv'>
                             <textarea className='writeReviewBox'value={myReview || ''} placeholder='Skriv din anmeldelse' onChange={handleMyReviewEditing}>
                             </textarea>
                         </div>
-                        <div class='ratingDiv'>
+                        <div className='ratingDiv'>
                             <FontAwesomeIcon icon={faStar} className='star' data-index="1" onClick={highlightStars}/>
                             <FontAwesomeIcon icon={faStar} className='star' data-index="2" onClick={highlightStars}/>
                             <FontAwesomeIcon icon={faStar} className='star' data-index="3" onClick={highlightStars}/>
@@ -472,7 +486,7 @@ const Games = () => {
                 {comments.map((comment, index) => (
                     <div key={index} className='othersReviewBox'>
                         <div className='profilePhotoBox'>
-                            <img src={require('./profilePhoto2.jpg')} alt='Profile Photo' class='profileImage' />
+                            <img src={require('./profilePhoto2.jpg')} alt='Profile Photo' className='profileImage' />
                         </div>
                         <div className='writeReviewDiv'>
                             <div className='textAreaDiv'>
@@ -480,8 +494,8 @@ const Games = () => {
                                     <h2>{comment.username}</h2>
                                     <div className='actualOthersReview'>
                                         <h5>{comment.comment}</h5>
-                                        <div class='othersRatingDiv'>
-                                            <div class='starsReviewed'>
+                                        <div className='othersRatingDiv'>
+                                            <div className='starsReviewed'>
                                                 <h1>{comment.stars}/5</h1>
                                                 <FontAwesomeIcon icon={faStar} className='othersStar'/>
                                             </div>
@@ -499,8 +513,8 @@ const Games = () => {
                 
 
                 <div className='othersReviewBox'>
-                    <div class='profilePhotoBox'>
-                        <img src={require('./profilePhoto2.jpg')} alt='Profile Photo' class='profileImage' />
+                    <div className='profilePhotoBox'>
+                        <img src={require('./profilePhoto2.jpg')} alt='Profile Photo' className='profileImage' />
                     </div>
                     <div className='writeReviewDiv'>
                         <div className='textAreaDiv'>
@@ -508,13 +522,13 @@ const Games = () => {
                                 <h2> James Heui </h2>
                                 <div className='actualOthersReview'>
                                     <h5> Artig spill!</h5>
-                                    <div class='othersRatingDiv'>
-                                        <div class='starsReviewed'>
+                                    <div className='othersRatingDiv'>
+                                        <div className='starsReviewed'>
                                             <h1>4/5</h1>
                                             <FontAwesomeIcon icon={faStar} className='othersStar'/>
                                         </div>
                                         <div className='trashDiv'>
-                                        <span>Rapporter</span> 
+                                        <span>rapportér</span> 
                                         <span className="icon"><i className="fa fa-flag"></i></span>
                                         </div>
                                     </div>
@@ -525,8 +539,8 @@ const Games = () => {
                 </div>
 
                 <div className='othersReviewBox'>
-                    <div class='profilePhotoBox'>
-                        <img src={require('./profilePhoto2.jpg')} alt='Profile Photo' class='profileImage' />
+                    <div className='profilePhotoBox'>
+                        <img src={require('./profilePhoto2.jpg')} alt='Profile Photo' className='profileImage' />
                     </div>
                     <div className='writeReviewDiv'>
                         <div className='textAreaDiv'>
@@ -534,13 +548,13 @@ const Games = () => {
                                 <h2> Brukernavn123 </h2>
                                 <div className='actualOthersReview'>
                                     <h5> Fantastisk nettside! Elsker spesielt dette spillet!</h5>
-                                    <div class='othersRatingDiv'>
-                                        <div class='starsReviewed'>
+                                    <div className='othersRatingDiv'>
+                                        <div className='starsReviewed'>
                                             <h1>5/5</h1>
                                             <FontAwesomeIcon icon={faStar} className='othersStar'/>
                                         </div>
                                         <div className='trashDiv'>
-                                        <span>Rapporter</span> 
+                                        <span>rapportér</span> 
                                         <span className="icon"><i className="fa fa-flag"></i></span>
                                         </div>
                                     </div>
