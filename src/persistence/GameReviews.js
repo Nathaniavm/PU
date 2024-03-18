@@ -1,5 +1,5 @@
 import { gameIDExists, updateAverageScore } from "./OpprettLekerBackend";
-import { ref, set, update, query, get, orderByChild, equalTo, push } from 'firebase/database';
+import { ref, set, update, query, get, orderByChild, equalTo, push, child, remove, orderByKey } from 'firebase/database';
 import { auth, database } from '../firebaseConfig';
 
 
@@ -100,6 +100,85 @@ export async function reportReview(reviewID){
 
 
 
-export async function deleteReview(gameID){
+export async function deleteReviewByGameID(gameID){
+    reviewRef = ref(database, "gameReviews/");
 
+    reviewQuery = query(reviewRef, orderByChild(gameID), equalTo(gameID));
+    const snapshot = await get(reviewQuery);
+
+    if (snapshot.exists()) {
+        snapshot.forEach((childSnapshot) => {
+            const reviewKey = childSnapshot.key;
+
+            const reviewToRemoveRef = child(reviewRef, reviewKey);
+            remove(reviewToRemoveRef)
+            .then(() => {
+                // console.log("Review removed successfully");
+            })
+            .catch((error) => {
+                console.log("Error removing review: " + error);
+            })
+        })
+    }
+    // else {
+    //     console.log("This game is not reviewed");
+    // }
+}
+
+export function deleteReviewByReviewID(reviewID){
+    reviewRef = ref(database, "gameReviews/" + reviewID);
+
+    remove(reviewRef);
+}
+
+export async function retriveGameFromReview(reviewID){
+    // JEG FÅR IKKE TESTA KODEN SÅ IKKE 100% SIKKER PÅ AT DET FUNKER ENDA
+
+    // Expectes that the review exists
+    const reviewRef = ref(database, "gameReviews/" + reviewID);
+    const snapsnot = await get(reviewRef);
+
+    if (snapsnot.exists()) {
+        const reviewData = snapsnot.val();
+        const gameID = reviewData.gameID;
+
+        return gameID;
+    }
+    else {
+        console.log("That review doesn't exist!");
+    }
+}
+
+export async function keepReview(reviewID){
+    // JEG FÅR IKKE TESTA KODEN SÅ IKKE 100% SIKKER PÅ AT DET FUNKER ENDA
+    const revRef = ref(database, "gameReviews/" + reviewID);
+
+    const snapshot = await get(revRef);
+
+    if (snapshot.exists()) {
+        const newUpdateValue = {
+            nReported: 0
+        }
+        update(revRef, newUpdateValue);
+        console.log("The game is no longer flagged");
+    }
+}
+
+export async function updateReview(reviewID, content) {
+    // FÅR IKKE TESTA KODEN SÅ IKKE 100% SIKKER PÅ AT DET FUNKER
+
+    const revRef = ref(database, "gameReviews/" + reviewID);
+
+    const snapshot = await get(revRef);
+
+    if (snapshot.exists()) {
+        const newUpdateValue = {
+            evaluation: content
+        }
+        update(revRef, newUpdateValue);
+        console.log("The review has been updated");
+    }
+    else {
+        console.log("The review doesn't exist!");
+    }
 }

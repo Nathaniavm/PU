@@ -134,11 +134,12 @@ export async function removeFavoriteGame(gameID) {
                     // console.log("Game removed from favorites successfully");
                 })
                 .catch((error) => {
-                    console.log("Error removing game from favorites: ", error);
+                    console.error("Error removing game from favorites: ", error);
                     throw error;
                 });
         });
-    } else {
-        console.log("Game doesn't exist in favorites");
-    }
+    } 
+    // else {
+    //     console.log("Game doesn't exist in favorites");
+    // }
 }

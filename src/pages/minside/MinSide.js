@@ -11,6 +11,7 @@ import { deleteGame, gameTitleExists, retrieveGameInfo } from '../../persistence
 import { retrieveQueue } from '../../persistence/userQueues';
 import useTimer from '../../common/timer/Timer';
 import { faPlay, faUndo, faTrashAlt, faStepBackward, faStepForward, faSquareCheck } from '@fortawesome/free-solid-svg-icons';
+import { deleteReviewByReviewID } from '../../persistence/GameReviews';
 
 var games = await getGameData();
 
@@ -44,21 +45,23 @@ const MinSide = () => {
   useEffect(() => {
     const fetchFavoritesAndQueue = async () => {
       try {
-        const favorites = await listFavorites();
-        const queue = await retrieveQueue()
-        // console.log(queue)
-        for(let i = 0; i < favorites.length; i++) {
-          const selectedGame = games.find(game => game.gameID === favorites[i].gameID);
-          setFavoriteGames(prevFavoriteGames => [...prevFavoriteGames, selectedGame]);
-        }
-
-        for(let i = 0; i < queue.length; i++) {
-          const selectedGame = games.find(game => game.gameID === Object.keys(queue[i])[0]);
-          setQueuedGames(prevQueuedGames => [...prevQueuedGames, selectedGame]);
-          if(i === 0){
-            setInitialMinutes(selectedGame.time)
-            setMinutes(selectedGame.time);
+        if (isLoggedIn) {
+          const favorites = await listFavorites();
+          const queue = await retrieveQueue()
+          // console.log(queue)
+          for(let i = 0; i < favorites.length; i++) {
+            const selectedGame = games.find(game => game.gameID === favorites[i].gameID);
+            setFavoriteGames(prevFavoriteGames => [...prevFavoriteGames, selectedGame]);
           }
+  
+          for(let i = 0; i < queue.length; i++) {
+            const selectedGame = games.find(game => game.gameID === Object.keys(queue[i])[0]);
+            setQueuedGames(prevQueuedGames => [...prevQueuedGames, selectedGame]);
+            if(i === 0){
+              setInitialMinutes(selectedGame.time)
+              setMinutes(selectedGame.time);
+            }
+          }  
         }
 
 
@@ -84,8 +87,8 @@ const MinSide = () => {
 
 
    // Function to handle reporting a game
-    const handleDeleteGame = (gameID) => {
-      deleteGame(gameID);
+    const handleDeleteGame = async (gameID) => {
+      await deleteGame(gameID);
        // Add the reported game to the reportedGames state variable
        setDeletedGames([...deletedGames, gameID]);
        // You can also perform additional actions here such as making an API call to report the game to the backend
@@ -142,12 +145,13 @@ const MinSide = () => {
 
     const handleDeleteReview = (reviewID) => {
       //backend delete review
-      //alert("Slettet vurderingen")
+      deleteReviewByReviewID(reviewID);
+      //console.log("Slettet vurderingen")
     }
 
     const handleKeepReview = (reviewID) => {
       //backend keep review
-      //alert("Fjernet rapporteringen av vurderingen")
+      //console.log("Fjernet rapporteringen av vurderingen")
     }
     
 
