@@ -1,5 +1,5 @@
-import { ref, query, get, orderByKey, equalTo } from 'firebase/database';
-import { database } from '../../firebaseConfig';
+import { ref, set, update, query, get, orderByKey, equalTo } from 'firebase/database';
+import { auth, database } from '../firebaseConfig';
 
 export async function retrieveUsername(userID) {
 

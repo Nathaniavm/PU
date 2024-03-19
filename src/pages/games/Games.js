@@ -9,7 +9,8 @@ import { addGameToQueue, isQueued, removeQueuedGame } from '../../persistence/us
 import { auth } from '../../firebaseConfig';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlay, faUndo, faStar, faTrashAlt} from '@fortawesome/free-solid-svg-icons';
-import { addReview } from '../../persistence/GameReviews';
+import { addReview, retrieveReviews } from '../../persistence/GameReviews';
+import { retrieveUsername } from '../../persistence/UserBackend';
 
 const Games = () => {
     const { gameID } = useParams();
@@ -46,7 +47,16 @@ const Games = () => {
                     }
                     const foundMinutes = foundGame.time;
                     const foundMinutesInt = parseInt(foundMinutes)
+                    const reviewArray = await retrieveReviews(foundGame.gameID);
+
+                    for(let i = 0; i < reviewArray.length; i++){
+                        const review = reviewArray[i];
+                        const user = await retrieveUsername(review.userID);
+                        review.username = user;
+
+                    }
                     setInitialMinutes(foundMinutesInt);
+                    setComments(reviewArray);
                 } else {
                     console.log('Game not found.');
                 }
@@ -57,7 +67,6 @@ const Games = () => {
 
         fetchGame();
     }, [gameID]);
-
     // Dette funka ikke så vi får se på det senere
     // // WITH USE EFFECT THE GAME ISN'T LOADED WHEN LOADING IN A PAGE, AND WILL DISPLAY "Fant ikke spillet". TO INSTEAD SAY LOADING:
     // if (!game) {
@@ -228,13 +237,14 @@ const Games = () => {
         console.log('Num stars:', myStarReview);
     }
 
-    const handleSendComment = () => {
+    const handleSendComment = async () => {
         const newComment = {
             username: localStorage.getItem('username') || '',
-            comment: myReview,
-            stars: myStarReview
+            evaluation: myReview,
+            rating: myStarReview
         };
         setComments(prevComments => [...prevComments, newComment]);
+        addReview(game.gameID, myStarReview, myReview);
         setMyReview('');
         resetHighlight();
         
@@ -245,6 +255,7 @@ const Games = () => {
         for (let i = 0; i < 7; i++) {
             deleteDiv = deleteDiv.parentNode;
         }
+        console.log(deleteDiv)
         deleteDiv.remove();
     }
 
@@ -253,9 +264,19 @@ const Games = () => {
             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
             <div className='page'>
               <div className='gamesContainer'>
-                  <div className='gameTitle'>
+                <div className="headerContainer">
+                    <div className="gameHeaderLeft">
+
+                    </div>
+                    <div className='gameTitle'>
                       <h1>{game.title}</h1>
-                  </div>
+                    </div>
+                    <div className="gameHeaderRight">
+                        {game.averageScore}/5
+                        <FontAwesomeIcon icon={faStar} className='othersStar'/>
+                    </div>
+                </div>
+                  
 
                   <div className='aboutGame'>
                       <div className='aboutItem'>
@@ -382,10 +403,10 @@ const Games = () => {
                                 <div className='othersWriteReviewBox'>
                                     <h2>{comment.username}</h2>
                                     <div className='actualOthersReview'>
-                                        <h5>{comment.comment}</h5>
+                                        <h5>{comment.evaluation}</h5>
                                         <div className='othersRatingDiv'>
                                             <div className='starsReviewed'>
-                                                <h1>{comment.stars}/5</h1>
+                                                <h1>{comment.rating}/5</h1>
                                                 <FontAwesomeIcon icon={faStar} className='othersStar'/>
                                             </div>
                                             <div className='myTrashDiv'>
@@ -452,118 +473,6 @@ const Games = () => {
                         </div>
                     </div>
                 </div>
-
-            </div>
-            <div className='reviewContainer'>
-                <div className='reviewTitle'>
-                    <h1>Anmeldelser</h1>
-                </div>
-                {isLoggedIn ? (
-                <div className='myReviewBox'>
-                    <div className='profilePhotoBox'>
-                        <img src={require('./profilePhoto2.jpg')} alt='Profile Photo' className='profileImage' />
-                    </div>
-                    <div className='writeReviewDiv'>
-                        <div className='textAreaDiv'>
-                            <textarea className='writeReviewBox'value={myReview || ''} placeholder='Skriv din anmeldelse' onChange={handleMyReviewEditing}>
-                            </textarea>
-                        </div>
-                        <div className='ratingDiv'>
-                            <FontAwesomeIcon icon={faStar} className='star' data-index="1" onClick={highlightStars}/>
-                            <FontAwesomeIcon icon={faStar} className='star' data-index="2" onClick={highlightStars}/>
-                            <FontAwesomeIcon icon={faStar} className='star' data-index="3" onClick={highlightStars}/>
-                            <FontAwesomeIcon icon={faStar} className='star' data-index="4" onClick={highlightStars}/>
-                            <FontAwesomeIcon icon={faStar} className='star' data-index="5" onClick={highlightStars}/>
-                            <div className='sendButton' onClick={handleSendComment}>
-                                <h2>Send</h2>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                ):(
-                    <div></div>
-                )}
-                {comments.map((comment, index) => (
-                    <div key={index} className='othersReviewBox'>
-                        <div className='profilePhotoBox'>
-                            <img src={require('./profilePhoto2.jpg')} alt='Profile Photo' className='profileImage' />
-                        </div>
-                        <div className='writeReviewDiv'>
-                            <div className='textAreaDiv'>
-                                <div className='othersWriteReviewBox'>
-                                    <h2>{comment.username}</h2>
-                                    <div className='actualOthersReview'>
-                                        <h5>{comment.comment}</h5>
-                                        <div className='othersRatingDiv'>
-                                            <div className='starsReviewed'>
-                                                <h1>{comment.stars}/5</h1>
-                                                <FontAwesomeIcon icon={faStar} className='othersStar'/>
-                                            </div>
-                                            <div className='myTrashDiv'>
-                                                <FontAwesomeIcon icon={faTrashAlt} className='commentToTrash' onClick={handleDeleteMyReview}/>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                    </div>
-                ))}
-                
-
-                <div className='othersReviewBox'>
-                    <div className='profilePhotoBox'>
-                        <img src={require('./profilePhoto2.jpg')} alt='Profile Photo' className='profileImage' />
-                    </div>
-                    <div className='writeReviewDiv'>
-                        <div className='textAreaDiv'>
-                            <div className='othersWriteReviewBox'>
-                                <h2> James Heui </h2>
-                                <div className='actualOthersReview'>
-                                    <h5> Artig spill!</h5>
-                                    <div className='othersRatingDiv'>
-                                        <div className='starsReviewed'>
-                                            <h1>4/5</h1>
-                                            <FontAwesomeIcon icon={faStar} className='othersStar'/>
-                                        </div>
-                                        <div className='trashDiv'>
-                                        <span>rapportér</span> 
-                                        <span className="icon"><i className="fa fa-flag"></i></span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div className='othersReviewBox'>
-                    <div className='profilePhotoBox'>
-                        <img src={require('./profilePhoto2.jpg')} alt='Profile Photo' className='profileImage' />
-                    </div>
-                    <div className='writeReviewDiv'>
-                        <div className='textAreaDiv'>
-                            <div className='othersWriteReviewBox'>
-                                <h2> Brukernavn123 </h2>
-                                <div className='actualOthersReview'>
-                                    <h5> Fantastisk nettside! Elsker spesielt dette spillet!</h5>
-                                    <div className='othersRatingDiv'>
-                                        <div className='starsReviewed'>
-                                            <h1>5/5</h1>
-                                            <FontAwesomeIcon icon={faStar} className='othersStar'/>
-                                        </div>
-                                        <div className='trashDiv'>
-                                        <span>rapportér</span> 
-                                        <span className="icon"><i className="fa fa-flag"></i></span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
             </div>
         </div>
       </div>

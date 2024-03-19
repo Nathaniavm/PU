@@ -3,7 +3,7 @@ import './Hjem.css'
 //import myImage from './reklame.png';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBars, faThLarge } from '@fortawesome/free-solid-svg-icons';
+import { faBars, faThLarge, faStar } from '@fortawesome/free-solid-svg-icons';
 import { getGameData } from '../../persistence/HjemBackend';
 
 /*
@@ -46,6 +46,8 @@ const Hjem = () => {
     const toggleToList = () => {
       setListView(true);
     }
+
+    console.log(games)
 
     const filteredGames = games.filter( game =>
       (game.title.toLowerCase().includes(searchInput.toLowerCase()) || searchInput === '') &&
@@ -112,7 +114,18 @@ const Hjem = () => {
                     <div className={isListView ? 'gameHorisontalList' : 'gameVerticalList'}>
                         {filteredGames.map((game, index) => (
                             <Link to={`game/${game.gameID}`} key={index} className={isListView ? "gameSquareHorisontalList" : "gameSquareVerticalList"}>
-                                <h4>{game.title}</h4>
+                                <div className={isListView ? "eachGameContainer" : "eachGameContainerVertical"}>
+                                  <div className={isListView ? "eachGameContainerLeft" : "eachGameContainerVerticalLeft"}>
+
+                                  </div>
+                                  <div className={isListView ? "eachGameContainerMid" : "eachGameContainerVerticalMid"}>
+                                    <h4>{game.title}</h4>
+                                  </div>
+                                  <div className={isListView ? "eachGameContainerRight" : "eachGameContainerVerticalRight"}>
+                                    {game.averageScore}/5
+                                    <FontAwesomeIcon icon={faStar} className='othersStar'/>
+                                  </div>
+                                </div>
                                 <div className={isListView ? "gameSquare-p-content-horisontal" : "gameSquare-p-content-vertical"}>
                                     <p>Kategori: {game.category}</p>
                                     <p>Antall: {game.nPeopleMin} - {game.nPeopleMax}</p>

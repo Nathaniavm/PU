@@ -11,9 +11,10 @@ import { deleteGame, gameTitleExists, retrieveGameInfo } from '../../persistence
 import { retrieveQueue } from '../../persistence/userQueues';
 import useTimer from '../../common/timer/Timer';
 import { faPlay, faUndo, faTrashAlt, faStepBackward, faStepForward, faSquareCheck } from '@fortawesome/free-solid-svg-icons';
-import { deleteReviewByReviewID } from '../../persistence/GameReviews';
+import { deleteReviewByReviewID, retrieveAllReviews } from '../../persistence/GameReviews';
 
 var games = await getGameData();
+var reviews = await retrieveAllReviews();
 
 const MinSide = () => {
   const { isAdmin, isLoggedIn} = useAuth();
@@ -47,8 +48,7 @@ const MinSide = () => {
       try {
         if (isLoggedIn) {
           const favorites = await listFavorites();
-          const queue = await retrieveQueue()
-          // console.log(queue)
+          const queue = await retrieveQueue();
           for(let i = 0; i < favorites.length; i++) {
             const selectedGame = games.find(game => game.gameID === favorites[i].gameID);
             setFavoriteGames(prevFavoriteGames => [...prevFavoriteGames, selectedGame]);
@@ -131,8 +131,14 @@ const MinSide = () => {
     }
 
     var reportedReviewsList = [];
+    for(let i = 0; i < reviews.length; i++) {
+      if (reviews[i].nReported > 0) {
+        reportedReviewsList.push(reviews[i])
+      }
+    }
 
-
+    console.log(reportedGamesList);
+    console.log(reportedReviewsList);
 
     // Event handlers for timer input fields
     const handleMinuteInputChange = (e) => {
@@ -321,23 +327,21 @@ const MinSide = () => {
               <table className='ulReportedGame'>
                 <thead>
                   <tr>
-                    <th>Navn på spill</th>
                     <th>Rapportert vurdering</th>
                     <th>Antall ganger rapportert</th>
                     <th>Slett vurdering</th>
                     <th>Behold vurdering</th>
                   </tr>
-                  {reportedGamesList.map((game, index) => (
+                  {reportedReviewsList.map((review, index) => (
                       <tr key={index}>
                           <td className="ReportedGameTitle"> 
-                              <Link to={`/game/${game.gameID}`} key={index} className="gamesSquare">{game.title}</Link>
+                              <Link to={`/game/${review.gameID}`} key={index} className="gamesSquare">{review.evaluation}</Link>
                           </td>
-                          <td className="ReportedGameCategory">{game.category}</td>
-                          <td className="ReportedGameReportCount">Reports: {game.nReported}</td>
-                          <td className='ReportedGameDelete' onClick={() => handleDeleteReview(game.gameID)}>
+                          <td className="ReportedGameReportCount">Reports: {review.nReported}</td>
+                          <td className='ReportedGameDelete' onClick={() => handleDeleteReview(review.gameID)}>
                             <FontAwesomeIcon icon={faTrashAlt} />
                           </td>
-                          <td className='ReportedGameKeep' onClick={() => handleKeepReview(game.gameID)}>
+                          <td className='ReportedGameKeep' onClick={() => handleKeepReview(review.gameID)}>
                             <FontAwesomeIcon icon={faSquareCheck}/>
                           </td>
                       </tr>

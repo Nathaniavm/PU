@@ -1,5 +1,5 @@
 import { ref, set, update, query, get, orderByKey, equalTo } from 'firebase/database';
-import { database } from '../firebaseConfig';
+import { auth, database } from '../firebaseConfig';
 
 export async function reportGame(gameKey){
     try {

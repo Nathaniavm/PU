@@ -193,6 +193,33 @@ h4 {
     transition: box-shadow 0.3s ease;
 }
 
+.eachGameContainer{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+}
+.eachGameContainerLeft{
+    display: flex;
+    align-items: center;
+    width: 21%;
+}
+.eachGameContainerMid{
+    width: 58%;
+    display: flex;
+    justify-content: center;
+}
+.eachGameContainerRight{
+    display: flex;
+    align-items:flex-end;
+    justify-content: flex-end;
+    width: 21%;
+}
+
+.eachGameContainerVerticalRight {
+    display: flex;
+    flex-direction: row;
+}
+
 .switchViewContainer{
     background-color: transparent;
     border: none;
@@ -217,5 +244,6 @@ h4 {
 .toggleBtn.active{
     background-color: rgb(224, 224, 224);
 }
+
 
 
