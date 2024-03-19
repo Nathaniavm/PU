@@ -2,6 +2,7 @@ import { ref, set, query, get, remove, update, limitToLast, orderByKey, orderByC
 import { database } from '../firebaseConfig'; //Import firebase instance
 import { removeFavoriteGame } from './favoriteBackend';
 import { removeQueuedGame } from './userQueues';
+import { deleteReviewByGameID } from './GameReviews';
 
 
 // Function to get the number of game elements
@@ -77,7 +78,7 @@ export async function registerGame(title, description, nPeopleMin, nPeopleMax, c
 }
 
 
-export async function updateAverageScore(gameID, score){
+export async function updateAverageScore(gameID, score, removed){
 
     var gameRef = ref(database, `games/${gameID}`);
 
@@ -89,9 +90,17 @@ export async function updateAverageScore(gameID, score){
         const scoreGame = Object.values(snapshot.val())[0];
 
         const oldAverageScore = scoreGame.averageScore;
-        console.log(scoreGame);
+        // console.log("Gammel score: " + scoreGame);
         const n = scoreGame.nEvaluations;
-        const newAverageScore = (oldAverageScore * n + score) / (n + 1);
+
+        var newAverageScore;
+        // removed is true if a review is deleted, false if a new review is written 
+        if(removed){
+            newAverageScore = (oldAverageScore * n - score) / (n - 1);
+        }
+        else{
+            newAverageScore = (oldAverageScore * n + score) / (n + 1);
+        }
 
         const newScoreData = {
             averageScore: newAverageScore,
@@ -99,27 +108,14 @@ export async function updateAverageScore(gameID, score){
         }
         
         update(gameRef, newScoreData);
-        console.log("nyscore: ", newAverageScore);
+        // console.log("Ny score: " + newAverageScore);
     }
 
 
 }
 
 
-export async function deleteGame(gameID){
-    
-    const gameRef = ref(database, 'games/' + gameID);
 
-    // FAVORITE
-    await removeFavoriteGame(gameID);
-
-    // QUEUE 
-    await removeQueuedGame(gameID);
-
-    //Does not throw error if gameID doesn't exist
-    remove(gameRef);
-    alert('Lek slettet');
-}
 
 export async function gameIDExists(gameID){ 
 
@@ -165,4 +161,24 @@ export async function gameTitleExists(title){
         console.log("Error med query til databasen: " + error);
         return false;
     }
+}
+
+export async function deleteGame(gameID){
+
+    // Flytta den nederst
+    
+    const gameRef = ref(database, 'games/' + gameID);
+
+    // FAVORITE
+    await removeFavoriteGame(gameID);
+
+    // QUEUE 
+    await removeQueuedGame(gameID);
+
+    // REVIEWS
+    await deleteReviewByGameID(gameID);
+
+    //Does not throw error if gameID doesn't exist
+    remove(gameRef);
+    alert('Lek slettet');
 }
