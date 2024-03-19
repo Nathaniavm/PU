@@ -215,6 +215,11 @@ h4 {
     width: 21%;
 }
 
+.eachGameContainerVerticalRight {
+    display: flex;
+    flex-direction: row;
+}
+
 .switchViewContainer{
     background-color: transparent;
     border: none;

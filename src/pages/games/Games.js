@@ -56,8 +56,6 @@ const Games = () => {
 
                     }
                     setInitialMinutes(foundMinutesInt);
-                    setIsFavoriteGame(isFavoritedGame);
-                    setIsQueuedGame(isQueuedGame);
                     setComments(reviewArray);
                 } else {
                     console.log('Game not found.');
@@ -405,10 +403,10 @@ const Games = () => {
                                 <div className='othersWriteReviewBox'>
                                     <h2>{comment.username}</h2>
                                     <div className='actualOthersReview'>
-                                        <h5>{comment.comment}</h5>
+                                        <h5>{comment.evaluation}</h5>
                                         <div className='othersRatingDiv'>
                                             <div className='starsReviewed'>
-                                                <h1>{comment.stars}/5</h1>
+                                                <h1>{comment.rating}/5</h1>
                                                 <FontAwesomeIcon icon={faStar} className='othersStar'/>
                                             </div>
                                             <div className='myTrashDiv'>
@@ -475,120 +473,6 @@ const Games = () => {
                         </div>
                     </div>
                 </div>
-
-            <button onClick={() => handleAddReview(game)}>Klikk på meg!</button>
-            <input type="text" id="minid" name="minid"></input>
-            </div>
-            <div className='reviewContainer'>
-                <div className='reviewTitle'>
-                    <h1>Anmeldelser</h1>
-                </div>
-                {isLoggedIn ? (
-                <div className='myReviewBox'>
-                    <div className='profilePhotoBox'>
-                        <img src={require('./profilePhoto2.jpg')} alt='Profile Photo' className='profileImage' />
-                    </div>
-                    <div className='writeReviewDiv'>
-                        <div className='textAreaDiv'>
-                            <textarea className='writeReviewBox'value={myReview || ''} placeholder='Skriv din anmeldelse' onChange={handleMyReviewEditing}>
-                            </textarea>
-                        </div>
-                        <div className='ratingDiv'>
-                            <FontAwesomeIcon icon={faStar} className='star' data-index="1" onClick={highlightStars}/>
-                            <FontAwesomeIcon icon={faStar} className='star' data-index="2" onClick={highlightStars}/>
-                            <FontAwesomeIcon icon={faStar} className='star' data-index="3" onClick={highlightStars}/>
-                            <FontAwesomeIcon icon={faStar} className='star' data-index="4" onClick={highlightStars}/>
-                            <FontAwesomeIcon icon={faStar} className='star' data-index="5" onClick={highlightStars}/>
-                            <div className='sendButton' onClick={handleSendComment}>
-                                <h2>Send</h2>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                ):(
-                    <div></div>
-                )}
-                {comments.map((comment, index) => (
-                    <div key={index} className='othersReviewBox'>
-                        <div className='profilePhotoBox'>
-                            <img src={require('./profilePhoto2.jpg')} alt='Profile Photo' className='profileImage' />
-                        </div>
-                        <div className='writeReviewDiv'>
-                            <div className='textAreaDiv'>
-                                <div className='othersWriteReviewBox'>
-                                    <h2>{comment.username}</h2>
-                                    <div className='actualOthersReview'>
-                                        <h5>{comment.comment}</h5>
-                                        <div class='othersRatingDiv'>
-                                            <div class='starsReviewed'>
-                                                <h1>{comment.stars}/5</h1>
-                                                <FontAwesomeIcon icon={faStar} className='othersStar'/>
-                                            </div>
-                                            <div className='myTrashDiv'>
-                                                <FontAwesomeIcon icon={faTrashAlt} className='commentToTrash' onClick={handleDeleteMyReview}/>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                    </div>
-                ))}
-                
-
-                <div className='othersReviewBox'>
-                    <div className='profilePhotoBox'>
-                        <img src={require('./profilePhoto2.jpg')} alt='Profile Photo' className='profileImage' />
-                    </div>
-                    <div className='writeReviewDiv'>
-                        <div className='textAreaDiv'>
-                            <div className='othersWriteReviewBox'>
-                                <h2> James Heui </h2>
-                                <div className='actualOthersReview'>
-                                    <h5> Artig spill!</h5>
-                                    <div className='othersRatingDiv'>
-                                        <div className='starsReviewed'>
-                                            <h1>4/5</h1>
-                                            <FontAwesomeIcon icon={faStar} className='othersStar'/>
-                                        </div>
-                                        <div className='trashDiv'>
-                                        <span>rapportér</span> 
-                                        <span className="icon"><i className="fa fa-flag"></i></span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div className='othersReviewBox'>
-                    <div className='profilePhotoBox'>
-                        <img src={require('./profilePhoto2.jpg')} alt='Profile Photo' className='profileImage' />
-                    </div>
-                    <div className='writeReviewDiv'>
-                        <div className='textAreaDiv'>
-                            <div className='othersWriteReviewBox'>
-                                <h2> Brukernavn123 </h2>
-                                <div className='actualOthersReview'>
-                                    <h5> Fantastisk nettside! Elsker spesielt dette spillet!</h5>
-                                    <div className='othersRatingDiv'>
-                                        <div className='starsReviewed'>
-                                            <h1>5/5</h1>
-                                            <FontAwesomeIcon icon={faStar} className='othersStar'/>
-                                        </div>
-                                        <div className='trashDiv'>
-                                        <span>rapportér</span> 
-                                        <span className="icon"><i className="fa fa-flag"></i></span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
             </div>
         </div>
       </div>

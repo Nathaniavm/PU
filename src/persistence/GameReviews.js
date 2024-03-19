@@ -65,6 +65,50 @@ export async function retrieveReviews(gameID){
     
 }
 
+export async function retrieveAllReviews(){
+    try {   
+        // Create a database reference to "games"
+        const reviewRef = ref(database, "gameReviews");
+        
+        // Execute the query to get the snapshot
+        const snapshot = await get(reviewRef);
+
+        // Initialize an array to store placeholder games
+        const placeholderReviews = [];
+
+        if (snapshot.exists()) {
+            // Loop through each child node (game) of the snapshot
+            snapshot.forEach((childSnapshot) => {
+                // Get the gameId of each child node
+                const reviewID = childSnapshot.key;
+
+                // Get the game data under the gameId
+                const reviewData = childSnapshot.val();
+
+                // Structure the game data in the placeholderGames format
+                const placeholderReview = {
+                    reviewID: reviewID,
+                    gameID: reviewData.gameID,
+                    rating: reviewData.rating,
+                    userID: reviewData.userID,
+                    nReported: reviewData.nReported,
+                    evaluation: reviewData.evaluation
+                };
+
+                // Push the placeholder game to the placeholderGames array
+                placeholderReviews.push(placeholderReview);
+            });
+        }
+
+        // Return the array of placeholder games
+        return placeholderReviews;
+    } catch (error) {
+        console.error("Error getting placeholder games:", error);
+        // Handle error appropriately, e.g., throw error or return a default value
+        throw error;
+    }
+}
+
 
 export async function reportReview(reviewID){
     try {

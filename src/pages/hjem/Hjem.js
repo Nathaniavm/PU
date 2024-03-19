@@ -114,14 +114,14 @@ const Hjem = () => {
                     <div className={isListView ? 'gameHorisontalList' : 'gameVerticalList'}>
                         {filteredGames.map((game, index) => (
                             <Link to={`game/${game.gameID}`} key={index} className={isListView ? "gameSquareHorisontalList" : "gameSquareVerticalList"}>
-                                <div className="eachGameContainer">
-                                  <div className="eachGameContainerLeft">
+                                <div className={isListView ? "eachGameContainer" : "eachGameContainerVertical"}>
+                                  <div className={isListView ? "eachGameContainerLeft" : "eachGameContainerVerticalLeft"}>
 
                                   </div>
-                                  <div className="eachGameContainerMid">
+                                  <div className={isListView ? "eachGameContainerMid" : "eachGameContainerVerticalMid"}>
                                     <h4>{game.title}</h4>
                                   </div>
-                                  <div className="eachGameContainerRight">
+                                  <div className={isListView ? "eachGameContainerRight" : "eachGameContainerVerticalRight"}>
                                     {game.averageScore}/5
                                     <FontAwesomeIcon icon={faStar} className='othersStar'/>
                                   </div>
