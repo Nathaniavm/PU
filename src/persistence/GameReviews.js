@@ -22,7 +22,7 @@ export async function addReview(gameID, rating, evaluation){
                 nReported: 0
             }
 
-            updateAverageScore(gameID, rating);
+            updateAverageScore(gameID, rating, false);
     
             return set(newReviewRef, reviewData)
                 .then(() => {
@@ -68,8 +68,6 @@ export async function retrieveReviews(gameID){
 
 export async function reportReview(reviewID){
     try {
-        var userID = auth.currentUser.uid;
-
         var reviewRef = ref(database, `gameReviews/${reviewID}`);
 
         const reviewsRef = ref(database, "gameReviews");
@@ -101,14 +99,20 @@ export async function reportReview(reviewID){
 
 
 export async function deleteReviewByGameID(gameID){
-    reviewRef = ref(database, "gameReviews/");
+    const reviewRef = ref(database, "gameReviews/");
 
-    reviewQuery = query(reviewRef, orderByChild(gameID), equalTo(gameID));
+    const reviewQuery = query(reviewRef, orderByChild(gameID), equalTo(gameID));
     const snapshot = await get(reviewQuery);
 
     if (snapshot.exists()) {
         snapshot.forEach((childSnapshot) => {
             const reviewKey = childSnapshot.key;
+
+            const rating = Object.values(snapshot.val())[0].rating;
+
+
+            updateAverageScore(gameID, rating, true);
+
 
             const reviewToRemoveRef = child(reviewRef, reviewKey);
             remove(reviewToRemoveRef)
@@ -125,8 +129,25 @@ export async function deleteReviewByGameID(gameID){
     // }
 }
 
-export function deleteReviewByReviewID(reviewID){
-    reviewRef = ref(database, "gameReviews/" + reviewID);
+export async function deleteReviewByReviewID(reviewID){
+    const reviewRef = ref(database, "gameReviews/" + reviewID);
+
+
+
+    //FINNES SIKKERT BEDRE LØSNING
+
+    //get gameID to update average score
+    const reviewsRef = ref(database, "gameReviews");
+    const reportedReviewQuery = query(reviewsRef, orderByKey(), equalTo(String(reviewID)));
+    const snapshot = await get(reportedReviewQuery);
+    if (snapshot.exists()) {
+        const values = Object.values(snapshot.val())[0];
+        const gameID = values.gameID;
+        const rating = values.rating;
+
+        updateAverageScore(gameID, rating, true);
+    }
+
 
     remove(reviewRef);
 }

@@ -143,9 +143,9 @@ const MinSide = () => {
         setInitialSeconds(parseInt(e.target.value));
     };
 
-    const handleDeleteReview = (reviewID) => {
+    const handleDeleteReview = async (reviewID) => {
       //backend delete review
-      deleteReviewByReviewID(reviewID);
+      await deleteReviewByReviewID(reviewID);
       //console.log("Slettet vurderingen")
     }
 
