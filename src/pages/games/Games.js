@@ -422,57 +422,7 @@ const Games = () => {
                 ))}
                 
 
-                <div className='othersReviewBox'>
-                    <div className='profilePhotoBox'>
-                        <img src={require('./profilePhoto2.jpg')} alt='Profile Photo' className='profileImage' />
-                    </div>
-                    <div className='writeReviewDiv'>
-                        <div className='textAreaDiv'>
-                            <div className='othersWriteReviewBox'>
-                                <h2> James Heui </h2>
-                                <div className='actualOthersReview'>
-                                    <h5> Artig spill!</h5>
-                                    <div className='othersRatingDiv'>
-                                        <div className='starsReviewed'>
-                                            <h1>4/5</h1>
-                                            <FontAwesomeIcon icon={faStar} className='othersStar'/>
-                                        </div>
-                                        <div className='trashDiv'>
-                                        <span>Rapportér</span> 
-                                        <span className="icon"><i className="fa fa-flag"></i></span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
 
-                <div className='othersReviewBox'>
-                    <div className='profilePhotoBox'>
-                        <img src={require('./profilePhoto2.jpg')} alt='Profile Photo' className='profileImage' />
-                    </div>
-                    <div className='writeReviewDiv'>
-                        <div className='textAreaDiv'>
-                            <div className='othersWriteReviewBox'>
-                                <h2> Brukernavn123 </h2>
-                                <div className='actualOthersReview'>
-                                    <h5> Fantastisk nettside! Elsker spesielt dette spillet!</h5>
-                                    <div className='othersRatingDiv'>
-                                        <div className='starsReviewed'>
-                                            <h1>5/5</h1>
-                                            <FontAwesomeIcon icon={faStar} className='othersStar'/>
-                                        </div>
-                                        <div className='trashDiv'>
-                                        <span>rapportér</span> 
-                                        <span className="icon"><i className="fa fa-flag"></i></span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
       </div>
